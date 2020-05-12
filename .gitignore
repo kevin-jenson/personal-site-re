@@ -67,3 +67,17 @@ yarn-error.log
 .pnp.js
 # Yarn Integrity file
 .yarn-integrity
+
+.DS_Store
+.merlin
+.bsb.lock
+npm-debug.log
+/lib/bs/*
+/lib/es6/src/*
+lib/
+/node_modules/
+build/
+dist/
+.env
+jspm_packages
+/server

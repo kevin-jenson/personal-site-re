@@ -5,4 +5,10 @@ B /Users/kjenson/Desktop/personal/personal-site-re/node_modules/bs-platform/lib/
 FLG -w +a-4-9-20-40-41-42-50-61-102
 S /Users/kjenson/Desktop/personal/personal-site-re/node_modules/reason-react/lib/ocaml
 B /Users/kjenson/Desktop/personal/personal-site-re/node_modules/reason-react/lib/ocaml
+S src
+B lib/bs/src
+S src/pages
+B lib/bs/src/pages
+S src/components
+B lib/bs/src/components
 ####BSB GENERATED: NO EDIT}
