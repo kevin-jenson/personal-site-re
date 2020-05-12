@@ -5,6 +5,7 @@
   "version": "0.1.0",
   "author": "Kyle Mathews <mathews.kyle@gmail.com>",
   "dependencies": {
+    "@material-ui/core": "^4.9.14",
     "gatsby": "^2.21.22",
     "gatsby-image": "^2.4.3",
     "gatsby-plugin-manifest": "^2.4.2",
@@ -16,9 +17,11 @@
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "react-helmet": "^6.0.0"
+    "react-helmet": "^6.0.0",
+    "reason-react": "^0.8.0"
   },
   "devDependencies": {
+    "bs-platform": "^7.3.2",
     "prettier": "2.0.5"
   },
   "keywords": [
@@ -26,8 +29,9 @@
   ],
   "license": "MIT",
   "scripts": {
-    "build": "gatsby build",
+    "build": "bsb -make-world && gatsby build",
     "develop": "gatsby develop",
+    "dev": "bsb -make-world -w",
     "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
     "start": "npm run develop",
     "serve": "gatsby serve",

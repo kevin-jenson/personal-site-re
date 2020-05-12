@@ -1,0 +1,15 @@
+{
+  "name": "reasonable-gatsby",
+  "sources": {
+    "dir": "src",
+    "subdirs": true
+  },
+  "reason": { "react-jsx": 3 },
+  "refmt": 3,
+  "package-specs": {
+    "module": "es6",
+    "in-source": true
+  },
+  "suffix": ".js",
+  "bs-dependencies": ["reason-react"]
+}
