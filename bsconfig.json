@@ -1,9 +1,11 @@
 {
   "name": "personal-site-re",
-  "sources": {
-    "dir": "src",
-    "subdirs": true
-  },
+  "sources": [
+    {
+      "dir": "src",
+      "subdirs": true
+    }
+  ],
   "reason": { "react-jsx": 3 },
   "refmt": 3,
   "package-specs": {
