@@ -52,15 +52,19 @@ let animationDuration = str => ("animation-duration", str);
 let animationFillMode = str => ("animation-fill-mode", str);
 let opacity = num => ("opacity", num |> Js.Float.toString);
 let animationName = str => ("animation-name", "$" ++ str);
+let textAlign = str => ("text-align", str);
+let lineHeight = str => ("line-height", str);
+let fontSize = str => ("font-size", str);
+let textDecoration = str => ("text-decoration", str);
+let color = str => ("color", str);
 
 // sudo selectors
 let nthChild = (child, dict) => {
   let child = string_of_int(child);
   ({j|&:nth-child($child)|j}, dict);
 };
-let var = (str, dict) => {
-  ("&$" ++ str, dict);
-};
+let var = (str, dict) => ("&$" ++ str, dict);
+let hover = dict => ("&:hover", dict);
 
 // css values
 let hidden = "hidden";
@@ -72,6 +76,9 @@ let translateY = str => {j|translateY($str)|j};
 let translate = (x, y) => {j|translate($x, $y)|j};
 let important = str => str ++ " !important";
 let forwards = "forwards";
+let center = "center";
+let none = "none";
+let underline = "underline";
 
 // keyframes
 let keyframes = (name, frames) => {

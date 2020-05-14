@@ -168,6 +168,41 @@ function animationName(str) {
         ];
 }
 
+function textAlign(str) {
+  return /* tuple */[
+          "text-align",
+          str
+        ];
+}
+
+function lineHeight(str) {
+  return /* tuple */[
+          "line-height",
+          str
+        ];
+}
+
+function fontSize(str) {
+  return /* tuple */[
+          "font-size",
+          str
+        ];
+}
+
+function textDecoration(str) {
+  return /* tuple */[
+          "text-decoration",
+          str
+        ];
+}
+
+function color(str) {
+  return /* tuple */[
+          "color",
+          str
+        ];
+}
+
 function nthChild(child, dict) {
   var child$1 = String(child);
   return /* tuple */[
@@ -179,6 +214,13 @@ function nthChild(child, dict) {
 function $$var(str, dict) {
   return /* tuple */[
           "&$" + str,
+          dict
+        ];
+}
+
+function hover(dict) {
+  return /* tuple */[
+          "&:hover",
           dict
         ];
 }
@@ -264,6 +306,12 @@ var flexEnd = "flexEnd";
 
 var forwards = "forwards";
 
+var center = "center";
+
+var none = "none";
+
+var underline = "underline";
+
 export {
   clsx ,
   toFloat ,
@@ -291,8 +339,14 @@ export {
   animationFillMode ,
   opacity ,
   animationName ,
+  textAlign ,
+  lineHeight ,
+  fontSize ,
+  textDecoration ,
+  color ,
   nthChild ,
   $$var ,
+  hover ,
   hidden ,
   flex ,
   column ,
@@ -302,6 +356,9 @@ export {
   translate ,
   important ,
   forwards ,
+  center ,
+  none ,
+  underline ,
   keyframes ,
   style ,
   create ,

@@ -5,6 +5,7 @@ import * as $$Array from "bs-platform/lib/es6/array.js";
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
 import * as Caml_int32 from "bs-platform/lib/es6/caml_int32.js";
+import * as DomHelpers from "../DomHelpers.js";
 import * as MakeStyles from "../MakeStyles.js";
 import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
@@ -247,6 +248,69 @@ var HamMenu = {
 
 function styles$1(theme) {
   var transitions = theme.transitions;
+  var link = function (colorMode) {
+    return MakeStyles.style(/* :: */[
+                MakeStyles.height(MakeStyles.px(50)),
+                /* :: */[
+                  MakeStyles.width(MakeStyles.px(MakeStyles.toInt(MakeStyles.toFloat(theme.spacer) * 36.5))),
+                  /* :: */[
+                    MakeStyles.opacity(0.0),
+                    /* :: */[
+                      MakeStyles.textAlign(MakeStyles.center),
+                      /* :: */[
+                        MakeStyles.lineHeight(MakeStyles.px(50)),
+                        /* :: */[
+                          MakeStyles.fontSize(MakeStyles.px(24)),
+                          /* :: */[
+                            MakeStyles.textDecoration(MakeStyles.none),
+                            /* :: */[
+                              MakeStyles.color(colorMode ? theme.background.light : theme.background.dark),
+                              /* :: */[
+                                MakeStyles.transition(Curry._2(transitions.create, ["opacity"], {
+                                          duration: transitions.duration.complex + transitions.duration.shortest | 0,
+                                          delay: transitions.duration.shorter
+                                        })),
+                                /* :: */[
+                                  MakeStyles.hover(MakeStyles.style(/* :: */[
+                                            MakeStyles.textDecoration(MakeStyles.underline),
+                                            /* [] */0
+                                          ])),
+                                  /* [] */0
+                                ]
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              ]);
+  };
+  return MakeStyles.create(/* :: */[
+              /* tuple */[
+                "link",
+                link
+              ],
+              /* [] */0
+            ]);
+}
+
+var useStyles$1 = MakeStyles.makeThemeStyles(styles$1);
+
+function Navigation$HeaderLink(Props) {
+  Curry._1(useStyles$1, Caml_option.some(undefined));
+  
+}
+
+var HeaderLink = {
+  styles: styles$1,
+  useStyles: useStyles$1,
+  make: Navigation$HeaderLink
+};
+
+function styles$2(theme) {
+  var transitions = theme.transitions;
   var createTransitionOptions = function (prim, prim$1, prim$2, prim$3) {
     var tmp = { };
     if (prim !== undefined) {
@@ -362,7 +426,7 @@ function styles$1(theme) {
             ]);
 }
 
-var useHeaderStyles = MakeStyles.makeThemeStyles(styles$1);
+var useHeaderStyles = MakeStyles.makeThemeStyles(styles$2);
 
 var links = /* :: */[
   "about",
@@ -380,16 +444,47 @@ function Navigation$DesktopHeader(Props) {
   var classes = Curry._1(useHeaderStyles, Caml_option.some(undefined));
   var theme = Core.useTheme();
   var hamRef = React.useRef(null);
-  React.useRef(0.0);
+  var linksRef = React.useRef(null);
+  var leaveTimeout = React.useRef(0.0);
+  var enterTimeout = React.useRef(0.0);
   var handleMouseEnter = function (_event) {
-    Belt_Option.map(Caml_option.nullable_to_opt(hamRef.current), (function (ref) {
-            return setTimeout((function (param) {
-                          return $$Array.iter((function (child) {
-                                        Curry._1(child.classList.add, Curry._1(classes, "hamLineHoverd"));
-                                        
-                                      }), ref.childNodes);
-                        }), theme.transitions.duration.shortest);
-          }));
+    if (leaveTimeout.current !== 0.0) {
+      clearTimeout(leaveTimeout.current);
+    }
+    var hamMenu = DomHelpers.useDomRef(hamRef);
+    var linkMenu = DomHelpers.useDomRef(linksRef);
+    Curry._1(hamMenu.classList.add, Curry._1(classes, "hamHovered"));
+    enterTimeout.current = setTimeout((function (param) {
+            DomHelpers.iterChildren((function (child) {
+                    return Curry._1(child.classList.add, Curry._1(classes, "hamLineHoverd"));
+                  }), hamMenu);
+            Curry._1(linkMenu.classList.add, Curry._1(classes, "headLinksHover"));
+            linkMenu.parentNode.style.zIndex = 0;
+            return DomHelpers.iterChildren((function (child) {
+                          child.style.opacity = 1;
+                          
+                        }), linkMenu);
+          }), theme.transitions.duration.shortest);
+    
+  };
+  var handleMouseLeave = function (_event) {
+    if (enterTimeout.current !== 0.0) {
+      clearTimeout(0.0);
+    }
+    var hamMenu = DomHelpers.useDomRef(hamRef);
+    var linkMenu = DomHelpers.useDomRef(linksRef);
+    DomHelpers.iterChildren((function (child) {
+            return Curry._1(child.classList.remove, Curry._1(classes, "hamLineHovered"));
+          }), hamMenu);
+    DomHelpers.iterChildren((function (child) {
+            child.style.opacity = 0;
+            
+          }), linkMenu);
+    Curry._1(linkMenu.classList.remove, Curry._1(classes, "headLinksHover"));
+    linkMenu.parentNode.style.zIndex = -1;
+    leaveTimeout.current = setTimeout((function (param) {
+            return Curry._1(hamMenu.classList.remove, Curry._1(classes, "hamHovered"));
+          }), theme.transitions.duration.shortest);
     
   };
   return React.createElement("div", {
@@ -400,11 +495,24 @@ function Navigation$DesktopHeader(Props) {
                   colorMode: colorMode,
                   className: Curry._1(classes, "hamMenu"),
                   ref: hamRef
-                }));
+                }), React.createElement("div", {
+                  style: {
+                    overflow: MakeStyles.hidden,
+                    zIndex: "-1",
+                    transform: MakeStyles.translate(MakeStyles.px(-6), MakeStyles.px(-44))
+                  }
+                }, React.createElement("div", {
+                      ref: linksRef,
+                      className: Curry._1(classes, "headerLinks"),
+                      role: "navigation",
+                      onMouseLeave: handleMouseLeave
+                    }, $$Array.of_list(List.map((function (_link) {
+                                return React.createElement("div", undefined);
+                              }), links)))));
 }
 
 var DesktopHeader = {
-  styles: styles$1,
+  styles: styles$2,
   useHeaderStyles: useHeaderStyles,
   links: links,
   make: Navigation$DesktopHeader
@@ -412,6 +520,7 @@ var DesktopHeader = {
 
 export {
   HamMenu ,
+  HeaderLink ,
   DesktopHeader ,
   
 }
