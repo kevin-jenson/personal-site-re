@@ -111,6 +111,10 @@ module Theme = {
     create: createTransition,
   };
 
+  type zIndex = {
+    appBar: int
+  };
+
   type t = {
     breakpoints,
     direction: string,
@@ -119,20 +123,22 @@ module Theme = {
     background: CustomTheme.background,
     spacer: int,
     typography: CustomTheme.typography,
+    zIndex
   };
 
-  [@bs.module "@material-ui/core"]
-  external createMuiTheme: CustomTheme.t => t = "createMuiTheme";
+  [@bs.module "@material-ui/core"] external createMuiTheme: CustomTheme.t => t = "createMuiTheme";
 
-	let theme = createMuiTheme(CustomTheme.theme);
+  let theme = createMuiTheme(CustomTheme.theme);
+
+  [@bs.module "@material-ui/core"] external useTheme: unit => t = "useTheme";
 };
 
 module CssBaseline = {
-	[@bs.module "@material-ui/core"] [@react.component]
-	external make: (~children: React.element) => React.element = "CssBaseline";
-}
+  [@bs.module "@material-ui/core"] [@react.component]
+  external make: (~children: React.element) => React.element = "CssBaseline";
+};
 
 module MuiThemeProvider = {
-	[@bs.module "@material-ui/core"][@react.component]
-	external make: (~children: React.element, ~theme: Theme.t) => React.element = "ThemeProvider";
-}
+  [@bs.module "@material-ui/core"] [@react.component]
+  external make: (~children: React.element, ~theme: Theme.t) => React.element = "ThemeProvider";
+};

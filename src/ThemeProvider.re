@@ -1,17 +1,19 @@
-let themeProviderGlobalStyles = {
-  "@global": {
-    "body": {
-      "overflow": "hidden",
-    },
-  },
+
+let styles = {
+	open MakeStyles;
+	let body = style([overflow(hidden)]);
+
+	create([
+		("body", body)
+	])
 };
 
-let useThemeProviderStyles = MakeStyles.makeStyles(themeProviderGlobalStyles);
+let useThemeProviderStyles = MakeStyles.makeGlobalStyles(styles);
 
 module ThemeProvider = {
   [@react.component]
   let make = (~children) => {
-    let _classes = useThemeProviderStyles();
+    let _getClass = useThemeProviderStyles(~props=());
 
     <Mui.CssBaseline>
       <Mui.MuiThemeProvider theme=Mui.Theme.theme> children </Mui.MuiThemeProvider>
