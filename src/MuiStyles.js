@@ -467,7 +467,7 @@ var All = {
   all: all
 };
 
-var Not_valid = Caml_exceptions.create("MakeStyles.Animation.Not_valid");
+var Not_valid = Caml_exceptions.create("MuiStyles.Animation.Not_valid");
 
 function _animationTime(opt) {
   if (typeof opt === "number") {
