@@ -91,7 +91,7 @@ let keyframes = (name, frames) => {
   ({j|@keyframes $name|j}, keyframe) |> Obj.magic;
 };
 
-let style = styles => Js.Dict.fromList(styles) |> Obj.magic;
+let css = styles => Js.Dict.fromList(styles) |> Obj.magic;
 
 let create = styles => Js.Dict.fromList(styles) |> Obj.magic;
 
@@ -131,14 +131,17 @@ let makeThemeStyles = styleFunc => {
 };
 
 // constants
+let auto = "auto";
 let initial = "initial";
 let inherit_ = "inherit";
+let none = "none";
 let unset = "unset";
 
 module TimingFunctions = {
   type step =
     | Start
     | End
+    | Unsafe_set(string)
   and timingOptions =
     | Linear
     | Ease
@@ -164,7 +167,15 @@ module TimingFunctions = {
     | StepStart => "step-start"
     | StepEnd => "step-end"
     | Step(times) => {j|steps($times)|j}
-    | Steps(times, step) => {j|steps($times, $step)|j}
+    | Steps(times, step) =>
+      let stepValue =
+        switch (step) {
+        | Start => "start"
+        | End => "end"
+        | Unsafe_set(str) => str
+        };
+
+      {j|steps($times, $stepValue)|j};
     | CubicBezier(x1, y1, x2, y2) => {j|cubic-bezier($x1, $y1, $x2, $y2)|j}
     | Initial => initial
     | Inherit => inherit_
@@ -277,8 +288,7 @@ module Animation = {
     | Unsafe_set(string);
 
   exception Not_valid(string);
-  let animationDelay = opt => (
-    "animation-delay",
+  let _animationTime = opt =>
     switch (opt) {
     | Time(str) =>
       if (Js.String.includes("ms", str) || Js.String.includes("s", str)) {
@@ -289,8 +299,9 @@ module Animation = {
     | Initial => initial
     | Inherit => inherit_
     | Unsafe_set(str) => str
-    },
-  );
+    };
+
+  let animationDelay = opt => ("animation-delay", _animationTime(opt));
 
   type animationDirectionOptions =
     | Normal
@@ -316,7 +327,7 @@ module Animation = {
 
   type animationDurationOptions = animationDelayOptions;
 
-  let animationDuration = animationDelay;
+  let animationDuration = opt => ("animation-duration", _animationTime(opt));
 
   type animationFillModeOptions =
     | None
@@ -432,7 +443,8 @@ module Animation = {
         animationDirectionOptions,
         animationFillModeOptions,
         animationPlayStateOptions,
-      );
+      )
+    | Unsafe_set(string);
 
   let animation = opt => (
     "animation",
@@ -489,6 +501,7 @@ module Animation = {
       let (_, fillModeValue) = animationFillMode(fillMode);
       let (_, playStateValue) = animationPlayState(playState);
       {j|$nameValue $durationValue $timingValue $delayValue $iterationCountValue $directionValue $fillModeValue $playStateValue|j};
+    | Unsafe_set(str) => str
     },
   );
 };
@@ -499,8 +512,10 @@ type alignItemsOptions = Align.alignItemsOptions;
 let alignItems = Align.alignItems;
 type alignSelfOptions = Align.alignSelfOptions;
 let alignSelf = Align.alignSelf;
+
 type allOptions = All.allOptions;
 let all = All.all;
+
 type animationOptions = Animation.animationOptions;
 let animation = Animation.animation;
 type animationDelayOptions = Animation.animationDelayOptions;
@@ -519,3 +534,293 @@ type animationPlayStateOptions = Animation.animationPlayStateOptions;
 let animationPlayState = Animation.animationPlayState;
 type animationTimingFunctionOptions = TimingFunctions.timingOptions;
 let animationTimingFunction = Animation.animationTimingFunction;
+
+// B's
+module Backface = {
+  type backfaceVisibiltyOptions =
+    | Visible
+    | Hidden
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+
+  let backfaceVisibilty = opt => (
+    "backface-visibility",
+    switch (opt) {
+    | Visible => "visible"
+    | Hidden => "hidden"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+module Background = {
+  type backgroundAttachmentOptions =
+    | Scroll
+    | Fixed
+    | Local
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let backgroundAttachment = opt => (
+    "background-attachment",
+    switch (opt) {
+    | Scroll => "scroll"
+    | Fixed => "fixed"
+    | Local => "local"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type backgroundBlendModeOptions =
+    | Normal
+    | Multiply
+    | Screen
+    | Overlay
+    | Darken
+    | Lighten
+    | ColorDodge
+    | Saturation
+    | Color
+    | Luminosity
+    | Unsafe_set(string);
+  let backgroundBlendMode = opt => (
+    "background-blend-mode",
+    switch (opt) {
+    | Normal => "normal"
+    | Multiply => "multiply"
+    | Screen => "screen"
+    | Overlay => "overlay"
+    | Darken => "darken"
+    | Lighten => "lighten"
+    | ColorDodge => "color-dodge"
+    | Saturation => "saturation"
+    | Color => "color"
+    | Luminosity => "luminosity"
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type backgroundClipOptions =
+    | BorderBox
+    | PaddingBox
+    | ContentBox
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+
+  let _backgroundBoxing = opt =>
+    switch (opt) {
+    | BorderBox => "border-box"
+    | PaddingBox => "padding-box"
+    | ContentBox => "content-box"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    };
+  let backgroundClip = opt => ("background-clip", _backgroundBoxing(opt));
+
+  type backgroundColorOptions =
+    | Color(string)
+    | Transparent
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let backgroundColor = opt => (
+    "background-color",
+    switch (opt) {
+    | Color(color) => color
+    | Transparent => "transparent"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type backgroundImageOptions =
+    | URL(string)
+    | None
+    | LinearGradient(string)
+    | RadialGradient(string)
+    | RepeatingLinearGradient(string)
+    | RepeatingRadialGradient(string)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let backgroundImage = opt => (
+    "background-image",
+    switch (opt) {
+    | URL(url) => {j|url($url)|j}
+    | None => none
+    | LinearGradient(gradient) => {j|linear-gradient($gradient)|j}
+    | RadialGradient(gradient) => {j|radial-gradient($gradient)|j}
+    | RepeatingLinearGradient(gradient) => {j|repeating-linear-gradient($gradient)|j}
+    | RepeatingRadialGradient(gradient) => {j|repeating-radial-gradient($gradient)|j}
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type backgroundOriginOptions = backgroundClipOptions;
+  let backgroundOrigin = opt => ("background-origin", _backgroundBoxing(opt));
+
+  type backgroundPositionPositionOption =
+    | Bottom
+    | Center
+    | Left
+    | Right
+    | Top
+  and backgroundPositionOptions =
+    | Position(backgroundPositionPositionOption, backgroundPositionPositionOption)
+    | PositionExact(string, string)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+
+  let backgroundPosition = opt => (
+    "background-position",
+    switch (opt) {
+    | Position(pos1, pos2) =>
+      switch (pos1, pos2) {
+      | (Left, Top) => "left top"
+      | (Left, Center) => "left enter"
+      | (Left, Bottom) => "left bottom"
+      | (Right, Top) => "right top"
+      | (Right, Center) => "right center"
+      | (Right, Bottom) => "right bottom"
+      | (Center, Top) => "center top"
+      | (Center, Center) => "center center"
+      | (Center, Bottom) => "center bottom"
+      | _ => "center center"
+      }
+    | PositionExact(x, y) => {j|$x $y|j}
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type backgroundRepeatOptions =
+    | Repeat
+    | RepeatX
+    | RepeatY
+    | NoRepeat
+    | Space
+    | Round
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let backgroundRepeat = opt => (
+    "background-repeat",
+    switch (opt) {
+    | Repeat => "repeat"
+    | RepeatX => "repeat-x"
+    | RepeatY => "repeat-y"
+    | NoRepeat => "no-repeat"
+    | Space => "space"
+    | Round => "round"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type backgroundSizeOptions =
+    | Auto
+    | Length(string, string)
+    | LengthX(string)
+    | LengthY(string)
+    | Cover
+    | Contain
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let backgroundSize = opt => (
+    "background-size",
+    switch (opt) {
+    | Auto => auto
+    | Length(x, y) => {j|$x $y|j}
+    | LengthX(x) => {j|$x|j}
+    | LengthY(y) => {j|auto $y|j}
+    | Cover => "cover"
+    | Contain => "contain"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+  // TODO: add background;
+};
+
+type backfaceVisibiltyOptions = Backface.backfaceVisibiltyOptions;
+let backfaceVisibilty = Backface.backfaceVisibilty;
+
+// TODO: add background
+let background = {};
+type backgroundAttachmentOptions = Background.backgroundAttachmentOptions;
+let backgroundAttachment = Background.backgroundAttachment;
+type backgroundBlendModeOptions = Background.backgroundBlendModeOptions;
+let backgroundBlendMode = Background.backgroundBlendMode;
+type backgroundClipOptions = Background.backgroundClipOptions;
+let backgroundClip = Background.backgroundClip;
+type backgroundColorOptions = Background.backgroundColorOptions;
+let backgroundColor = Background.backgroundColor;
+type backgroundImageOptions = Background.backgroundImageOptions;
+let backgroundImage = Background.backgroundImage;
+type backgroundOriginOptions = Background.backgroundOriginOptions;
+let backgroundOrigin = Background.backgroundOrigin;
+type backgroundPositionOptions = Background.backgroundPositionOptions;
+let backgroundPosition = Background.backgroundPosition;
+type backgroundRepeatOptions = Background.backgroundRepeatOptions;
+let backgroundRepeat = Background.backgroundRepeat;
+type backgroundSizeOptions = Background.backgroundSizeOptions;
+let backgroundSize = Background.backgroundSize;
+
+let border = {};
+let borderBottom = {};
+let borderBottomColor = {};
+let borderBottomLeftRadius = {};
+let borderBottomRightRadius = {};
+let borderBottomStyle = {};
+let borderBottomWidth = {};
+let borderCollapse = {};
+let borderColor = {};
+let borderImage = {};
+let borderImageOutset = {};
+let borderImageRepeat = {};
+let borderImageSlice = {};
+let borderImageSource = {};
+let borderImageWidth = {};
+let borderLeft = {};
+let borderLeftColor = {};
+let borderLeftStyle = {};
+let borderLeftWidth = {};
+let borderRadius = {};
+let borderRight = {};
+let borderRightColor = {};
+let borderRightStyle = {};
+let borderRightWidth = {};
+let borderSpacing = {};
+let borderStyle = {};
+let borderTop = {};
+let borderTopColor = {};
+let borderTopLeftRadius = {};
+let borderTopRightRadius = {};
+let borderTopStyle = {};
+let borderTopWidth = {};
+let borderWidth = {};
+
+let bottom = {};
+
+let boxDecorationBreak = {};
+let boxShadow = {};
+let boxSizing = {};
+
+let breakAfter = {};
+let breakBefore = {};
+let breakInside = {};

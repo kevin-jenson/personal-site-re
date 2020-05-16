@@ -6,7 +6,7 @@ import * as MakeStyles from "./MakeStyles.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as Core from "@material-ui/core";
 
-var body = MakeStyles.style(/* :: */[
+var body = MakeStyles.css(/* :: */[
       MakeStyles.overflow(MakeStyles.hidden),
       /* [] */0
     ]);

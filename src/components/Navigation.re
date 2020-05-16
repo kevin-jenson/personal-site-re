@@ -3,10 +3,10 @@ module HamMenu = {
     let transitions = theme.transitions;
     let createTransitionOptions = Mui.Theme.transitionOptions;
     open MakeStyles;
-    let hamMenu = style([zIndex(theme.zIndex.appBar)]);
+    let hamMenu = css([zIndex(theme.zIndex.appBar)]);
 
     let hamLine = (colorMode: Layout.colorMode) =>
-      style([
+      css([
         backgroundColor(
           switch (colorMode) {
           | Light => theme.background.dark
@@ -21,21 +21,21 @@ module HamMenu = {
             createTransitionOptions(~duration=transitions.duration.short, ()),
           ),
         ),
-        nthChild(2, style([margin([px(theme.spacer * 2), px(0)])])),
-        animationDuration(ms(transitions.duration.shortest)),
-        animationFillMode(forwards),
+        nthChild(2, css([margin([px(theme.spacer * 2), px(0)])])),
+        animationDuration(Time(ms(transitions.duration.shortest))),
+        animationFillMode(Forwards),
         opacity(0.0),
-        var("light", style([animationName("hamFadeInLight")])),
-        var("dark", style([animationName("hamFadeInDark")])),
+        var("light", css([animationName(Name("hamFadeInLight"))])),
+        var("dark", css([animationName(Name("hamFadeInDark"))])),
       ]);
 
     let hamFadeInLight =
       keyframes(
         "hamFadeInLight",
         [
-          (0, style([opacity(0.0), backgroundColor(theme.colors.black)])),
-          (90, style([opacity(0.5), backgroundColor(theme.colors.pink)])),
-          (100, style([opacity(1.0), backgroundColor(theme.colors.black)])),
+          (0, css([opacity(0.0), backgroundColor(theme.colors.black)])),
+          (90, css([opacity(0.5), backgroundColor(theme.colors.pink)])),
+          (100, css([opacity(1.0), backgroundColor(theme.colors.black)])),
         ],
       );
 
@@ -43,17 +43,17 @@ module HamMenu = {
       keyframes(
         "hamFadeInDark",
         [
-          (0, style([opacity(0.0), backgroundColor(theme.colors.white)])),
-          (90, style([opacity(0.5), backgroundColor(theme.colors.pink)])),
-          (100, style([opacity(1.0), backgroundColor(theme.colors.white)])),
+          (0, css([opacity(0.0), backgroundColor(theme.colors.white)])),
+          (90, css([opacity(0.5), backgroundColor(theme.colors.pink)])),
+          (100, css([opacity(1.0), backgroundColor(theme.colors.white)])),
         ],
       );
 
     create([
       ("hamMenu", hamMenu),
       ("hamLine", hamLine),
-      ("light", style([])),
-      ("dark", style([])),
+      ("light", css([])),
+      ("dark", css([])),
       hamFadeInLight,
       hamFadeInDark,
     ]);
@@ -104,7 +104,7 @@ module HeaderLink = {
     open MakeStyles;
 
     let link = (colorMode: Layout.colorMode) =>
-      style([
+      css([
         height(px(50)),
         width(px(toFloat(theme.spacer) *. 36.5 |> toInt)),
         opacity(0.0),
@@ -128,7 +128,7 @@ module HeaderLink = {
             ),
           ),
         ),
-        hover(style([textDecoration(underline)])),
+        hover(css([textDecoration(underline)])),
       ]);
 
     create([("link", link)]);
@@ -150,7 +150,7 @@ module DesktopHeader = {
     open MakeStyles;
 
     let header =
-      style([
+      css([
         width(pct(100)),
         display(flex),
         flexDirection(column),
@@ -160,23 +160,23 @@ module DesktopHeader = {
       ]);
 
     let hamMenu =
-      style([
+      css([
         transition(
           transitions.create([|"transform"|], createTransitionOptions(~duration=transitions.duration.shortest, ())),
         ),
       ]);
 
-    let hamHovered = style([transform(rotate(deg(90)))]);
+    let hamHovered = css([transform(rotate(deg(90)))]);
 
     let hamLineHovered =
-      style([
+      css([
         backgroundColor(important(theme.colors.pink)),
-        nthChild(2, style([transform(translateY(px(toFloat(theme.spacer) *. 16.25 |> toInt)))])),
-        nthChild(3, style([transform(translateY(px(toFloat(theme.spacer) *. 32.5 |> toInt)))])),
+        nthChild(2, css([transform(translateY(px(toFloat(theme.spacer) *. 16.25 |> toInt)))])),
+        nthChild(3, css([transform(translateY(px(toFloat(theme.spacer) *. 32.5 |> toInt)))])),
       ]);
 
     let headerLinks =
-      style([
+      css([
         display(flex),
         transform(translate(px(450), px(0))),
         transition(
@@ -187,7 +187,7 @@ module DesktopHeader = {
         ),
       ]);
 
-    let headerLinksHover = style([transform(translate(px(0), px(0)))]);
+    let headerLinksHover = css([transform(translate(px(0), px(0)))]);
 
     create([
       ("header", header),

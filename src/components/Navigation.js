@@ -2,6 +2,7 @@
 
 import * as List from "bs-platform/lib/es6/list.js";
 import * as $$Array from "bs-platform/lib/es6/array.js";
+import * as Block from "bs-platform/lib/es6/block.js";
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
 import * as Caml_int32 from "bs-platform/lib/es6/caml_int32.js";
@@ -26,12 +27,12 @@ function styles(theme) {
     }
     return tmp;
   };
-  var hamMenu = MakeStyles.style(/* :: */[
+  var hamMenu = MakeStyles.css(/* :: */[
         MakeStyles.zIndex(theme.zIndex.appBar),
         /* [] */0
       ]);
   var hamLine = function (colorMode) {
-    return MakeStyles.style(/* :: */[
+    return MakeStyles.css(/* :: */[
                 MakeStyles.backgroundColor(colorMode ? theme.background.light : theme.background.dark),
                 /* :: */[
                   MakeStyles.width(MakeStyles.px(50)),
@@ -43,7 +44,7 @@ function styles(theme) {
                                 "background-color"
                               ], createTransitionOptions(transitions.duration.short, undefined, undefined, undefined))),
                       /* :: */[
-                        MakeStyles.nthChild(2, MakeStyles.style(/* :: */[
+                        MakeStyles.nthChild(2, MakeStyles.css(/* :: */[
                                   MakeStyles.margin(/* :: */[
                                         MakeStyles.px((theme.spacer << 1)),
                                         /* :: */[
@@ -54,19 +55,19 @@ function styles(theme) {
                                   /* [] */0
                                 ])),
                         /* :: */[
-                          MakeStyles.animationDuration(MakeStyles.ms(transitions.duration.shortest)),
+                          MakeStyles.animationDuration(/* Time */Block.__(0, [MakeStyles.ms(transitions.duration.shortest)])),
                           /* :: */[
-                            MakeStyles.animationFillMode(MakeStyles.forwards),
+                            MakeStyles.animationFillMode(/* Forwards */1),
                             /* :: */[
                               MakeStyles.opacity(0.0),
                               /* :: */[
-                                MakeStyles.$$var("light", MakeStyles.style(/* :: */[
-                                          MakeStyles.animationName("hamFadeInLight"),
+                                MakeStyles.$$var("light", MakeStyles.css(/* :: */[
+                                          MakeStyles.animationName(/* Name */Block.__(0, ["hamFadeInLight"])),
                                           /* [] */0
                                         ])),
                                 /* :: */[
-                                  MakeStyles.$$var("dark", MakeStyles.style(/* :: */[
-                                            MakeStyles.animationName("hamFadeInDark"),
+                                  MakeStyles.$$var("dark", MakeStyles.css(/* :: */[
+                                            MakeStyles.animationName(/* Name */Block.__(0, ["hamFadeInDark"])),
                                             /* [] */0
                                           ])),
                                   /* [] */0
@@ -84,7 +85,7 @@ function styles(theme) {
   var hamFadeInLight = MakeStyles.keyframes("hamFadeInLight", /* :: */[
         /* tuple */[
           0,
-          MakeStyles.style(/* :: */[
+          MakeStyles.css(/* :: */[
                 MakeStyles.opacity(0.0),
                 /* :: */[
                   MakeStyles.backgroundColor(theme.colors.black),
@@ -95,7 +96,7 @@ function styles(theme) {
         /* :: */[
           /* tuple */[
             90,
-            MakeStyles.style(/* :: */[
+            MakeStyles.css(/* :: */[
                   MakeStyles.opacity(0.5),
                   /* :: */[
                     MakeStyles.backgroundColor(theme.colors.pink),
@@ -106,7 +107,7 @@ function styles(theme) {
           /* :: */[
             /* tuple */[
               100,
-              MakeStyles.style(/* :: */[
+              MakeStyles.css(/* :: */[
                     MakeStyles.opacity(1.0),
                     /* :: */[
                       MakeStyles.backgroundColor(theme.colors.black),
@@ -121,7 +122,7 @@ function styles(theme) {
   var hamFadeInDark = MakeStyles.keyframes("hamFadeInDark", /* :: */[
         /* tuple */[
           0,
-          MakeStyles.style(/* :: */[
+          MakeStyles.css(/* :: */[
                 MakeStyles.opacity(0.0),
                 /* :: */[
                   MakeStyles.backgroundColor(theme.colors.white),
@@ -132,7 +133,7 @@ function styles(theme) {
         /* :: */[
           /* tuple */[
             90,
-            MakeStyles.style(/* :: */[
+            MakeStyles.css(/* :: */[
                   MakeStyles.opacity(0.5),
                   /* :: */[
                     MakeStyles.backgroundColor(theme.colors.pink),
@@ -143,7 +144,7 @@ function styles(theme) {
           /* :: */[
             /* tuple */[
               100,
-              MakeStyles.style(/* :: */[
+              MakeStyles.css(/* :: */[
                     MakeStyles.opacity(1.0),
                     /* :: */[
                       MakeStyles.backgroundColor(theme.colors.white),
@@ -168,12 +169,12 @@ function styles(theme) {
                 /* :: */[
                   /* tuple */[
                     "light",
-                    MakeStyles.style(/* [] */0)
+                    MakeStyles.css(/* [] */0)
                   ],
                   /* :: */[
                     /* tuple */[
                       "dark",
-                      MakeStyles.style(/* [] */0)
+                      MakeStyles.css(/* [] */0)
                     ],
                     /* :: */[
                       hamFadeInLight,
@@ -249,7 +250,7 @@ var HamMenu = {
 function styles$1(theme) {
   var transitions = theme.transitions;
   var link = function (colorMode) {
-    return MakeStyles.style(/* :: */[
+    return MakeStyles.css(/* :: */[
                 MakeStyles.height(MakeStyles.px(50)),
                 /* :: */[
                   MakeStyles.width(MakeStyles.px(MakeStyles.toInt(MakeStyles.toFloat(theme.spacer) * 36.5))),
@@ -271,7 +272,7 @@ function styles$1(theme) {
                                           delay: transitions.duration.shorter
                                         })),
                                 /* :: */[
-                                  MakeStyles.hover(MakeStyles.style(/* :: */[
+                                  MakeStyles.hover(MakeStyles.css(/* :: */[
                                             MakeStyles.textDecoration(MakeStyles.underline),
                                             /* [] */0
                                           ])),
@@ -324,7 +325,7 @@ function styles$2(theme) {
     }
     return tmp;
   };
-  var header = MakeStyles.style(/* :: */[
+  var header = MakeStyles.css(/* :: */[
         MakeStyles.width(MakeStyles.pct(100)),
         /* :: */[
           MakeStyles.display(MakeStyles.flex),
@@ -349,23 +350,23 @@ function styles$2(theme) {
           ]
         ]
       ]);
-  var hamMenu = MakeStyles.style(/* :: */[
+  var hamMenu = MakeStyles.css(/* :: */[
         MakeStyles.transition(Curry._2(transitions.create, ["transform"], createTransitionOptions(transitions.duration.shortest, undefined, undefined, undefined))),
         /* [] */0
       ]);
-  var hamHovered = MakeStyles.style(/* :: */[
+  var hamHovered = MakeStyles.css(/* :: */[
         MakeStyles.transform(MakeStyles.rotate(MakeStyles.deg(90))),
         /* [] */0
       ]);
-  var hamLineHovered = MakeStyles.style(/* :: */[
+  var hamLineHovered = MakeStyles.css(/* :: */[
         MakeStyles.backgroundColor(MakeStyles.important(theme.colors.pink)),
         /* :: */[
-          MakeStyles.nthChild(2, MakeStyles.style(/* :: */[
+          MakeStyles.nthChild(2, MakeStyles.css(/* :: */[
                     MakeStyles.transform(MakeStyles.translateY(MakeStyles.px(MakeStyles.toInt(MakeStyles.toFloat(theme.spacer) * 16.25)))),
                     /* [] */0
                   ])),
           /* :: */[
-            MakeStyles.nthChild(3, MakeStyles.style(/* :: */[
+            MakeStyles.nthChild(3, MakeStyles.css(/* :: */[
                       MakeStyles.transform(MakeStyles.translateY(MakeStyles.px(MakeStyles.toInt(MakeStyles.toFloat(theme.spacer) * 32.5)))),
                       /* [] */0
                     ])),
@@ -373,7 +374,7 @@ function styles$2(theme) {
           ]
         ]
       ]);
-  var headerLinks = MakeStyles.style(/* :: */[
+  var headerLinks = MakeStyles.css(/* :: */[
         MakeStyles.display(MakeStyles.flex),
         /* :: */[
           MakeStyles.transform(MakeStyles.translate(MakeStyles.px(450), MakeStyles.px(0))),
@@ -383,7 +384,7 @@ function styles$2(theme) {
           ]
         ]
       ]);
-  var headerLinksHover = MakeStyles.style(/* :: */[
+  var headerLinksHover = MakeStyles.css(/* :: */[
         MakeStyles.transform(MakeStyles.translate(MakeStyles.px(0), MakeStyles.px(0))),
         /* [] */0
       ]);

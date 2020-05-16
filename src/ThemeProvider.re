@@ -1,7 +1,7 @@
 
 let styles = {
 	open MakeStyles;
-	let body = style([overflow(hidden)]);
+	let body = css([overflow(hidden)]);
 
 	create([
 		("body", body)

@@ -6,7 +6,7 @@ let styles = (theme: Mui.Theme.t) => {
   open MakeStyles;
 
   let appContainer = props =>
-    style([
+    css([
       backgroundColor(
         switch (props) {
         | Dark => theme.background.dark

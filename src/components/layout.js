@@ -6,7 +6,7 @@ import * as MakeStyles from "../MakeStyles.js";
 
 function styles(theme) {
   var appContainer = function (props) {
-    return MakeStyles.style(/* :: */[
+    return MakeStyles.css(/* :: */[
                 MakeStyles.backgroundColor(props ? theme.background.dark : theme.background.light),
                 /* :: */[
                   MakeStyles.width(MakeStyles.vw(100)),
