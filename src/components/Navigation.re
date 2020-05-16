@@ -154,7 +154,7 @@ module DesktopHeader = {
         width(pct(100)),
         display(flex),
         flexDirection(column),
-        alignItems(flexEnd),
+        alignItems(FlexEnd),
         padding([px(theme.spacer * 8), px(theme.spacer * 6)]),
         overflow(hidden),
       ]);

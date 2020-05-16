@@ -4,6 +4,7 @@ import * as List from "bs-platform/lib/es6/list.js";
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as Js_dict from "bs-platform/lib/es6/js_dict.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
+import * as Caml_exceptions from "bs-platform/lib/es6/caml_exceptions.js";
 import * as Styles from "@material-ui/styles";
 
 function clsx(classNames) {
@@ -90,13 +91,6 @@ function flexDirection(str) {
         ];
 }
 
-function alignItems(str) {
-  return /* tuple */[
-          "align-items",
-          str
-        ];
-}
-
 function padding(pad) {
   var getPaddingStr = function (str, p) {
     return str + (", " + p);
@@ -140,31 +134,10 @@ function margin(marg) {
         ];
 }
 
-function animationDuration(str) {
-  return /* tuple */[
-          "animation-duration",
-          str
-        ];
-}
-
-function animationFillMode(str) {
-  return /* tuple */[
-          "animation-fill-mode",
-          str
-        ];
-}
-
 function opacity(num) {
   return /* tuple */[
           "opacity",
           num.toString()
-        ];
-}
-
-function animationName(str) {
-  return /* tuple */[
-          "animation-name",
-          "$" + str
         ];
 }
 
@@ -296,6 +269,443 @@ function makeThemeStyles(styleFunc) {
     });
 }
 
+var initial = "initial";
+
+var inherit_ = "inherit";
+
+var unset = "unset";
+
+function timing(opt) {
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Linear */0 :
+          return "linear";
+      case /* Ease */1 :
+          return "ease";
+      case /* EaseIn */2 :
+          return "ease-in";
+      case /* EaseOut */3 :
+          return "ease-out";
+      case /* EaseInOut */4 :
+          return "ease-in-out";
+      case /* StepStart */5 :
+          return "step-start";
+      case /* StepEnd */6 :
+          return "step-end";
+      case /* Initial */7 :
+          return initial;
+      case /* Inherit */8 :
+          return inherit_;
+      
+    }
+  } else {
+    switch (opt.tag | 0) {
+      case /* Step */0 :
+          return "steps(" + (String(opt[0]) + ")");
+      case /* Steps */1 :
+          return "steps(" + (String(opt[0]) + (", " + (String(opt[1]) + ")")));
+      case /* CubicBezier */2 :
+          return "cubic-bezier(" + (String(opt[0]) + (", " + (String(opt[1]) + (", " + (String(opt[2]) + (", " + (String(opt[3]) + ")")))))));
+      case /* Unsafe_set */3 :
+          return opt[0];
+      
+    }
+  }
+}
+
+var TimingFunctions = {
+  timing: timing
+};
+
+function alignContent(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Stretch */0 :
+          tmp = "stretch";
+          break;
+      case /* Center */1 :
+          tmp = "center";
+          break;
+      case /* FlexStart */2 :
+          tmp = "flex-start";
+          break;
+      case /* FlexEnd */3 :
+          tmp = "flex-end";
+          break;
+      case /* SpaceBetween */4 :
+          tmp = "space-between";
+          break;
+      case /* SpaceAround */5 :
+          tmp = "space-around";
+          break;
+      case /* Initial */6 :
+          tmp = initial;
+          break;
+      case /* Inherit */7 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "align-content",
+          tmp
+        ];
+}
+
+function alignItems(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Stretch */0 :
+          tmp = "stretch";
+          break;
+      case /* Center */1 :
+          tmp = "center";
+          break;
+      case /* FlexStart */2 :
+          tmp = "flex-start";
+          break;
+      case /* FlexEnd */3 :
+          tmp = "flex-end";
+          break;
+      case /* Baseline */4 :
+          tmp = "baseline";
+          break;
+      case /* Initial */5 :
+          tmp = initial;
+          break;
+      case /* Inherit */6 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "align-items",
+          tmp
+        ];
+}
+
+function alignSelf(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Auto */0 :
+          tmp = "auto";
+          break;
+      case /* Stretch */1 :
+          tmp = "stretch";
+          break;
+      case /* Center */2 :
+          tmp = "center";
+          break;
+      case /* FlexStart */3 :
+          tmp = "flex-start";
+          break;
+      case /* FlexEnd */4 :
+          tmp = "flex-end";
+          break;
+      case /* Baseline */5 :
+          tmp = "baseline";
+          break;
+      case /* Initial */6 :
+          tmp = initial;
+          break;
+      case /* Inherit */7 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "align-self",
+          tmp
+        ];
+}
+
+var Align = {
+  alignContent: alignContent,
+  alignItems: alignItems,
+  alignSelf: alignSelf
+};
+
+function all(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Initial */0 :
+          tmp = initial;
+          break;
+      case /* Inherit */1 :
+          tmp = inherit_;
+          break;
+      case /* Unset */2 :
+          tmp = unset;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "all",
+          tmp
+        ];
+}
+
+var All = {
+  all: all
+};
+
+var Not_valid = Caml_exceptions.create("MakeStyles.Animation.Not_valid");
+
+function animationDelay(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    tmp = opt === /* Initial */0 ? initial : inherit_;
+  } else if (opt.tag) {
+    tmp = opt[0];
+  } else {
+    var str = opt[0];
+    if (str.includes("ms") || str.includes("s")) {
+      tmp = str;
+    } else {
+      throw [
+            Not_valid,
+            "Time(string) needs to be in seconds or miliseconds"
+          ];
+    }
+  }
+  return /* tuple */[
+          "animation-delay",
+          tmp
+        ];
+}
+
+function animationDirection(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Normal */0 :
+          tmp = "normal";
+          break;
+      case /* Reverse */1 :
+          tmp = "reverse";
+          break;
+      case /* Alternate */2 :
+          tmp = "alternate";
+          break;
+      case /* AlternateReverse */3 :
+          tmp = "alternate-reverse";
+          break;
+      case /* Initial */4 :
+          tmp = initial;
+          break;
+      case /* Inherit */5 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "animation-direction",
+          tmp
+        ];
+}
+
+function animationFillMode(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* None */0 :
+          tmp = "none";
+          break;
+      case /* Forwards */1 :
+          tmp = "forwards";
+          break;
+      case /* Backwards */2 :
+          tmp = "backwards";
+          break;
+      case /* Both */3 :
+          tmp = "both";
+          break;
+      case /* Initial */4 :
+          tmp = initial;
+          break;
+      case /* Inherit */5 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "animation-fill-mode",
+          tmp
+        ];
+}
+
+function animationIterationCount(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Infinite */0 :
+          tmp = "infinite";
+          break;
+      case /* Initial */1 :
+          tmp = initial;
+          break;
+      case /* Inherit */2 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt.tag ? opt[0] : String(opt[0]);
+  }
+  return /* tuple */[
+          "animation-iteration-count",
+          tmp
+        ];
+}
+
+function animationName(opt) {
+  return /* tuple */[
+          "animation-name",
+          typeof opt === "number" ? (
+              opt !== 0 ? inherit_ : initial
+            ) : opt[0]
+        ];
+}
+
+function animationPlayState(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Paused */0 :
+          tmp = "paused";
+          break;
+      case /* Running */1 :
+          tmp = "running";
+          break;
+      case /* Initial */2 :
+          tmp = initial;
+          break;
+      case /* Inherit */3 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "animation-play-state",
+          tmp
+        ];
+}
+
+function animationTimingFunction(opt) {
+  return /* tuple */[
+          "animation-timing-function",
+          timing(opt)
+        ];
+}
+
+function animation(opt) {
+  var tmp;
+  switch (opt.tag | 0) {
+    case /* Animation1 */0 :
+        tmp = animationName(opt[0])[1];
+        break;
+    case /* Animation2 */1 :
+        var match = animationName(opt[0]);
+        var match$1 = animationDelay(opt[1]);
+        tmp = "" + (String(match[1]) + (" " + (String(match$1[1]) + "")));
+        break;
+    case /* Animation3 */2 :
+        var match$2 = animationName(opt[0]);
+        var match$3 = animationDelay(opt[1]);
+        var timingValue = timing(opt[2]);
+        tmp = "" + (String(match$2[1]) + (" " + (String(match$3[1]) + (" " + (String(timingValue) + "")))));
+        break;
+    case /* Animation4 */3 :
+        var match$4 = animationName(opt[0]);
+        var match$5 = animationDelay(opt[1]);
+        var timingValue$1 = timing(opt[2]);
+        var match$6 = animationDelay(opt[3]);
+        tmp = "" + (String(match$4[1]) + (" " + (String(match$5[1]) + (" " + (String(timingValue$1) + (" " + (String(match$6[1]) + "")))))));
+        break;
+    case /* Animation5 */4 :
+        var match$7 = animationName(opt[0]);
+        var match$8 = animationDelay(opt[1]);
+        var timingValue$2 = timing(opt[2]);
+        var match$9 = animationDelay(opt[3]);
+        var match$10 = animationIterationCount(opt[4]);
+        tmp = "" + (String(match$7[1]) + (" " + (String(match$8[1]) + (" " + (String(timingValue$2) + (" " + (String(match$9[1]) + (" " + (String(match$10[1]) + "")))))))));
+        break;
+    case /* Animation6 */5 :
+        var match$11 = animationName(opt[0]);
+        var match$12 = animationDelay(opt[1]);
+        var timingValue$3 = timing(opt[2]);
+        var match$13 = animationDelay(opt[3]);
+        var match$14 = animationDirection(opt[5]);
+        var match$15 = animationIterationCount(opt[4]);
+        tmp = "" + (String(match$11[1]) + (" " + (String(match$12[1]) + (" " + (String(timingValue$3) + (" " + (String(match$13[1]) + (" " + (String(match$15[1]) + (" " + (String(match$14[1]) + "")))))))))));
+        break;
+    case /* Animation7 */6 :
+        var match$16 = animationName(opt[0]);
+        var match$17 = animationDelay(opt[1]);
+        var timingValue$4 = timing(opt[2]);
+        var match$18 = animationDelay(opt[3]);
+        var match$19 = animationIterationCount(opt[4]);
+        var match$20 = animationDirection(opt[5]);
+        var match$21 = animationFillMode(opt[6]);
+        tmp = "" + (String(match$16[1]) + (" " + (String(match$17[1]) + (" " + (String(timingValue$4) + (" " + (String(match$18[1]) + (" " + (String(match$19[1]) + (" " + (String(match$20[1]) + (" " + (String(match$21[1]) + "")))))))))))));
+        break;
+    case /* Animation8 */7 :
+        var match$22 = animationName(opt[0]);
+        var match$23 = animationDelay(opt[1]);
+        var timingValue$5 = timing(opt[2]);
+        var match$24 = animationDelay(opt[3]);
+        var match$25 = animationIterationCount(opt[4]);
+        var match$26 = animationDirection(opt[5]);
+        var match$27 = animationFillMode(opt[6]);
+        var match$28 = animationPlayState(opt[7]);
+        tmp = "" + (String(match$22[1]) + (" " + (String(match$23[1]) + (" " + (String(timingValue$5) + (" " + (String(match$24[1]) + (" " + (String(match$25[1]) + (" " + (String(match$26[1]) + (" " + (String(match$27[1]) + (" " + (String(match$28[1]) + "")))))))))))))));
+        break;
+    
+  }
+  return /* tuple */[
+          "animation",
+          tmp
+        ];
+}
+
+var Animation = {
+  Not_valid: Not_valid,
+  animationDelay: animationDelay,
+  animationDirection: animationDirection,
+  animationDuration: animationDelay,
+  animationFillMode: animationFillMode,
+  animationIterationCount: animationIterationCount,
+  animationName: animationName,
+  animationPlayState: animationPlayState,
+  animationTimingFunction: animationTimingFunction,
+  animation: animation
+};
+
 var hidden = "hidden";
 
 var flex = "flex";
@@ -311,6 +721,8 @@ var center = "center";
 var none = "none";
 
 var underline = "underline";
+
+var animationDuration = animationDelay;
 
 export {
   clsx ,
@@ -329,16 +741,12 @@ export {
   overflow ,
   display ,
   flexDirection ,
-  alignItems ,
   padding ,
   transition ,
   transform ,
   zIndex ,
   margin ,
-  animationDuration ,
-  animationFillMode ,
   opacity ,
-  animationName ,
   textAlign ,
   lineHeight ,
   fontSize ,
@@ -367,6 +775,26 @@ export {
   makeGlobalStyles ,
   makeStyles ,
   makeThemeStyles ,
+  initial ,
+  inherit_ ,
+  unset ,
+  TimingFunctions ,
+  Align ,
+  All ,
+  Animation ,
+  alignContent ,
+  alignItems ,
+  alignSelf ,
+  all ,
+  animation ,
+  animationDelay ,
+  animationDirection ,
+  animationDuration ,
+  animationFillMode ,
+  animationIterationCount ,
+  animationName ,
+  animationPlayState ,
+  animationTimingFunction ,
   
 }
 /* @material-ui/styles Not a pure module */

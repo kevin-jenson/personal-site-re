@@ -331,7 +331,7 @@ function styles$2(theme) {
           /* :: */[
             MakeStyles.flexDirection(MakeStyles.column),
             /* :: */[
-              MakeStyles.alignItems(MakeStyles.flexEnd),
+              MakeStyles.alignItems(/* FlexEnd */3),
               /* :: */[
                 MakeStyles.padding(/* :: */[
                       MakeStyles.px((theme.spacer << 3)),
