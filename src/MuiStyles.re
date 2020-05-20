@@ -77,7 +77,6 @@ let translate = (x, y) => {j|translate($x, $y)|j};
 let important = str => str ++ " !important";
 let forwards = "forwards";
 let center = "center";
-let none = "none";
 let underline = "underline";
 
 // keyframes
@@ -136,6 +135,44 @@ let initial = "initial";
 let inherit_ = "inherit";
 let none = "none";
 let unset = "unset";
+
+module Length = {
+  type options =
+    | Cm(int)
+    | Mm(int)
+    | In(int)
+    | Px(int)
+    | Pt(int)
+    | Pc(int)
+    | Em(int)
+    | Ex(int)
+    | Ch(int)
+    | Rem(int)
+    | Vw(int)
+    | Vh(int)
+    | Vmin(int)
+    | Vmax(int)
+    | Pct(int);
+
+  let getLength = length =>
+    switch (length) {
+    | Cm(length) => toStr(length) ++ "cm"
+    | Mm(length) => toStr(length) ++ "mm"
+    | In(length) => toStr(length) ++ "in"
+    | Px(length) => toStr(length) ++ "px"
+    | Pt(length) => toStr(length) ++ "pt"
+    | Pc(length) => toStr(length) ++ "pc"
+    | Em(length) => toStr(length) ++ "em"
+    | Ex(length) => toStr(length) ++ "ex"
+    | Ch(length) => toStr(length) ++ "ch"
+    | Rem(length) => toStr(length) ++ "rem"
+    | Vw(length) => toStr(length) ++ "vw"
+    | Vh(length) => toStr(length) ++ "vh"
+    | Vmin(length) => toStr(length) ++ "vmin"
+    | Vmax(length) => toStr(length) ++ "vmax"
+    | Pct(length) => toStr(length) ++ "%"
+    };
+};
 
 module TimingFunctions = {
   type step =
@@ -556,6 +593,9 @@ module Backface = {
   );
 };
 
+type backfaceVisibiltyOptions = Backface.backfaceVisibiltyOptions;
+let backfaceVisibilty = Backface.backfaceVisibilty;
+
 module Background = {
   type backgroundAttachmentOptions =
     | Scroll
@@ -677,7 +717,7 @@ module Background = {
     | Top
   and backgroundPositionOptions =
     | Position(backgroundPositionPositionOption, backgroundPositionPositionOption)
-    | PositionExact(string, string)
+    | PositionExact(Length.options, Length.options)
     | Initial
     | Inherit
     | Unsafe_set(string);
@@ -698,7 +738,10 @@ module Background = {
       | (Center, Bottom) => "center bottom"
       | _ => "center center"
       }
-    | PositionExact(x, y) => {j|$x $y|j}
+    | PositionExact(x, y) =>
+      let x = Length.getLength(x);
+      let y = Length.getLength(y);
+      {j|$x $y|j};
     | Initial => initial
     | Inherit => inherit_
     | Unsafe_set(str) => str
@@ -732,9 +775,9 @@ module Background = {
 
   type backgroundSizeOptions =
     | Auto
-    | Length(string, string)
-    | LengthX(string)
-    | LengthY(string)
+    | Length(Length.options, Length.options)
+    | LengthX(Length.options)
+    | LengthY(Length.options)
     | Cover
     | Contain
     | Initial
@@ -744,9 +787,16 @@ module Background = {
     "background-size",
     switch (opt) {
     | Auto => auto
-    | Length(x, y) => {j|$x $y|j}
-    | LengthX(x) => {j|$x|j}
-    | LengthY(y) => {j|auto $y|j}
+    | Length(x, y) =>
+      let x = Length.getLength(x);
+      let y = Length.getLength(y);
+      {j|$x $y|j};
+    | LengthX(x) =>
+      let x = Length.getLength(x);
+      {j|$x|j};
+    | LengthY(y) =>
+      let y = Length.getLength(y);
+      {j|auto $y|j};
     | Cover => "cover"
     | Contain => "contain"
     | Initial => initial
@@ -754,14 +804,21 @@ module Background = {
     | Unsafe_set(str) => str
     },
   );
-  // TODO: add background;
+
+  // TODO: add better types for background
+  type backgroundOptions =
+    | Whatever(string);
+  let background = opt => (
+    "background",
+    switch (opt) {
+    | Whatever(str) => str
+    },
+  );
 };
 
-type backfaceVisibiltyOptions = Backface.backfaceVisibiltyOptions;
-let backfaceVisibilty = Backface.backfaceVisibilty;
-
 // TODO: add background
-let background = {};
+type backgroundOptions = Background.backgroundOptions;
+let background = Background.background;
 type backgroundAttachmentOptions = Background.backgroundAttachmentOptions;
 let backgroundAttachment = Background.backgroundAttachment;
 type backgroundBlendModeOptions = Background.backgroundBlendModeOptions;
@@ -781,46 +838,497 @@ let backgroundRepeat = Background.backgroundRepeat;
 type backgroundSizeOptions = Background.backgroundSizeOptions;
 let backgroundSize = Background.backgroundSize;
 
-let border = {};
-let borderBottom = {};
-let borderBottomColor = {};
-let borderBottomLeftRadius = {};
-let borderBottomRightRadius = {};
-let borderBottomStyle = {};
-let borderBottomWidth = {};
-let borderCollapse = {};
-let borderColor = {};
-let borderImage = {};
-let borderImageOutset = {};
-let borderImageRepeat = {};
-let borderImageSlice = {};
-let borderImageSource = {};
-let borderImageWidth = {};
-let borderLeft = {};
-let borderLeftColor = {};
-let borderLeftStyle = {};
-let borderLeftWidth = {};
-let borderRadius = {};
-let borderRight = {};
-let borderRightColor = {};
-let borderRightStyle = {};
-let borderRightWidth = {};
-let borderSpacing = {};
-let borderStyle = {};
-let borderTop = {};
-let borderTopColor = {};
-let borderTopLeftRadius = {};
-let borderTopRightRadius = {};
-let borderTopStyle = {};
-let borderTopWidth = {};
-let borderWidth = {};
+module Border = {
+  type borderWidthOptions =
+    | Medium
+    | Thin
+    | Thick
+    | Length(Length.options)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let getBorderWidth = opt =>
+    switch (opt) {
+    | Medium => "medium"
+    | Thin => "thin"
+    | Thick => "thick"
+    | Length(length) => Length.getLength(length)
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    };
 
-let bottom = {};
+  type borderStyleOptions =
+    | None
+    | Hidden
+    | Dotted
+    | Dashed
+    | Solid
+    | Double
+    | Groove
+    | Ridge
+    | Inset
+    | Outset
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let getBorderStyle = opt =>
+    switch (opt) {
+    | None => none
+    | Hidden => "hidden"
+    | Dotted => "dotted"
+    | Dashed => "dashed"
+    | Solid => "solid"
+    | Double => "double"
+    | Groove => "groove"
+    | Ridge => "ridge"
+    | Inset => "inset"
+    | Outset => "outset"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    };
 
-let boxDecorationBreak = {};
-let boxShadow = {};
-let boxSizing = {};
+  type borderColorOptions =
+    | Color(string)
+    | Transparent
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let getBorderColor = opt =>
+    switch (opt) {
+    | Color(color) => color
+    | Transparent => "transparent"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    };
 
-let breakAfter = {};
-let breakBefore = {};
-let breakInside = {};
+  let getBorder =
+      (
+        ~width: borderWidthOptions=Unsafe_set(""),
+        ~style: borderStyleOptions=Unsafe_set(""),
+        ~color: borderColorOptions=Unsafe_set(""),
+        (),
+      ) => {
+    let width = getBorderWidth(width);
+    let style = getBorderStyle(style);
+    let color = getBorderColor(color);
+    {j|$width $style $color|j} |> String.trim;
+  };
+
+  let borderBottomWidth = opt => ("border-bottom-width", getBorderWidth(opt));
+  let borderBottomeStyle = opt => ("border-bottom-style", getBorderStyle(opt));
+  let borderBottomColor = opt => ("border-bottom-color", getBorderColor(opt));
+
+  let borderBottom = (~width=?, ~style=?, ~color=?, ()) => (
+    "border-bottom",
+    getBorder(~width?, ~style?, ~color?, ()),
+  );
+
+  type borderRadiusOptions =
+    | Length(Length.options)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let getBorderRadius = radius =>
+    switch (radius) {
+    | Length(length) => Length.getLength(length)
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    };
+
+  let borderBottomLeftRadius = opt => ("border-bottom-left-radius", getBorderRadius(opt));
+  let borderBottomRightRadius = opt => ("border-bottom-right-radius", getBorderRadius(opt));
+
+  type borderCollapseOptions =
+    | Separate
+    | Collapse
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let borderCollapse = opt => (
+    "border-collapse",
+    switch (opt) {
+    | Separate => "separate"
+    | Collapse => "collapse"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  let borderColor = opt => ("border-color", getBorderColor(opt));
+
+  type borderImageSourceOptions =
+    | None
+    | Image(string)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let borderImageSource = opt => (
+    "border-image-source",
+    switch (opt) {
+    | None => "none"
+    | Image(image) => image
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type borderImageSliceOptions =
+    | Number(int, int)
+    | Pct(int, int)
+    | Fill
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let borderImageSlice = opt => (
+    "border-image-slice",
+    switch (opt) {
+    | Number(x, y) => {j|$x $y|j}
+    | Pct(x, y) => {j|$x% $y%|j}
+    | Fill => "fill"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type borderImageWidthOptions =
+    | Length(Length.options)
+    | Number(int)
+    | Pct(int)
+    | Auto
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let borderImageWidth = opt => (
+    "border-image-width",
+    switch (opt) {
+    | Length(length) => Length.getLength(length)
+    | Number(number) => toStr(number)
+    | Pct(number) => toStr(number) ++ "%"
+    | Auto => auto
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type borderImageOutsetOptions =
+    | Length(Length.options)
+    | Number(int)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let borderImageOutset = opt => (
+    "border-image-outset",
+    switch (opt) {
+    | Length(length) => Length.getLength(length)
+    | Number(number) => toStr(number)
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type borderImageRepeatOptions =
+    | Stretch
+    | Repeat
+    | Round
+    | Space
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let borderImageRepeat = opt => (
+    "border-image-repeat",
+    switch (opt) {
+    | Stretch => "stretch"
+    | Repeat => "repeat"
+    | Round => "round"
+    | Space => "space"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  let borderImage =
+      (
+        ~source: borderImageSourceOptions=Unsafe_set(""),
+        ~slice: borderImageSliceOptions=Unsafe_set(""),
+        ~width: borderImageWidthOptions=Unsafe_set(""),
+        ~outset: borderImageOutsetOptions=Unsafe_set(""),
+        ~repeat: borderImageRepeatOptions=Unsafe_set(""),
+        (),
+      ) => {
+    let (_, source) = borderImageSource(source);
+    let (_, slice) = borderImageSlice(slice);
+    let (_, width) = borderImageWidth(width);
+    let (_, outset) = borderImageOutset(outset);
+    let (_, repeat) = borderImageRepeat(repeat);
+    ("border-image", {j|$source $slice $width $outset $repeat|j} |> String.trim);
+  };
+
+  let borderLeft = (~width=?, ~style=?, ~color=?, ()) => ("border-left", getBorder(~width?, ~style?, ~color?, ()));
+  let borderLeftColor = opt => ("border-left-color", getBorderColor(opt));
+  let borderLeftStyle = opt => ("border-left-style", getBorderStyle(opt));
+  let borderLeftWidth = opt => ("border-left-width", getBorderWidth(opt));
+
+  let borderRadius = optList => {
+    let radius = optList |> List.map(getBorderRadius) |> Array.of_list |> Js.Array.joinWith(" ");
+    ("border-radius", radius);
+  };
+
+  let borderRight = (~width=?, ~style=?, ~color=?, ()) => (
+    "border-right",
+    getBorder(~width?, ~style?, ~color?, ()),
+  );
+  let borderRightColor = opt => ("border-right-color", getBorderColor(opt));
+  let borderRightStyle = opt => ("border-right-style", getBorderStyle(opt));
+  let borderRightWidth = opt => ("border-right-width", getBorderWidth(opt));
+
+  type borderSpacingOptions =
+    | Length(list(Length.options))
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let borderSpacing = opt => (
+    "border-spacing",
+    switch (opt) {
+    | Length(values) => values |> List.map(Length.getLength) |> Array.of_list |> Js.Array.joinWith(" ")
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  let borderStyle = opt => ("border-style", getBorderStyle(opt));
+
+  let borderTop = (~width=?, ~style=?, ~color=?, ()) => ("border-top", getBorder(~width?, ~style?, ~color?, ()));
+  let borderTopColor = opt => ("border-top-color", getBorderColor(opt));
+  let borderTopLeftRadius = opt => ("border-top-left-radius", getBorderRadius(opt));
+  let borderTopRightRadius = opt => ("border-top-right-radius", getBorderRadius(opt));
+  let borderTopStyle = opt => ("border-top-style", getBorderStyle(opt));
+  let borderTopWidth = opt => ("border-top-width", getBorderWidth(opt));
+
+  let borderWidth = opt => ("border-width", getBorderWidth(opt));
+  let border = (~width=?, ~style=?, ~color=?, ()) => ("border", getBorder(~width?, ~style?, ~color?, ()));
+};
+
+let border = Border.border;
+type borderColorOptions = Border.borderColorOptions;
+type borderStyleOptions = Border.borderStyleOptions;
+type borderWidthOptions = Border.borderWidthOptions;
+let borderBottom = Border.borderBottom;
+let borderBottomColor = Border.borderBottomColor;
+type borderRadiusOptions = Border.borderRadiusOptions;
+let borderBottomLeftRadius = Border.borderBottomLeftRadius;
+let borderBottomRightRadius = Border.borderBottomRightRadius;
+let borderBottomStyle = Border.borderBottomeStyle;
+let borderBottomWidth = Border.borderBottomWidth;
+type borderCollapseOptions = Border.borderCollapseOptions;
+let borderCollapse = Border.borderCollapse;
+let borderColor = Border.borderColor;
+let borderImage = Border.borderImage;
+type borderImageOutsetOptions = Border.borderImageOutsetOptions;
+let borderImageOutset = Border.borderImageOutset;
+type borderImageRepeatOptions = Border.borderImageRepeatOptions;
+let borderImageRepeat = Border.borderImageRepeat;
+type borderImageSliceOptions = Border.borderImageSliceOptions;
+let borderImageSlice = Border.borderImageSlice;
+type borderImageSourceOptions = Border.borderImageSourceOptions;
+let borderImageSource = Border.borderImageSource;
+type borderImageWidthOptions = Border.borderImageWidthOptions;
+let borderImageWidth = Border.borderImageWidth;
+let borderLeft = Border.borderLeft;
+let borderLeftColor = Border.borderLeftColor;
+let borderLeftStyle = Border.borderLeftStyle;
+let borderLeftWidth = Border.borderLeftWidth;
+let borderRadius = Border.borderRadius;
+let borderRight = Border.borderRight;
+let borderRightColor = Border.borderRightColor;
+let borderRightStyle = Border.borderRightStyle;
+let borderRightWidth = Border.borderRightWidth;
+let borderSpacing = Border.borderSpacing;
+let borderStyle = Border.borderStyle;
+let borderTop = Border.borderTop;
+let borderTopColor = Border.borderTopColor;
+let borderTopLeftRadius = Border.borderTopLeftRadius;
+let borderTopRightRadius = Border.borderTopRightRadius;
+let borderTopStyle = Border.borderTopStyle;
+let borderTopWidth = Border.borderTopWidth;
+let borderWidth = Border.borderWidth;
+
+module Bottom = {
+  type options =
+    | Auto
+    | Length(Length.options)
+    | Pct(int)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let bottom = opt => (
+    "bottom",
+    switch (opt) {
+    | Auto => auto
+    | Length(length) => Length.getLength(length)
+    | Pct(num) => toStr(num) ++ "%"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type bottomOptions = Bottom.options;
+let bottom = Bottom.bottom;
+
+module Box = {
+  type boxDecorationBreakOptions =
+    | Slice
+    | Clone
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let boxDecorationBreak = opt => (
+    "box-decoration-break",
+    switch (opt) {
+    | Slice => "slice"
+    | Clone => "clone"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  let boxShadow = shadowList => ("box-shadow", shadowList |> Array.of_list |> Js.Array.joinWith(" "));
+
+  type boxSizingOptions =
+    | ContentBox
+    | BorderBox
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let boxSizing = opt => (
+    "box-sizing",
+    switch (opt) {
+    | ContentBox => "content-box"
+    | BorderBox => "border-box"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type boxDecorationBreakOptions = Box.boxDecorationBreakOptions;
+let boxDecorationBreak = Box.boxDecorationBreak;
+let boxShadow = Box.boxShadow;
+type boxSizingOptions = Box.boxSizingOptions;
+let boxSizing = Box.boxSizing;
+
+module Break = {
+  type breakOptions =
+    | Auto
+    | All
+    | Always
+    | Avoid
+    | AvoidColumn
+    | AvoidPage
+    | AvoidRegion
+    | Column
+    | Left
+    | Page
+    | Recto
+    | Region
+    | Right
+    | Verso
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let getBreak = opt =>
+    switch (opt) {
+    | Auto => auto
+    | All => "all"
+    | Always => "always"
+    | Avoid => "avoid"
+    | AvoidColumn => "avoid-column"
+    | AvoidPage => "avoid-page"
+    | AvoidRegion => "avoid-region"
+    | Column => "column"
+    | Left => "left"
+    | Page => "page"
+    | Recto => "recto"
+    | Region => "region"
+    | Right => "right"
+    | Verso => "verso"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    };
+
+  let breakAfter = opt => ("break-after", getBreak(opt));
+  let breakBefore = opt => ("break-before", getBreak(opt));
+
+  type breakInsideOptions =
+    | Auto
+    | Avoid
+    | AvoidColumn
+    | AvoidPage
+    | AvoidRegion
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let breakInside = opt => (
+    "break-inside",
+    switch (opt) {
+    | Auto => auto
+    | Avoid => "avoid"
+    | AvoidColumn => "avoid-column"
+    | AvoidPage => "avoid-page"
+    | AvoidRegion => "avoid-region"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type breakOptions = Break.breakOptions;
+let breakAfter = Break.breakAfter;
+let breakBefore = Break.breakBefore;
+type breakInsideOptions = Break.breakInsideOptions;
+let breakInside = Break.breakInside;
+
+// C's
+let captionSide = {};
+let caretColor = {};
+let charset = {};
+let clear = {};
+let clip = {};
+let color = {};
+let columnCount = {};
+let columnFill = {};
+let columnGap = {};
+let columnRule = {};
+let columnRuleColor = {};
+let columnRuleStyle = {};
+let columnRuleWidth = {};
+let columnSpan = {};
+let columnWidth = {};
+let columns = {};
+let content = {};
+let counterIncrement = {};
+let counterReset = {};
+let cursor = {};
+
+// D's
+let direction = {};
+let display = {};
+
+// E's
+let emptyCells = {};
