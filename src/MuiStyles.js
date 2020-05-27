@@ -6,6 +6,8 @@ import * as Block from "bs-platform/lib/es6/block.js";
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as $$String from "bs-platform/lib/es6/string.js";
 import * as Js_dict from "bs-platform/lib/es6/js_dict.js";
+import * as Pervasives from "bs-platform/lib/es6/pervasives.js";
+import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as CamlinternalOO from "bs-platform/lib/es6/camlinternalOO.js";
 import * as Caml_exceptions from "bs-platform/lib/es6/caml_exceptions.js";
@@ -27,186 +29,6 @@ function toInt(prim) {
 
 function toStr(prim) {
   return String(prim);
-}
-
-function vw($$int) {
-  return String($$int) + "vw";
-}
-
-function vh($$int) {
-  return String($$int) + "vh";
-}
-
-function px($$int) {
-  return String($$int) + "px";
-}
-
-function pct($$int) {
-  return String($$int) + "%";
-}
-
-function deg($$int) {
-  return String($$int) + "deg";
-}
-
-function ms($$int) {
-  return String($$int) + "ms";
-}
-
-function width(str) {
-  return /* tuple */[
-          "width",
-          str
-        ];
-}
-
-function height(str) {
-  return /* tuple */[
-          "height",
-          str
-        ];
-}
-
-function overflow(str) {
-  return /* tuple */[
-          "overflow",
-          str
-        ];
-}
-
-function flexDirection(str) {
-  return /* tuple */[
-          "flex-direction",
-          str
-        ];
-}
-
-function padding(pad) {
-  var getPaddingStr = function (str, p) {
-    return str + (", " + p);
-  };
-  var paddingStr = List.fold_left(getPaddingStr, "", pad);
-  return /* tuple */[
-          "padding",
-          paddingStr
-        ];
-}
-
-function transition(str) {
-  return /* tuple */[
-          "transition",
-          str
-        ];
-}
-
-function transform(str) {
-  return /* tuple */[
-          "transfrom",
-          str
-        ];
-}
-
-function zIndex(index) {
-  return /* tuple */[
-          "z-index",
-          String(index)
-        ];
-}
-
-function margin(marg) {
-  var getMarginStr = function (str, m) {
-    return str + (", " + m);
-  };
-  var marginStr = List.fold_left(getMarginStr, "", marg);
-  return /* tuple */[
-          "margin",
-          marginStr
-        ];
-}
-
-function opacity(num) {
-  return /* tuple */[
-          "opacity",
-          num.toString()
-        ];
-}
-
-function textAlign(str) {
-  return /* tuple */[
-          "text-align",
-          str
-        ];
-}
-
-function lineHeight(str) {
-  return /* tuple */[
-          "line-height",
-          str
-        ];
-}
-
-function fontSize(str) {
-  return /* tuple */[
-          "font-size",
-          str
-        ];
-}
-
-function textDecoration(str) {
-  return /* tuple */[
-          "text-decoration",
-          str
-        ];
-}
-
-function nthChild(child, dict) {
-  var child$1 = String(child);
-  return /* tuple */[
-          "&:nth-child(" + (String(child$1) + ")"),
-          dict
-        ];
-}
-
-function $$var(str, dict) {
-  return /* tuple */[
-          "&$" + str,
-          dict
-        ];
-}
-
-function hover(dict) {
-  return /* tuple */[
-          "&:hover",
-          dict
-        ];
-}
-
-function rotate(str) {
-  return "rotate(" + (String(str) + ")");
-}
-
-function translateY(str) {
-  return "translateY(" + (String(str) + ")");
-}
-
-function translate(x, y) {
-  return "translate(" + (String(x) + (", " + (String(y) + ")")));
-}
-
-function important(str) {
-  return str + " !important";
-}
-
-function keyframes(name, frames) {
-  var formatFrames = function (dict, param) {
-    dict[String(param[0]) + "%"] = param[1];
-    return dict;
-  };
-  var keyframe = List.fold_left(formatFrames, { }, frames);
-  return /* tuple */[
-          "@keyframes " + (String(name) + ""),
-          keyframe
-        ];
 }
 
 var css = Js_dict.fromList;
@@ -1880,200 +1702,1713 @@ var Break = {
   breakInside: breakInside
 };
 
+function captionSide(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Top */0 :
+          tmp = "top";
+          break;
+      case /* Bottom */1 :
+          tmp = "bottom";
+          break;
+      case /* Initial */2 :
+          tmp = initial;
+          break;
+      case /* Inherit */3 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "caption-side",
+          tmp
+        ];
+}
+
+var Caption = {
+  captionSide: captionSide
+};
+
+function caretColor(opt) {
+  return /* tuple */[
+          "caret-color",
+          typeof opt === "number" ? "auto" : opt[0]
+        ];
+}
+
+var Caret = {
+  caretColor: caretColor
+};
+
+function charset(set) {
+  return /* tuple */[
+          "@charset",
+          set
+        ];
+}
+
+function clear(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* None */0 :
+          tmp = none;
+          break;
+      case /* Left */1 :
+          tmp = "left";
+          break;
+      case /* Right */2 :
+          tmp = "right";
+          break;
+      case /* Both */3 :
+          tmp = "both";
+          break;
+      case /* Initial */4 :
+          tmp = initial;
+          break;
+      case /* Inherit */5 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "clear",
+          tmp
+        ];
+}
+
+var Clear = {
+  clear: clear
+};
+
+function clipPath(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* MarginBox */0 :
+          tmp = "margin-box";
+          break;
+      case /* BorderBox */1 :
+          tmp = "border-box";
+          break;
+      case /* PaddingBox */2 :
+          tmp = "padding-box";
+          break;
+      case /* ContentBox */3 :
+          tmp = "content-box";
+          break;
+      case /* FillBox */4 :
+          tmp = "fill-box";
+          break;
+      case /* StrokeBox */5 :
+          tmp = "stroke-box";
+          break;
+      case /* ViewBox */6 :
+          tmp = "view-box";
+          break;
+      case /* None */7 :
+          tmp = none;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "clip-path",
+          tmp
+        ];
+}
+
+var Clip = {
+  clipPath: clipPath
+};
+
+function color(opt) {
+  return /* tuple */[
+          "color",
+          typeof opt === "number" ? (
+              opt !== 0 ? inherit_ : initial
+            ) : opt[0]
+        ];
+}
+
+var Color = {
+  color: color
+};
+
+function columnCount(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Auto */0 :
+          tmp = auto;
+          break;
+      case /* Initial */1 :
+          tmp = initial;
+          break;
+      case /* Inherit */2 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt.tag ? opt[0] : String(opt[0]);
+  }
+  return /* tuple */[
+          "column-count",
+          tmp
+        ];
+}
+
+function columnFill(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Balance */0 :
+          tmp = "balance";
+          break;
+      case /* Auto */1 :
+          tmp = auto;
+          break;
+      case /* Initial */2 :
+          tmp = initial;
+          break;
+      case /* Inherit */3 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "column-fill",
+          tmp
+        ];
+}
+
+function columnGap(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Normal */0 :
+          tmp = "normal";
+          break;
+      case /* Initial */1 :
+          tmp = initial;
+          break;
+      case /* Inherit */2 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt.tag ? opt[0] : getLength(opt[0]);
+  }
+  return /* tuple */[
+          "column-gap",
+          tmp
+        ];
+}
+
+function columnRuleColor(opt) {
+  return /* tuple */[
+          "column-rule-color",
+          typeof opt === "number" ? (
+              opt !== 0 ? inherit_ : initial
+            ) : opt[0]
+        ];
+}
+
+function columnRuleStyle(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* None */0 :
+          tmp = none;
+          break;
+      case /* Hidden */1 :
+          tmp = "hidden";
+          break;
+      case /* Dotted */2 :
+          tmp = "dotted";
+          break;
+      case /* Dashed */3 :
+          tmp = "dashed";
+          break;
+      case /* Solid */4 :
+          tmp = "solid";
+          break;
+      case /* Double */5 :
+          tmp = "double";
+          break;
+      case /* Groove */6 :
+          tmp = "groove";
+          break;
+      case /* Ridge */7 :
+          tmp = "ridge";
+          break;
+      case /* Inset */8 :
+          tmp = "inset";
+          break;
+      case /* Outset */9 :
+          tmp = "outset";
+          break;
+      case /* Initial */10 :
+          tmp = initial;
+          break;
+      case /* Inherit */11 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "column-rule-style",
+          tmp
+        ];
+}
+
+function columnRuleWidth(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Medium */0 :
+          tmp = "medium";
+          break;
+      case /* Thin */1 :
+          tmp = "thin";
+          break;
+      case /* Thick */2 :
+          tmp = "thick";
+          break;
+      case /* Initial */3 :
+          tmp = initial;
+          break;
+      case /* Inherit */4 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt.tag ? opt[0] : getLength(opt[0]);
+  }
+  return /* tuple */[
+          "column-rule-width",
+          tmp
+        ];
+}
+
+function columnRule(color, style, width, param) {
+  var match = columnRuleColor(Belt_Option.getWithDefault(color, /* Unsafe_set */Block.__(1, [""])));
+  var match$1 = columnRuleStyle(Belt_Option.getWithDefault(style, /* Unsafe_set */[""]));
+  var match$2 = columnRuleWidth(Belt_Option.getWithDefault(width, /* Unsafe_set */Block.__(1, [""])));
+  return "" + (String(match$2[1]) + (" " + (String(match$1[1]) + (" " + (String(match[1]) + "")))));
+}
+
+function columnSpan(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* None */0 :
+          tmp = none;
+          break;
+      case /* All */1 :
+          tmp = "all";
+          break;
+      case /* Initial */2 :
+          tmp = initial;
+          break;
+      case /* Inherit */3 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "column-span",
+          tmp
+        ];
+}
+
+function columnWidth(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Auto */0 :
+          tmp = auto;
+          break;
+      case /* Initial */1 :
+          tmp = initial;
+          break;
+      case /* Inherit */2 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt.tag ? opt[0] : getLength(opt[0]);
+  }
+  return /* tuple */[
+          "column-width",
+          tmp
+        ];
+}
+
+function columns(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Auto */0 :
+          tmp = auto;
+          break;
+      case /* Initial */1 :
+          tmp = initial;
+          break;
+      case /* Inherit */2 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else if (opt.tag) {
+    tmp = opt[0];
+  } else {
+    var match = columnWidth(opt[0]);
+    var match$1 = columnCount(opt[1]);
+    tmp = "" + (String(match[1]) + (" " + (String(match$1[1]) + "")));
+  }
+  return /* tuple */[
+          "columns",
+          tmp
+        ];
+}
+
+var Column = {
+  columnCount: columnCount,
+  columnFill: columnFill,
+  columnGap: columnGap,
+  columnRuleColor: columnRuleColor,
+  columnRuleStyle: columnRuleStyle,
+  columnRuleWidth: columnRuleWidth,
+  columnRule: columnRule,
+  columnSpan: columnSpan,
+  columnWidth: columnWidth,
+  columns: columns
+};
+
+function content(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Normal */0 :
+          tmp = "normal";
+          break;
+      case /* None */1 :
+          tmp = none;
+          break;
+      case /* Counter */2 :
+          tmp = "counter";
+          break;
+      case /* OpenQuote */3 :
+          tmp = "open-quote";
+          break;
+      case /* CloseQuote */4 :
+          tmp = "close-quote";
+          break;
+      case /* NoOpenQuote */5 :
+          tmp = "no-open-quote";
+          break;
+      case /* Initial */6 :
+          tmp = initial;
+          break;
+      case /* Inherit */7 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    switch (opt.tag | 0) {
+      case /* Attr */0 :
+          tmp = "attr(" + (String(opt[0]) + ")");
+          break;
+      case /* Url */2 :
+          tmp = "url(" + (String(opt[0]) + ")");
+          break;
+      case /* String */1 :
+      case /* Unsafe_set */3 :
+          tmp = opt[0];
+          break;
+      
+    }
+  }
+  return /* tuple */[
+          "content",
+          tmp
+        ];
+}
+
+var Content = {
+  content: content
+};
+
+function getCounterValue(opt) {
+  if (typeof opt !== "number") {
+    if (opt.tag) {
+      return opt[0];
+    } else {
+      return String(opt[0]);
+    }
+  }
+  switch (opt) {
+    case /* None */0 :
+        return none;
+    case /* Initial */1 :
+        return initial;
+    case /* Inherit */2 :
+        return inherit_;
+    
+  }
+}
+
+function counterIncrement(opt) {
+  return /* tuple */[
+          "counter-increment",
+          getCounterValue(opt)
+        ];
+}
+
+function counterReset(opt) {
+  return /* tuple */[
+          "counter-reset",
+          getCounterValue(opt)
+        ];
+}
+
+var Counter = {
+  getCounterValue: getCounterValue,
+  counterIncrement: counterIncrement,
+  counterReset: counterReset
+};
+
+function cursor(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Alias */0 :
+          tmp = "alias";
+          break;
+      case /* AllScroll */1 :
+          tmp = "all-scroll";
+          break;
+      case /* Auto */2 :
+          tmp = auto;
+          break;
+      case /* Cell */3 :
+          tmp = "cell";
+          break;
+      case /* ContextMenu */4 :
+          tmp = "context-menu";
+          break;
+      case /* ColResize */5 :
+          tmp = "col-resize";
+          break;
+      case /* Copy */6 :
+          tmp = "copy";
+          break;
+      case /* Crosshair */7 :
+          tmp = "crosshair";
+          break;
+      case /* Default */8 :
+          tmp = "default";
+          break;
+      case /* EResize */9 :
+          tmp = "e-resize";
+          break;
+      case /* EwResize */10 :
+          tmp = "ew-resize";
+          break;
+      case /* Grab */11 :
+          tmp = "grab";
+          break;
+      case /* Grabbing */12 :
+          tmp = "grabbing";
+          break;
+      case /* Help */13 :
+          tmp = "help";
+          break;
+      case /* Move */14 :
+          tmp = "move";
+          break;
+      case /* NResize */15 :
+          tmp = "n-resize";
+          break;
+      case /* NeResize */16 :
+          tmp = "ne-resize";
+          break;
+      case /* NeswResize */17 :
+          tmp = "nesw-resize";
+          break;
+      case /* NsResize */18 :
+          tmp = "ns-resize";
+          break;
+      case /* NwResize */19 :
+          tmp = "nw-resize";
+          break;
+      case /* NwseResize */20 :
+          tmp = "nwse-resize";
+          break;
+      case /* NoDrop */21 :
+          tmp = "no-drop";
+          break;
+      case /* None */22 :
+          tmp = none;
+          break;
+      case /* NotAllowed */23 :
+          tmp = "not-allowed";
+          break;
+      case /* Pointer */24 :
+          tmp = "pointer";
+          break;
+      case /* Progress */25 :
+          tmp = "progress";
+          break;
+      case /* RowRezise */26 :
+          tmp = "row-resize";
+          break;
+      case /* SResize */27 :
+          tmp = "s-resize";
+          break;
+      case /* SeResize */28 :
+          tmp = "se=resize";
+          break;
+      case /* SwResize */29 :
+          tmp = "sw-resize";
+          break;
+      case /* Text */30 :
+          tmp = "text";
+          break;
+      case /* VerticalText */31 :
+          tmp = "vertical-text";
+          break;
+      case /* WResize */32 :
+          tmp = "w-resize";
+          break;
+      case /* Wait */33 :
+          tmp = "wait";
+          break;
+      case /* ZoomIn */34 :
+          tmp = "zoom-in";
+          break;
+      case /* ZoomOut */35 :
+          tmp = "zoom-out";
+          break;
+      case /* Initial */36 :
+          tmp = initial;
+          break;
+      case /* Inherit */37 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "cursor",
+          tmp
+        ];
+}
+
+var Cursor = {
+  cursor: cursor
+};
+
+function direction(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Ltr */0 :
+          tmp = "ltr";
+          break;
+      case /* Rtl */1 :
+          tmp = "rtl";
+          break;
+      case /* Initial */2 :
+          tmp = initial;
+          break;
+      case /* Inherit */3 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "direction",
+          tmp
+        ];
+}
+
+var Direction = {
+  direction: direction
+};
+
+function display(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Inline */0 :
+          tmp = "inline";
+          break;
+      case /* Block */1 :
+          tmp = "block";
+          break;
+      case /* Contents */2 :
+          tmp = "contents";
+          break;
+      case /* Flex */3 :
+          tmp = "flex";
+          break;
+      case /* Grid */4 :
+          tmp = "grid";
+          break;
+      case /* InlineBlock */5 :
+          tmp = "inline-block";
+          break;
+      case /* InlineFlex */6 :
+          tmp = "inline-flex";
+          break;
+      case /* InlineGrid */7 :
+          tmp = "inline-grid";
+          break;
+      case /* InlineTable */8 :
+          tmp = "inline-table";
+          break;
+      case /* ListItem */9 :
+          tmp = "list-item";
+          break;
+      case /* RunIn */10 :
+          tmp = "run-in";
+          break;
+      case /* Table */11 :
+          tmp = "table";
+          break;
+      case /* TableCaption */12 :
+          tmp = "table-caption";
+          break;
+      case /* TableColumnGroup */13 :
+          tmp = "table-column-group";
+          break;
+      case /* TableHeaderGroup */14 :
+          tmp = "table-header-group";
+          break;
+      case /* TableFooterGroup */15 :
+          tmp = "table-footer-group";
+          break;
+      case /* TableRowGroup */16 :
+          tmp = "table-row-group";
+          break;
+      case /* TableCell */17 :
+          tmp = "table-cell";
+          break;
+      case /* TableColumn */18 :
+          tmp = "table-column";
+          break;
+      case /* TableRow */19 :
+          tmp = "table-row";
+          break;
+      case /* None */20 :
+          tmp = none;
+          break;
+      case /* Initial */21 :
+          tmp = initial;
+          break;
+      case /* Inherit */22 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "display",
+          tmp
+        ];
+}
+
+var Display = {
+  display: display
+};
+
+function emptyCells(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Show */0 :
+          tmp = "show";
+          break;
+      case /* Hide */1 :
+          tmp = "hide";
+          break;
+      case /* Initial */2 :
+          tmp = initial;
+          break;
+      case /* Inherit */3 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "empty-cells",
+          tmp
+        ];
+}
+
+var EmptyCells = {
+  emptyCells: emptyCells
+};
+
+function filter(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* None */0 :
+          tmp = none;
+          break;
+      case /* Initial */1 :
+          tmp = initial;
+          break;
+      case /* Inherit */2 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    switch (opt.tag | 0) {
+      case /* Blur */0 :
+          tmp = "blur(" + (String(opt[0]) + "px)");
+          break;
+      case /* Brightness */1 :
+          tmp = "brightness(" + (String(opt[0]) + "%)");
+          break;
+      case /* Contrast */2 :
+          tmp = "contrast(" + (String(opt[0]) + "%)");
+          break;
+      case /* DropShadow */3 :
+          tmp = $$Array.of_list(opt[0]).join(" ");
+          break;
+      case /* Grayscale */4 :
+          tmp = "grayscale(" + (String(opt[0]) + "%)");
+          break;
+      case /* HueRotate */5 :
+          tmp = "hue-rotate(" + (String(opt[0]) + "deg)");
+          break;
+      case /* Invert */6 :
+          tmp = "invert(" + (String(opt[0]) + "%)");
+          break;
+      case /* Opacity */7 :
+          tmp = "opacity(" + (String(opt[0]) + "%)");
+          break;
+      case /* Saturate */8 :
+          tmp = "saturate(" + (String(opt[0]) + "%)");
+          break;
+      case /* Sepia */9 :
+          tmp = "sepia(" + (String(opt[0]) + "%)");
+          break;
+      case /* Url */10 :
+          tmp = "url(" + (String(opt[0]) + ")");
+          break;
+      case /* Unsafe_set */11 :
+          tmp = opt[0];
+          break;
+      
+    }
+  }
+  return /* tuple */[
+          "filter",
+          tmp
+        ];
+}
+
+var Filter = {
+  filter: filter
+};
+
+function flexBasis(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Auto */0 :
+          tmp = auto;
+          break;
+      case /* Initial */1 :
+          tmp = initial;
+          break;
+      case /* Inherit */2 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt.tag ? opt[0] : getLength(opt[0]);
+  }
+  return /* tuple */[
+          "flex-basis",
+          tmp
+        ];
+}
+
+function flexDirection(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Row */0 :
+          tmp = "row";
+          break;
+      case /* RowReverse */1 :
+          tmp = "row-reverse";
+          break;
+      case /* Column */2 :
+          tmp = "column";
+          break;
+      case /* ColumnReverse */3 :
+          tmp = "column-reverse";
+          break;
+      case /* Initial */4 :
+          tmp = initial;
+          break;
+      case /* Inherit */5 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "flex-direction",
+          tmp
+        ];
+}
+
+function flexGrow(opt) {
+  var tmp;
+  tmp = typeof opt === "number" ? (
+      opt === /* Initial */0 ? initial : inherit_
+    ) : (
+      opt.tag ? opt[0] : String(opt[0])
+    );
+  return /* tuple */[
+          "flex-grow",
+          tmp
+        ];
+}
+
+function flexShrink(opt) {
+  var tmp;
+  tmp = typeof opt === "number" ? (
+      opt === /* Initial */0 ? initial : inherit_
+    ) : (
+      opt.tag ? opt[0] : String(opt[0])
+    );
+  return /* tuple */[
+          "flex-shrink",
+          tmp
+        ];
+}
+
+function flex(grow, shrink, basis, param) {
+  var match = flexGrow(Belt_Option.getWithDefault(grow, /* Unsafe_set */Block.__(1, [""])));
+  var match$1 = flexShrink(Belt_Option.getWithDefault(shrink, /* Unsafe_set */Block.__(1, [""])));
+  var match$2 = flexBasis(Belt_Option.getWithDefault(basis, /* Unsafe_set */Block.__(1, [""])));
+  return $$String.trim("" + (String(match[1]) + (" " + (String(match$1[1]) + (" " + (String(match$2[1]) + ""))))));
+}
+
+function flexWrap(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* NoWrap */0 :
+          tmp = "no-wrap";
+          break;
+      case /* Wrap */1 :
+          tmp = "wrap";
+          break;
+      case /* WrapReverse */2 :
+          tmp = "wrap-reverse";
+          break;
+      case /* Initial */3 :
+          tmp = initial;
+          break;
+      case /* Inherit */4 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "flex-wrap",
+          tmp
+        ];
+}
+
+function flexFlow(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    tmp = opt === /* Initial */0 ? initial : inherit_;
+  } else if (opt.tag) {
+    tmp = opt[0];
+  } else {
+    var match = flexDirection(opt[0]);
+    var match$1 = flexWrap(opt[1]);
+    tmp = "" + (String(match[1]) + (" " + (String(match$1[1]) + "")));
+  }
+  return /* tuple */[
+          "flex-flow",
+          tmp
+        ];
+}
+
+var Flex = {
+  flexBasis: flexBasis,
+  flexDirection: flexDirection,
+  flexGrow: flexGrow,
+  flexShrink: flexShrink,
+  flex: flex,
+  flexWrap: flexWrap,
+  flexFlow: flexFlow
+};
+
+function $$float(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* None */0 :
+          tmp = none;
+          break;
+      case /* Left */1 :
+          tmp = "left";
+          break;
+      case /* Right */2 :
+          tmp = "right";
+          break;
+      case /* Initial */3 :
+          tmp = initial;
+          break;
+      case /* Inherit */4 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "float",
+          tmp
+        ];
+}
+
+var Float = {
+  $$float: $$float
+};
+
+function fontFamily(opt) {
+  return /* tuple */[
+          "font-family",
+          typeof opt === "number" ? (
+              opt !== 0 ? inherit_ : initial
+            ) : opt[0]
+        ];
+}
+
+function fontFeatureSettings(opt) {
+  var tmp;
+  tmp = typeof opt === "number" ? "normal" : (
+      opt.tag ? opt[0] : $$Array.of_list(opt[0]).join(" ")
+    );
+  return /* tuple */[
+          "font-feature-settings",
+          tmp
+        ];
+}
+
+function fontKerning(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Auto */0 :
+          tmp = auto;
+          break;
+      case /* Normal */1 :
+          tmp = "normal";
+          break;
+      case /* None */2 :
+          tmp = none;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "font-kerning",
+          tmp
+        ];
+}
+
+function fontSize(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Medium */0 :
+          tmp = "medium";
+          break;
+      case /* XxSmall */1 :
+          tmp = "xx-small";
+          break;
+      case /* XSmall */2 :
+          tmp = "x-small";
+          break;
+      case /* Small */3 :
+          tmp = "small";
+          break;
+      case /* Large */4 :
+          tmp = "large";
+          break;
+      case /* XLarge */5 :
+          tmp = "x-large";
+          break;
+      case /* XxLarge */6 :
+          tmp = "xx-large";
+          break;
+      case /* Smaller */7 :
+          tmp = "smaller";
+          break;
+      case /* Larger */8 :
+          tmp = "larger";
+          break;
+      case /* Initial */9 :
+          tmp = initial;
+          break;
+      case /* Inherit */10 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt.tag ? opt[0] : getLength(opt[0]);
+  }
+  return /* tuple */[
+          "font-size",
+          tmp
+        ];
+}
+
+function fontSizeAdjust(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* None */0 :
+          tmp = none;
+          break;
+      case /* Initial */1 :
+          tmp = initial;
+          break;
+      case /* Inherit */2 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt.tag ? opt[0] : Pervasives.string_of_float(opt[0]);
+  }
+  return /* tuple */[
+          "font-size-adjust",
+          tmp
+        ];
+}
+
+function fontStretch(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* UltraCondensed */0 :
+          tmp = "ultra-condensed";
+          break;
+      case /* ExtraCondensed */1 :
+          tmp = "extra-condensed";
+          break;
+      case /* Condensed */2 :
+          tmp = "condensed";
+          break;
+      case /* SemiCondensed */3 :
+          tmp = "semi-condensed";
+          break;
+      case /* Normal */4 :
+          tmp = "normal";
+          break;
+      case /* SemiExpanded */5 :
+          tmp = "semi-expanded";
+          break;
+      case /* Expanded */6 :
+          tmp = "expanded";
+          break;
+      case /* ExtraExpanded */7 :
+          tmp = "extra-expanded";
+          break;
+      case /* UltraExpanded */8 :
+          tmp = "ultra-expanded";
+          break;
+      case /* Initial */9 :
+          tmp = initial;
+          break;
+      case /* Inherit */10 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "font-stretch",
+          tmp
+        ];
+}
+
+function fontStyle(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Normal */0 :
+          tmp = "normal";
+          break;
+      case /* Italic */1 :
+          tmp = "italic";
+          break;
+      case /* Oblique */2 :
+          tmp = "oblique";
+          break;
+      case /* Initial */3 :
+          tmp = initial;
+          break;
+      case /* Inherit */4 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "font-style",
+          tmp
+        ];
+}
+
+function fontVariant(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Normal */0 :
+          tmp = "normal";
+          break;
+      case /* SmallCaps */1 :
+          tmp = "small-caps";
+          break;
+      case /* Initial */2 :
+          tmp = initial;
+          break;
+      case /* Inherit */3 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "font-variant",
+          tmp
+        ];
+}
+
+function fontVariantCaps(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Normal */0 :
+          tmp = "normal";
+          break;
+      case /* SmallCaps */1 :
+          tmp = "small-caps";
+          break;
+      case /* AllSmallCaps */2 :
+          tmp = "all-small-caps";
+          break;
+      case /* PetiteCaps */3 :
+          tmp = "petite-caps";
+          break;
+      case /* AllPetiteCaps */4 :
+          tmp = "all-petite-caps";
+          break;
+      case /* Unicase */5 :
+          tmp = "unicase";
+          break;
+      case /* TitlingCaps */6 :
+          tmp = "titling-caps";
+          break;
+      case /* Initial */7 :
+          tmp = initial;
+          break;
+      case /* Inherit */8 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "font-variant-caps",
+          tmp
+        ];
+}
+
+function fontWeight(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Normal */0 :
+          tmp = "normal";
+          break;
+      case /* Bold */1 :
+          tmp = "bold";
+          break;
+      case /* Bolder */2 :
+          tmp = "bolder";
+          break;
+      case /* Lighter */3 :
+          tmp = "lighter";
+          break;
+      case /* Initial */4 :
+          tmp = initial;
+          break;
+      case /* Inherit */5 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else if (opt.tag) {
+    tmp = opt[0];
+  } else {
+    var tmp$1;
+    switch (opt[0]) {
+      case /* One */0 :
+          tmp$1 = 100;
+          break;
+      case /* Two */1 :
+          tmp$1 = 200;
+          break;
+      case /* Three */2 :
+          tmp$1 = 300;
+          break;
+      case /* Four */3 :
+          tmp$1 = 400;
+          break;
+      case /* Five */4 :
+          tmp$1 = 500;
+          break;
+      case /* Six */5 :
+          tmp$1 = 600;
+          break;
+      case /* Seven */6 :
+          tmp$1 = 700;
+          break;
+      case /* Eight */7 :
+          tmp$1 = 800;
+          break;
+      case /* Nine */8 :
+          tmp$1 = 900;
+          break;
+      
+    }
+    tmp = String(tmp$1);
+  }
+  return /* tuple */[
+          "font-weight",
+          tmp
+        ];
+}
+
+function font(fontList) {
+  return $$Array.of_list(fontList).join(" ");
+}
+
+function fontFace(family, src, stretch, style, weight, unicodeRange, param) {
+  var stretch$1 = fontStretch(Belt_Option.getWithDefault(stretch, /* Unsafe_set */[""]));
+  var style$1 = fontStyle(Belt_Option.getWithDefault(style, /* Unsafe_set */[""]));
+  var weight$1 = fontWeight(Belt_Option.getWithDefault(weight, /* Unsafe_set */Block.__(1, [""])));
+  var unicodeRange$1 = Belt_Option.getWithDefault(unicodeRange, "");
+  return Js_dict.fromList(/* :: */[
+              /* tuple */[
+                "font-family",
+                family
+              ],
+              /* :: */[
+                /* tuple */[
+                  "src",
+                  "url(" + (String(src) + ")")
+                ],
+                /* :: */[
+                  stretch$1,
+                  /* :: */[
+                    style$1,
+                    /* :: */[
+                      weight$1,
+                      /* :: */[
+                        /* tuple */[
+                          "unicode-range",
+                          unicodeRange$1
+                        ],
+                        /* [] */0
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]);
+}
+
+var Font = {
+  fontFamily: fontFamily,
+  fontFeatureSettings: fontFeatureSettings,
+  fontKerning: fontKerning,
+  fontSize: fontSize,
+  fontSizeAdjust: fontSizeAdjust,
+  fontStretch: fontStretch,
+  fontStyle: fontStyle,
+  fontVariant: fontVariant,
+  fontVariantCaps: fontVariantCaps,
+  fontWeight: fontWeight,
+  font: font,
+  fontFace: fontFace
+};
+
+var Grid = { };
+
 var $$class = CamlinternalOO.create_table(0);
 
 CamlinternalOO.init_class($$class);
 
-var captionSide = CamlinternalOO.create_object_opt(undefined, $$class);
+var grid = CamlinternalOO.create_object_opt(undefined, $$class);
 
 var $$class$1 = CamlinternalOO.create_table(0);
 
 CamlinternalOO.init_class($$class$1);
 
-var caretColor = CamlinternalOO.create_object_opt(undefined, $$class$1);
+var gridArea = CamlinternalOO.create_object_opt(undefined, $$class$1);
 
 var $$class$2 = CamlinternalOO.create_table(0);
 
 CamlinternalOO.init_class($$class$2);
 
-var charset = CamlinternalOO.create_object_opt(undefined, $$class$2);
+var gridAutoColumns = CamlinternalOO.create_object_opt(undefined, $$class$2);
 
 var $$class$3 = CamlinternalOO.create_table(0);
 
 CamlinternalOO.init_class($$class$3);
 
-var clear = CamlinternalOO.create_object_opt(undefined, $$class$3);
+var gridAutoFlow = CamlinternalOO.create_object_opt(undefined, $$class$3);
 
 var $$class$4 = CamlinternalOO.create_table(0);
 
 CamlinternalOO.init_class($$class$4);
 
-var clip = CamlinternalOO.create_object_opt(undefined, $$class$4);
+var gridAutoRows = CamlinternalOO.create_object_opt(undefined, $$class$4);
 
 var $$class$5 = CamlinternalOO.create_table(0);
 
 CamlinternalOO.init_class($$class$5);
 
-var color = CamlinternalOO.create_object_opt(undefined, $$class$5);
+var gridColumn = CamlinternalOO.create_object_opt(undefined, $$class$5);
 
 var $$class$6 = CamlinternalOO.create_table(0);
 
 CamlinternalOO.init_class($$class$6);
 
-var columnCount = CamlinternalOO.create_object_opt(undefined, $$class$6);
+var gridColumnEnd = CamlinternalOO.create_object_opt(undefined, $$class$6);
 
 var $$class$7 = CamlinternalOO.create_table(0);
 
 CamlinternalOO.init_class($$class$7);
 
-var columnFill = CamlinternalOO.create_object_opt(undefined, $$class$7);
+var gridColumnGap = CamlinternalOO.create_object_opt(undefined, $$class$7);
 
 var $$class$8 = CamlinternalOO.create_table(0);
 
 CamlinternalOO.init_class($$class$8);
 
-var columnGap = CamlinternalOO.create_object_opt(undefined, $$class$8);
+var gridColumnStart = CamlinternalOO.create_object_opt(undefined, $$class$8);
 
 var $$class$9 = CamlinternalOO.create_table(0);
 
 CamlinternalOO.init_class($$class$9);
 
-var columnRule = CamlinternalOO.create_object_opt(undefined, $$class$9);
+var gridGap = CamlinternalOO.create_object_opt(undefined, $$class$9);
 
 var $$class$10 = CamlinternalOO.create_table(0);
 
 CamlinternalOO.init_class($$class$10);
 
-var columnRuleColor = CamlinternalOO.create_object_opt(undefined, $$class$10);
+var gridRow = CamlinternalOO.create_object_opt(undefined, $$class$10);
 
 var $$class$11 = CamlinternalOO.create_table(0);
 
 CamlinternalOO.init_class($$class$11);
 
-var columnRuleStyle = CamlinternalOO.create_object_opt(undefined, $$class$11);
+var gridRowEnd = CamlinternalOO.create_object_opt(undefined, $$class$11);
 
 var $$class$12 = CamlinternalOO.create_table(0);
 
 CamlinternalOO.init_class($$class$12);
 
-var columnRuleWidth = CamlinternalOO.create_object_opt(undefined, $$class$12);
+var gridRowGap = CamlinternalOO.create_object_opt(undefined, $$class$12);
 
 var $$class$13 = CamlinternalOO.create_table(0);
 
 CamlinternalOO.init_class($$class$13);
 
-var columnSpan = CamlinternalOO.create_object_opt(undefined, $$class$13);
+var gridRowStart = CamlinternalOO.create_object_opt(undefined, $$class$13);
 
 var $$class$14 = CamlinternalOO.create_table(0);
 
 CamlinternalOO.init_class($$class$14);
 
-var columnWidth = CamlinternalOO.create_object_opt(undefined, $$class$14);
+var gridTemplate = CamlinternalOO.create_object_opt(undefined, $$class$14);
 
 var $$class$15 = CamlinternalOO.create_table(0);
 
 CamlinternalOO.init_class($$class$15);
 
-var columns = CamlinternalOO.create_object_opt(undefined, $$class$15);
+var gridTemplateAreas = CamlinternalOO.create_object_opt(undefined, $$class$15);
 
 var $$class$16 = CamlinternalOO.create_table(0);
 
 CamlinternalOO.init_class($$class$16);
 
-var content = CamlinternalOO.create_object_opt(undefined, $$class$16);
+var gridTemplateColumns = CamlinternalOO.create_object_opt(undefined, $$class$16);
 
 var $$class$17 = CamlinternalOO.create_table(0);
 
 CamlinternalOO.init_class($$class$17);
 
-var counterIncrement = CamlinternalOO.create_object_opt(undefined, $$class$17);
+var gridTemplateRows = CamlinternalOO.create_object_opt(undefined, $$class$17);
 
-var $$class$18 = CamlinternalOO.create_table(0);
+function hangingPunctuation(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* None */0 :
+          tmp = none;
+          break;
+      case /* First */1 :
+          tmp = "first";
+          break;
+      case /* Last */2 :
+          tmp = "last";
+          break;
+      case /* AllowEnd */3 :
+          tmp = "allow-end";
+          break;
+      case /* ForceEnd */4 :
+          tmp = "force-end";
+          break;
+      case /* Initial */5 :
+          tmp = initial;
+          break;
+      case /* Inherit */6 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "hanging-punctuation",
+          tmp
+        ];
+}
 
-CamlinternalOO.init_class($$class$18);
+var HangingPunctuation = {
+  hangingPunctuation: hangingPunctuation
+};
 
-var counterReset = CamlinternalOO.create_object_opt(undefined, $$class$18);
+function height(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Auto */0 :
+          tmp = auto;
+          break;
+      case /* Initial */1 :
+          tmp = initial;
+          break;
+      case /* Inherit */2 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt.tag ? opt[0] : getLength(opt[0]);
+  }
+  return /* tuple */[
+          "height",
+          tmp
+        ];
+}
 
-var $$class$19 = CamlinternalOO.create_table(0);
+var Height = {
+  height: height
+};
 
-CamlinternalOO.init_class($$class$19);
+function hyphens(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* None */0 :
+          tmp = none;
+          break;
+      case /* Manual */1 :
+          tmp = "manual";
+          break;
+      case /* Auto */2 :
+          tmp = auto;
+          break;
+      case /* Initial */3 :
+          tmp = initial;
+          break;
+      case /* Inherit */4 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "hyphens",
+          tmp
+        ];
+}
 
-var cursor = CamlinternalOO.create_object_opt(undefined, $$class$19);
+var Hyphens = {
+  hyphens: hyphens
+};
 
-var $$class$20 = CamlinternalOO.create_table(0);
+function isolation(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Auto */0 :
+          tmp = auto;
+          break;
+      case /* Isolate */1 :
+          tmp = "isolate";
+          break;
+      case /* Initial */2 :
+          tmp = initial;
+          break;
+      case /* Inherit */3 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "isolation",
+          tmp
+        ];
+}
 
-CamlinternalOO.init_class($$class$20);
+var Isolation = {
+  isolation: isolation
+};
 
-var direction = CamlinternalOO.create_object_opt(undefined, $$class$20);
+function justifyContent(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* FlexStart */0 :
+          tmp = "flex-start";
+          break;
+      case /* FlexEnd */1 :
+          tmp = "flex-end";
+          break;
+      case /* Center */2 :
+          tmp = "center";
+          break;
+      case /* SpaceBetween */3 :
+          tmp = "space-between";
+          break;
+      case /* SpaceAround */4 :
+          tmp = "space-around";
+          break;
+      case /* Initial */5 :
+          tmp = initial;
+          break;
+      case /* Inherit */6 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "justify-content",
+          tmp
+        ];
+}
 
-var $$class$21 = CamlinternalOO.create_table(0);
+var JustifyContent = {
+  justifyContent: justifyContent
+};
 
-CamlinternalOO.init_class($$class$21);
-
-var display = CamlinternalOO.create_object_opt(undefined, $$class$21);
-
-var $$class$22 = CamlinternalOO.create_table(0);
-
-CamlinternalOO.init_class($$class$22);
-
-var emptyCells = CamlinternalOO.create_object_opt(undefined, $$class$22);
-
-var hidden = "hidden";
-
-var flex = "flex";
-
-var column = "column";
-
-var flexEnd = "flexEnd";
-
-var forwards = "forwards";
-
-var center = "center";
-
-var underline = "underline";
+var Keyframes = { };
 
 var borderBottomStyle = borderBottomeStyle;
+
+var clip = clipPath;
 
 export {
   clsx ,
   toFloat ,
   toInt ,
   toStr ,
-  vw ,
-  vh ,
-  px ,
-  pct ,
-  deg ,
-  ms ,
-  width ,
-  height ,
-  overflow ,
-  flexDirection ,
-  padding ,
-  transition ,
-  transform ,
-  zIndex ,
-  margin ,
-  opacity ,
-  textAlign ,
-  lineHeight ,
-  fontSize ,
-  textDecoration ,
-  nthChild ,
-  $$var ,
-  hover ,
-  hidden ,
-  flex ,
-  column ,
-  flexEnd ,
-  rotate ,
-  translateY ,
-  translate ,
-  important ,
-  forwards ,
-  center ,
-  underline ,
-  keyframes ,
   css ,
   create ,
   getClassName ,
@@ -2161,12 +3496,19 @@ export {
   breakAfter ,
   breakBefore ,
   breakInside ,
+  Caption ,
   captionSide ,
+  Caret ,
   caretColor ,
   charset ,
+  Clear ,
   clear ,
+  Clip ,
   clip ,
+  clipPath ,
+  Color ,
   color ,
+  Column ,
   columnCount ,
   columnFill ,
   columnGap ,
@@ -2177,13 +3519,74 @@ export {
   columnSpan ,
   columnWidth ,
   columns ,
+  Content ,
   content ,
+  Counter ,
   counterIncrement ,
   counterReset ,
+  Cursor ,
   cursor ,
+  Direction ,
   direction ,
+  Display ,
   display ,
+  EmptyCells ,
   emptyCells ,
+  Filter ,
+  filter ,
+  Flex ,
+  flex ,
+  flexBasis ,
+  flexDirection ,
+  flexFlow ,
+  flexGrow ,
+  flexShrink ,
+  flexWrap ,
+  Float ,
+  $$float ,
+  Font ,
+  font ,
+  fontFace ,
+  fontFamily ,
+  fontFeatureSettings ,
+  fontKerning ,
+  fontSize ,
+  fontSizeAdjust ,
+  fontStretch ,
+  fontStyle ,
+  fontVariant ,
+  fontVariantCaps ,
+  fontWeight ,
+  Grid ,
+  grid ,
+  gridArea ,
+  gridAutoColumns ,
+  gridAutoFlow ,
+  gridAutoRows ,
+  gridColumn ,
+  gridColumnEnd ,
+  gridColumnGap ,
+  gridColumnStart ,
+  gridGap ,
+  gridRow ,
+  gridRowEnd ,
+  gridRowGap ,
+  gridRowStart ,
+  gridTemplate ,
+  gridTemplateAreas ,
+  gridTemplateColumns ,
+  gridTemplateRows ,
+  HangingPunctuation ,
+  hangingPunctuation ,
+  Height ,
+  height ,
+  Hyphens ,
+  hyphens ,
+  Isolation ,
+  isolation ,
+  JustifyContent ,
+  justifyContent ,
+  Keyframes ,
   
 }
 /* class Not a pure module */

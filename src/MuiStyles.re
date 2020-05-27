@@ -13,83 +13,6 @@ let toFloat = float_of_int;
 let toInt = int_of_float;
 let toStr = string_of_int;
 
-// css measurement values
-let vw = int => toStr(int) ++ "vw";
-let vh = int => toStr(int) ++ "vh";
-let px = int => toStr(int) ++ "px";
-let pct = int => toStr(int) ++ "%";
-let deg = int => toStr(int) ++ "deg";
-let ms = int => toStr(int) ++ "ms";
-
-// css properties
-let backgroundColor = str => ("backgroundColor", str);
-let width = str => ("width", str);
-let height = str => ("height", str);
-let overflow = str => ("overflow", str);
-let display = str => ("display", str);
-let flexDirection = str => ("flex-direction", str);
-let alignItems = str => ("align-items", str);
-let padding = pad => {
-  let getPaddingStr = (str, p) => {
-    str ++ ", " ++ p;
-  };
-
-  let paddingStr = getPaddingStr->List.fold_left("", pad);
-  ("padding", paddingStr);
-};
-let transition = str => ("transition", str);
-let transform = str => ("transfrom", str);
-let zIndex = index => ("z-index", index |> toStr);
-let margin = marg => {
-  let getMarginStr = (str, m) => {
-    str ++ ", " ++ m;
-  };
-
-  let marginStr = getMarginStr->List.fold_left("", marg);
-  ("margin", marginStr);
-};
-let animationDuration = str => ("animation-duration", str);
-let animationFillMode = str => ("animation-fill-mode", str);
-let opacity = num => ("opacity", num |> Js.Float.toString);
-let animationName = str => ("animation-name", "$" ++ str);
-let textAlign = str => ("text-align", str);
-let lineHeight = str => ("line-height", str);
-let fontSize = str => ("font-size", str);
-let textDecoration = str => ("text-decoration", str);
-let color = str => ("color", str);
-
-// sudo selectors
-let nthChild = (child, dict) => {
-  let child = string_of_int(child);
-  ({j|&:nth-child($child)|j}, dict);
-};
-let var = (str, dict) => ("&$" ++ str, dict);
-let hover = dict => ("&:hover", dict);
-
-// css values
-let hidden = "hidden";
-let flex = "flex";
-let column = "column";
-let flexEnd = "flexEnd";
-let rotate = str => {j|rotate($str)|j};
-let translateY = str => {j|translateY($str)|j};
-let translate = (x, y) => {j|translate($x, $y)|j};
-let important = str => str ++ " !important";
-let forwards = "forwards";
-let center = "center";
-let underline = "underline";
-
-// keyframes
-let keyframes = (name, frames) => {
-  let formatFrames = (dict, (percent, styles)) => {
-    Js.Dict.set(dict, pct(percent), styles);
-    dict;
-  };
-
-  let keyframe = formatFrames->List.fold_left(Js.Dict.empty(), frames);
-  ({j|@keyframes $name|j}, keyframe) |> Obj.magic;
-};
-
 let css = styles => Js.Dict.fromList(styles) |> Obj.magic;
 
 let create = styles => Js.Dict.fromList(styles) |> Obj.magic;
@@ -1304,31 +1227,1235 @@ let breakBefore = Break.breakBefore;
 type breakInsideOptions = Break.breakInsideOptions;
 let breakInside = Break.breakInside;
 
+module Caption = {
+  type captionSideOptions =
+    | Top
+    | Bottom
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let captionSide = opt => (
+    "caption-side",
+    switch (opt) {
+    | Top => "top"
+    | Bottom => "bottom"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
 // C's
-let captionSide = {};
-let caretColor = {};
-let charset = {};
-let clear = {};
-let clip = {};
-let color = {};
-let columnCount = {};
-let columnFill = {};
-let columnGap = {};
-let columnRule = {};
-let columnRuleColor = {};
-let columnRuleStyle = {};
-let columnRuleWidth = {};
-let columnSpan = {};
-let columnWidth = {};
-let columns = {};
-let content = {};
-let counterIncrement = {};
-let counterReset = {};
-let cursor = {};
+type captionSideOptions = Caption.captionSideOptions;
+let captionSide = Caption.captionSide;
+
+module Caret = {
+  type caretColorOptions =
+    | Auto
+    | Color(string)
+    | Unsafe_set(string);
+  let caretColor = opt => (
+    "caret-color",
+    switch (opt) {
+    | Auto => "auto"
+    | Color(color) => color
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type caretColorOptions = Caret.caretColorOptions;
+let caretColor = Caret.caretColor;
+
+let charset = (set: string) => ("@charset", set);
+
+module Clear = {
+  type clearOptions =
+    | None
+    | Left
+    | Right
+    | Both
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let clear = opt => (
+    "clear",
+    switch (opt) {
+    | None => none
+    | Left => "left"
+    | Right => "right"
+    | Both => "both"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type clearOptions = Clear.clearOptions;
+let clear = Clear.clear;
+
+module Clip = {
+  type clipPathOptions =
+    | MarginBox
+    | BorderBox
+    | PaddingBox
+    | ContentBox
+    | FillBox
+    | StrokeBox
+    | ViewBox
+    | Shape(string)
+    | ClipSource(string)
+    | None
+    | Unsafe_set(string);
+  let clipPath = opt => (
+    "clip-path",
+    switch (opt) {
+    | MarginBox => "margin-box"
+    | BorderBox => "border-box"
+    | PaddingBox => "padding-box"
+    | ContentBox => "content-box"
+    | FillBox => "fill-box"
+    | StrokeBox => "stroke-box"
+    | ViewBox => "view-box"
+    | Shape(shape) => shape
+    | ClipSource(source) => source
+    | None => none
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type clipPathOptions = Clip.clipPathOptions;
+let clip = Clip.clipPath;
+let clipPath = Clip.clipPath;
+
+module Color = {
+  type colorOptions =
+    | Color(string)
+    | Initial
+    | Inherit;
+  let color = opt => (
+    "color",
+    switch (opt) {
+    | Color(color) => color
+    | Initial => initial
+    | Inherit => inherit_
+    },
+  );
+};
+
+type colorOptions = Color.colorOptions;
+let color = Color.color;
+
+module Column = {
+  type columnCountOptions =
+    | Count(int)
+    | Auto
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let columnCount = opt => (
+    "column-count",
+    switch (opt) {
+    | Count(count) => toStr(count)
+    | Auto => auto
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type columnFillOptions =
+    | Balance
+    | Auto
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let columnFill = opt => (
+    "column-fill",
+    switch (opt) {
+    | Balance => "balance"
+    | Auto => auto
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type columnGapOptions =
+    | Length(Length.options)
+    | Normal
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let columnGap = opt => (
+    "column-gap",
+    switch (opt) {
+    | Length(length) => Length.getLength(length)
+    | Normal => "normal"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type columnRuleColorOptions =
+    | Color(string)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let columnRuleColor = opt => (
+    "column-rule-color",
+    switch (opt) {
+    | Color(color) => color
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type columnRuleStyleOptions =
+    | None
+    | Hidden
+    | Dotted
+    | Dashed
+    | Solid
+    | Double
+    | Groove
+    | Ridge
+    | Inset
+    | Outset
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let columnRuleStyle = opt => (
+    "column-rule-style",
+    switch (opt) {
+    | None => none
+    | Hidden => "hidden"
+    | Dotted => "dotted"
+    | Dashed => "dashed"
+    | Solid => "solid"
+    | Double => "double"
+    | Groove => "groove"
+    | Ridge => "ridge"
+    | Inset => "inset"
+    | Outset => "outset"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type columnRuleWidthOptions =
+    | Width(Length.options)
+    | Medium
+    | Thin
+    | Thick
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let columnRuleWidth = opt => (
+    "column-rule-width",
+    switch (opt) {
+    | Width(length) => Length.getLength(length)
+    | Medium => "medium"
+    | Thin => "thin"
+    | Thick => "thick"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  let columnRule =
+      (
+        ~color: option(columnRuleColorOptions)=?,
+        ~style: option(columnRuleStyleOptions)=?,
+        ~width: option(columnRuleWidthOptions)=?,
+        (),
+      ) => {
+    let (_, color) = color->Belt.Option.getWithDefault(Unsafe_set(""))->columnRuleColor;
+    let (_, style) = style->Belt.Option.getWithDefault(Unsafe_set(""))->columnRuleStyle;
+    let (_, width) = width->Belt.Option.getWithDefault(Unsafe_set(""))->columnRuleWidth;
+
+    {j|$width $style $color|j};
+  };
+
+  type columnSpanOptions =
+    | None
+    | All
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let columnSpan = opt => (
+    "column-span",
+    switch (opt) {
+    | None => none
+    | All => "all"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type columnWidthOptions =
+    | Auto
+    | Width(Length.options)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let columnWidth = opt => (
+    "column-width",
+    switch (opt) {
+    | Auto => auto
+    | Width(length) => Length.getLength(length)
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type columnsOptions =
+    | Auto
+    | Columns(columnWidthOptions, columnCountOptions)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let columns = opt => (
+    "columns",
+    switch (opt) {
+    | Auto => auto
+    | Columns(width, count) =>
+      let (_, width) = columnWidth(width);
+      let (_, count) = columnCount(count);
+      {j|$width $count|j};
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type columnCountOptions = Column.columnCountOptions;
+let columnCount = Column.columnCount;
+type columnFillOptions = Column.columnFillOptions;
+let columnFill = Column.columnFill;
+type columnGapOptions = Column.columnGapOptions;
+let columnGap = Column.columnGap;
+let columnRule = Column.columnRule;
+type columnRuleColorOptions = Column.columnRuleColorOptions;
+let columnRuleColor = Column.columnRuleColor;
+type columnRuleStyleOptions = Column.columnRuleStyleOptions;
+let columnRuleStyle = Column.columnRuleStyle;
+type columnRuleWidthOptions = Column.columnRuleWidthOptions;
+let columnRuleWidth = Column.columnRuleWidth;
+type columnSpanOptions = Column.columnSpanOptions;
+let columnSpan = Column.columnSpan;
+type columnWidthOptions = Column.columnWidthOptions;
+let columnWidth = Column.columnWidth;
+type columnsOptions = Column.columnsOptions;
+let columns = Column.columns;
+
+module Content = {
+  type contentOptions =
+    | Normal
+    | None
+    | Counter
+    | Attr(string)
+    | String(string)
+    | OpenQuote
+    | CloseQuote
+    | NoOpenQuote
+    | Url(string)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let content = opt => (
+    "content",
+    switch (opt) {
+    | Normal => "normal"
+    | None => none
+    | Counter => "counter"
+    | Attr(attr) => {j|attr($attr)|j}
+    | String(str) => str
+    | OpenQuote => "open-quote"
+    | CloseQuote => "close-quote"
+    | NoOpenQuote => "no-open-quote"
+    | Url(url) => {j|url($url)|j}
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type contentOptions = Content.contentOptions;
+let content = Content.content;
+
+module Counter = {
+  type counterOptions =
+    | None
+    | ID(int)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+
+  let getCounterValue = opt =>
+    switch (opt) {
+    | None => none
+    | ID(id) => toStr(id)
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    };
+
+  let counterIncrement = opt => ("counter-increment", getCounterValue(opt));
+
+  let counterReset = opt => ("counter-reset", getCounterValue(opt));
+};
+
+type counterOptions = Counter.counterOptions;
+let counterIncrement = Counter.counterIncrement;
+let counterReset = Counter.counterReset;
+
+module Cursor = {
+  type options =
+    | Alias
+    | AllScroll
+    | Auto
+    | Cell
+    | ContextMenu
+    | ColResize
+    | Copy
+    | Crosshair
+    | Default
+    | EResize
+    | EwResize
+    | Grab
+    | Grabbing
+    | Help
+    | Move
+    | NResize
+    | NeResize
+    | NeswResize
+    | NsResize
+    | NwResize
+    | NwseResize
+    | NoDrop
+    | None
+    | NotAllowed
+    | Pointer
+    | Progress
+    | RowRezise
+    | SResize
+    | SeResize
+    | SwResize
+    | Text
+    | Url(string)
+    | VerticalText
+    | WResize
+    | Wait
+    | ZoomIn
+    | ZoomOut
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+
+  let cursor = opt => (
+    "cursor",
+    switch (opt) {
+    | Alias => "alias"
+    | AllScroll => "all-scroll"
+    | Auto => auto
+    | Cell => "cell"
+    | ContextMenu => "context-menu"
+    | ColResize => "col-resize"
+    | Copy => "copy"
+    | Crosshair => "crosshair"
+    | Default => "default"
+    | EResize => "e-resize"
+    | EwResize => "ew-resize"
+    | Grab => "grab"
+    | Grabbing => "grabbing"
+    | Help => "help"
+    | Move => "move"
+    | NResize => "n-resize"
+    | NeResize => "ne-resize"
+    | NeswResize => "nesw-resize"
+    | NsResize => "ns-resize"
+    | NwResize => "nw-resize"
+    | NwseResize => "nwse-resize"
+    | NoDrop => "no-drop"
+    | None => none
+    | NotAllowed => "not-allowed"
+    | Pointer => "pointer"
+    | Progress => "progress"
+    | RowRezise => "row-resize"
+    | SResize => "s-resize"
+    | SeResize => "se=resize"
+    | SwResize => "sw-resize"
+    | Text => "text"
+    | Url(url) => url
+    | VerticalText => "vertical-text"
+    | WResize => "w-resize"
+    | Wait => "wait"
+    | ZoomIn => "zoom-in"
+    | ZoomOut => "zoom-out"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type cursorOptions = Cursor.options;
+let cursor = Cursor.cursor;
 
 // D's
-let direction = {};
-let display = {};
+module Direction = {
+  type options =
+    | Ltr
+    | Rtl
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let direction = opt => (
+    "direction",
+    switch (opt) {
+    | Ltr => "ltr"
+    | Rtl => "rtl"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type directionOptions = Direction.options;
+let direction = Direction.direction;
+
+module Display = {
+  type options =
+    | Inline
+    | Block
+    | Contents
+    | Flex
+    | Grid
+    | InlineBlock
+    | InlineFlex
+    | InlineGrid
+    | InlineTable
+    | ListItem
+    | RunIn
+    | Table
+    | TableCaption
+    | TableColumnGroup
+    | TableHeaderGroup
+    | TableFooterGroup
+    | TableRowGroup
+    | TableCell
+    | TableColumn
+    | TableRow
+    | None
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+
+  let display = opt => (
+    "display",
+    switch (opt) {
+    | Inline => "inline"
+    | Block => "block"
+    | Contents => "contents"
+    | Flex => "flex"
+    | Grid => "grid"
+    | InlineBlock => "inline-block"
+    | InlineFlex => "inline-flex"
+    | InlineGrid => "inline-grid"
+    | InlineTable => "inline-table"
+    | ListItem => "list-item"
+    | RunIn => "run-in"
+    | Table => "table"
+    | TableCaption => "table-caption"
+    | TableColumnGroup => "table-column-group"
+    | TableHeaderGroup => "table-header-group"
+    | TableFooterGroup => "table-footer-group"
+    | TableRowGroup => "table-row-group"
+    | TableCell => "table-cell"
+    | TableColumn => "table-column"
+    | TableRow => "table-row"
+    | None => none
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type displayOptions = Display.options;
+let display = Display.display;
 
 // E's
-let emptyCells = {};
+module EmptyCells = {
+  type options =
+    | Show
+    | Hide
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+
+  let emptyCells = opt => (
+    "empty-cells",
+    switch (opt) {
+    | Show => "show"
+    | Hide => "hide"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type emptyCellsOptions = EmptyCells.options;
+let emptyCells = EmptyCells.emptyCells;
+
+// F's
+module Filter = {
+  type options =
+    | None
+    | Blur(int)
+    | Brightness(float)
+    | Contrast(float)
+    | DropShadow(list(string))
+    | Grayscale(float)
+    | HueRotate(int)
+    | Invert(float)
+    | Opacity(float)
+    | Saturate(float)
+    | Sepia(float)
+    | Url(string)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+
+  let filter = opt => (
+    "filter",
+    switch (opt) {
+    | None => none
+    | Blur(blur) => {j|blur($(blur)px)|j}
+    | Brightness(brightness) => {j|brightness($(brightness)%)|j}
+    | Contrast(contrast) => {j|contrast($(contrast)%)|j}
+    | DropShadow(shadowList) => Array.of_list(shadowList) |> Js.Array.joinWith(" ")
+    | Grayscale(scale) => {j|grayscale($(scale)%)|j}
+    | HueRotate(rotate) => {j|hue-rotate($(rotate)deg)|j}
+    | Invert(invert) => {j|invert($(invert)%)|j}
+    | Opacity(opacity) => {j|opacity($(opacity)%)|j}
+    | Saturate(saturate) => {j|saturate($(saturate)%)|j}
+    | Sepia(sepia) => {j|sepia($(sepia)%)|j}
+    | Url(url) => {j|url($url)|j}
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type filterOptions = Filter.options;
+let filter = Filter.filter;
+
+module Flex = {
+  type flexBasisOptions =
+    | Basis(Length.options)
+    | Auto
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let flexBasis = opt => (
+    "flex-basis",
+    switch (opt) {
+    | Basis(length) => Length.getLength(length)
+    | Auto => auto
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type flexDirectionOptions =
+    | Row
+    | RowReverse
+    | Column
+    | ColumnReverse
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let flexDirection = opt => (
+    "flex-direction",
+    switch (opt) {
+    | Row => "row"
+    | RowReverse => "row-reverse"
+    | Column => "column"
+    | ColumnReverse => "column-reverse"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type flexGrowOptions =
+    | Grow(int)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let flexGrow = opt => (
+    "flex-grow",
+    switch (opt) {
+    | Grow(grow) => toStr(grow)
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type flexShrinkOptions =
+    | Shrink(int)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let flexShrink = opt => (
+    "flex-shrink",
+    switch (opt) {
+    | Shrink(shrink) => toStr(shrink)
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  let flex =
+      (
+        ~grow: option(flexGrowOptions)=?,
+        ~shrink: option(flexShrinkOptions)=?,
+        ~basis: option(flexBasisOptions)=?,
+        (),
+      ) => {
+    let (_, grow) = grow->Belt.Option.getWithDefault(Unsafe_set(""))->flexGrow;
+    let (_, shrink) = shrink->Belt.Option.getWithDefault(Unsafe_set(""))->flexShrink;
+    let (_, basis) = basis->Belt.Option.getWithDefault(Unsafe_set(""))->flexBasis;
+
+    {j|$grow $shrink $basis|j} |> String.trim;
+  };
+
+  type flexWrapOptions =
+    | NoWrap
+    | Wrap
+    | WrapReverse
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let flexWrap = opt => (
+    "flex-wrap",
+    switch (opt) {
+    | NoWrap => "no-wrap"
+    | Wrap => "wrap"
+    | WrapReverse => "wrap-reverse"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type flexFlowOptions =
+    | Flow(flexDirectionOptions, flexWrapOptions)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let flexFlow = opt => (
+    "flex-flow",
+    switch (opt) {
+    | Flow(direction, wrap) =>
+      let (_, direction) = flexDirection(direction);
+      let (_, wrap) = flexWrap(wrap);
+
+      {j|$direction $wrap|j};
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+let flex = Flex.flex;
+type flexBasisOptions = Flex.flexBasisOptions;
+let flexBasis = Flex.flexBasis;
+type flexDirectionOptions = Flex.flexDirectionOptions;
+let flexDirection = Flex.flexDirection;
+type flexFlowOptions = Flex.flexFlowOptions;
+let flexFlow = Flex.flexFlow;
+type flexGrowOptions = Flex.flexGrowOptions;
+let flexGrow = Flex.flexGrow;
+type flexShrinkOptions = Flex.flexShrinkOptions;
+let flexShrink = Flex.flexShrink;
+type flexWrapOptions = Flex.flexWrapOptions;
+let flexWrap = Flex.flexWrap;
+
+module Float = {
+  type options =
+    | None
+    | Left
+    | Right
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let float = opt => (
+    "float",
+    switch (opt) {
+    | None => none
+    | Left => "left"
+    | Right => "right"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type floatOptions = Float.options;
+let float = Float.float;
+
+module Font = {
+  type fontFamilyOptions =
+    | Family(string)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let fontFamily = opt => (
+    "font-family",
+    switch (opt) {
+    | Family(family) => family
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type fontFeatureSettingsOptions =
+    | Normal
+    | Feature(list(string))
+    | Unsafe_set(string);
+  let fontFeatureSettings = opt => (
+    "font-feature-settings",
+    switch (opt) {
+    | Normal => "normal"
+    | Feature(features) => Array.of_list(features) |> Js.Array.joinWith(" ")
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type fontKerningOptions =
+    | Auto
+    | Normal
+    | None
+    | Unsafe_set(string);
+  let fontKerning = opt => (
+    "font-kerning",
+    switch (opt) {
+    | Auto => auto
+    | Normal => "normal"
+    | None => none
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type fontSizeOptions =
+    | Medium
+    | XxSmall
+    | XSmall
+    | Small
+    | Large
+    | XLarge
+    | XxLarge
+    | Smaller
+    | Larger
+    | Size(Length.options)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let fontSize = opt => (
+    "font-size",
+    switch (opt) {
+    | Medium => "medium"
+    | XxSmall => "xx-small"
+    | XSmall => "x-small"
+    | Small => "small"
+    | Large => "large"
+    | XLarge => "x-large"
+    | XxLarge => "xx-large"
+    | Smaller => "smaller"
+    | Larger => "larger"
+    | Size(length) => Length.getLength(length)
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type fontSizeAdjustOptions =
+    | Adjust(float)
+    | None
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let fontSizeAdjust = opt => (
+    "font-size-adjust",
+    switch (opt) {
+    | Adjust(adjust) => string_of_float(adjust)
+    | None => none
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type fontStretchOptions =
+    | UltraCondensed
+    | ExtraCondensed
+    | Condensed
+    | SemiCondensed
+    | Normal
+    | SemiExpanded
+    | Expanded
+    | ExtraExpanded
+    | UltraExpanded
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let fontStretch = opt => (
+    "font-stretch",
+    switch (opt) {
+    | UltraCondensed => "ultra-condensed"
+    | ExtraCondensed => "extra-condensed"
+    | Condensed => "condensed"
+    | SemiCondensed => "semi-condensed"
+    | Normal => "normal"
+    | SemiExpanded => "semi-expanded"
+    | Expanded => "expanded"
+    | ExtraExpanded => "extra-expanded"
+    | UltraExpanded => "ultra-expanded"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type fontStyleOptions =
+    | Normal
+    | Italic
+    | Oblique
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let fontStyle = opt => (
+    "font-style",
+    switch (opt) {
+    | Normal => "normal"
+    | Italic => "italic"
+    | Oblique => "oblique"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type fontVariantOptions =
+    | Normal
+    | SmallCaps
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let fontVariant = opt => (
+    "font-variant",
+    switch (opt) {
+    | Normal => "normal"
+    | SmallCaps => "small-caps"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type fontVariantCapsOptions =
+    | Normal
+    | SmallCaps
+    | AllSmallCaps
+    | PetiteCaps
+    | AllPetiteCaps
+    | Unicase
+    | TitlingCaps
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let fontVariantCaps = opt => (
+    "font-variant-caps",
+    switch (opt) {
+    | Normal => "normal"
+    | SmallCaps => "small-caps"
+    | AllSmallCaps => "all-small-caps"
+    | PetiteCaps => "petite-caps"
+    | AllPetiteCaps => "all-petite-caps"
+    | Unicase => "unicase"
+    | TitlingCaps => "titling-caps"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type weightOptions =
+    | One
+    | Two
+    | Three
+    | Four
+    | Five
+    | Six
+    | Seven
+    | Eight
+    | Nine
+  and fontWeightOptions =
+    | Normal
+    | Bold
+    | Bolder
+    | Lighter
+    | Weight(weightOptions)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let fontWeight = opt => (
+    "font-weight",
+    switch (opt) {
+    | Normal => "normal"
+    | Bold => "bold"
+    | Bolder => "bolder"
+    | Lighter => "lighter"
+    | Weight(weight) =>
+      (
+        switch (weight) {
+        | One => 100
+        | Two => 200
+        | Three => 300
+        | Four => 400
+        | Five => 500
+        | Six => 600
+        | Seven => 700
+        | Eight => 800
+        | Nine => 900
+        }
+      )
+      |> toStr
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  let font = fontList => Array.of_list(fontList) |> Js.Array.joinWith(" ");
+
+  let fontFace =
+      (
+        ~family,
+        ~src,
+        ~stretch: option(fontStretchOptions)=?,
+        ~style: option(fontStyleOptions)=?,
+        ~weight: option(fontWeightOptions)=?,
+        ~unicodeRange: option(string)=?,
+        (),
+      ) => {
+    let stretch = stretch->Belt.Option.getWithDefault(Unsafe_set(""))->fontStretch;
+    let style = style->Belt.Option.getWithDefault(Unsafe_set(""))->fontStyle;
+    let weight = weight->Belt.Option.getWithDefault(Unsafe_set(""))->fontWeight;
+    let unicodeRange = unicodeRange->Belt.Option.getWithDefault("");
+
+    [("font-family", family), ("src", {j|url($src)|j}), stretch, style, weight, ("unicode-range", unicodeRange)]
+    |> Js.Dict.fromList;
+  };
+};
+
+let font = Font.font;
+let fontFace = Font.fontFace;
+type fontFamilyOptions = Font.fontFamilyOptions;
+let fontFamily = Font.fontFamily;
+type fontFeatureSettingsOptions = Font.fontFeatureSettingsOptions;
+let fontFeatureSettings = Font.fontFeatureSettings;
+type fontKerningOptions = Font.fontKerningOptions;
+let fontKerning = Font.fontKerning;
+type fontSizeOptions = Font.fontSizeOptions;
+let fontSize = Font.fontSize;
+type fontSizeAdjustOptions = Font.fontSizeAdjustOptions;
+let fontSizeAdjust = Font.fontSizeAdjust;
+type fontStretchOptions = Font.fontStretchOptions;
+let fontStretch = Font.fontStretch;
+type fontStyleOptions = Font.fontStyleOptions;
+let fontStyle = Font.fontStyle;
+type fontVariantOptions = Font.fontVariantOptions;
+let fontVariant = Font.fontVariant;
+type fontVariantCapsOptions = Font.fontVariantCapsOptions;
+let fontVariantCaps = Font.fontVariantCaps;
+type fontWeightOptions = Font.fontWeightOptions;
+let fontWeight = Font.fontWeight;
+
+// G's
+module Grid = {};
+
+let grid = {};
+let gridArea = {};
+let gridAutoColumns = {};
+let gridAutoFlow = {};
+let gridAutoRows = {};
+let gridColumn = {};
+let gridColumnEnd = {};
+let gridColumnGap = {};
+let gridColumnStart = {};
+let gridGap = {};
+let gridRow = {};
+let gridRowEnd = {};
+let gridRowGap = {};
+let gridRowStart = {};
+let gridTemplate = {};
+let gridTemplateAreas = {};
+let gridTemplateColumns = {};
+let gridTemplateRows = {};
+
+// H's
+module HangingPunctuation = {
+  type options =
+    | None
+    | First
+    | Last
+    | AllowEnd
+    | ForceEnd
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let hangingPunctuation = opt => (
+    "hanging-punctuation",
+    switch (opt) {
+    | None => none
+    | First => "first"
+    | Last => "last"
+    | AllowEnd => "allow-end"
+    | ForceEnd => "force-end"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type hangingPunctuationOptions = HangingPunctuation.options;
+let hangingPunctuation = HangingPunctuation.hangingPunctuation;
+
+module Height = {
+  type options =
+    | Auto
+    | Height(Length.options)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let height = opt => (
+    "height",
+    switch (opt) {
+    | Auto => auto
+    | Height(length) => Length.getLength(length)
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type heightOptions = Height.options;
+let height = Height.height;
+
+module Hyphens = {
+  type options =
+    | None
+    | Manual
+    | Auto
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let hyphens = opt => (
+    "hyphens",
+    switch (opt) {
+    | None => none
+    | Manual => "manual"
+    | Auto => auto
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type hyphenOptions = Hyphens.options;
+let hyphens = Hyphens.hyphens;
+
+// I's
+module Isolation = {
+  type options =
+    | Auto
+    | Isolate
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let isolation = opt => (
+    "isolation",
+    switch (opt) {
+    | Auto => auto
+    | Isolate => "isolate"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type isolationOptions = Isolation.options;
+let isolation = Isolation.isolation;
+
+// J's
+module JustifyContent = {
+  type options =
+    | FlexStart
+    | FlexEnd
+    | Center
+    | SpaceBetween
+    | SpaceAround
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let justifyContent = opt => (
+    "justify-content",
+    switch (opt) {
+    | FlexStart => "flex-start"
+    | FlexEnd => "flex-end"
+    | Center => "center"
+    | SpaceBetween => "space-between"
+    | SpaceAround => "space-around"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type justifyContentOptions = JustifyContent.options;
+let justifyContent = JustifyContent.justifyContent;
+
+// K's
+module Keyframes = {
+  // let fromTo
+};
