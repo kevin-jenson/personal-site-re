@@ -3398,11 +3398,1357 @@ var JustifyContent = {
   justifyContent: justifyContent
 };
 
-var Keyframes = { };
+function keyframe(name, frame) {
+  var dict = { };
+  dict[name] = Js_dict.fromList(frame);
+  
+}
+
+var Keyframes = {
+  keyframe: keyframe
+};
+
+function left(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Auto */0 :
+          tmp = auto;
+          break;
+      case /* Initial */1 :
+          tmp = initial;
+          break;
+      case /* Inherit */2 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt.tag ? opt[0] : getLength(opt[0]);
+  }
+  return /* tuple */[
+          "left",
+          tmp
+        ];
+}
+
+var Left = {
+  left: left
+};
+
+function letterSpacing(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Normal */0 :
+          tmp = "normal";
+          break;
+      case /* Initial */1 :
+          tmp = initial;
+          break;
+      case /* Inherit */2 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt.tag ? opt[0] : getLength(opt[0]);
+  }
+  return /* tuple */[
+          "letter-spacing",
+          tmp
+        ];
+}
+
+var Letter = {
+  letterSpacing: letterSpacing
+};
+
+function lineHeight(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Normal */0 :
+          tmp = "normal";
+          break;
+      case /* Initial */1 :
+          tmp = initial;
+          break;
+      case /* Inherit */2 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    switch (opt.tag | 0) {
+      case /* Number */0 :
+          tmp = String(opt[0]);
+          break;
+      case /* Length */1 :
+          tmp = getLength(opt[0]);
+          break;
+      case /* Unsafe_set */2 :
+          tmp = opt[0];
+          break;
+      
+    }
+  }
+  return /* tuple */[
+          "line-height",
+          tmp
+        ];
+}
+
+var Line = {
+  lineHeight: lineHeight
+};
+
+function listStyleImage(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* None */0 :
+          tmp = none;
+          break;
+      case /* Initial */1 :
+          tmp = initial;
+          break;
+      case /* Inherit */2 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "list-style-image",
+          tmp
+        ];
+}
+
+function listStylePosition(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Inside */0 :
+          tmp = "inside";
+          break;
+      case /* Outside */1 :
+          tmp = "outside";
+          break;
+      case /* Initial */2 :
+          tmp = initial;
+          break;
+      case /* Inherit */3 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "list-style-position",
+          tmp
+        ];
+}
+
+function listStyleType(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Disc */0 :
+          tmp = "disc";
+          break;
+      case /* Armenian */1 :
+          tmp = "armenian";
+          break;
+      case /* Circle */2 :
+          tmp = "circle";
+          break;
+      case /* CjkIdeagraphic */3 :
+          tmp = "cjk-ideographic";
+          break;
+      case /* Decimal */4 :
+          tmp = "decimal";
+          break;
+      case /* DecimalLeadingZero */5 :
+          tmp = "decimal-leading-zero";
+          break;
+      case /* Georgian */6 :
+          tmp = "georgian";
+          break;
+      case /* Hebrew */7 :
+          tmp = "hebrew";
+          break;
+      case /* Hiragana */8 :
+          tmp = "hiragana";
+          break;
+      case /* HiraganaIroha */9 :
+          tmp = "hiragana-iroha";
+          break;
+      case /* Katakana */10 :
+          tmp = "katakana";
+          break;
+      case /* KatakanaIroha */11 :
+          tmp = "katakana-iroha";
+          break;
+      case /* LowerAlpha */12 :
+          tmp = "lower-alpha";
+          break;
+      case /* LowerGreek */13 :
+          tmp = "lower-greek";
+          break;
+      case /* LowerLatin */14 :
+          tmp = "lower-latin";
+          break;
+      case /* LowerRoman */15 :
+          tmp = "lower-roman";
+          break;
+      case /* None */16 :
+          tmp = none;
+          break;
+      case /* Square */17 :
+          tmp = "square";
+          break;
+      case /* UpperAlpha */18 :
+          tmp = "upper-alpha";
+          break;
+      case /* UpperGreek */19 :
+          tmp = "upper-greek";
+          break;
+      case /* UpperLatin */20 :
+          tmp = "upper-latin";
+          break;
+      case /* UpperRoman */21 :
+          tmp = "upper-roman";
+          break;
+      case /* Initial */22 :
+          tmp = initial;
+          break;
+      case /* Inherit */23 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "list-style-type",
+          tmp
+        ];
+}
+
+function listStyle(styleType, position, image, param) {
+  var match = listStyleType(Belt_Option.getWithDefault(styleType, /* Unsafe_set */[""]));
+  var match$1 = listStylePosition(Belt_Option.getWithDefault(position, /* Unsafe_set */[""]));
+  var match$2 = listStyleImage(Belt_Option.getWithDefault(image, /* Unsafe_set */Block.__(1, [""])));
+  return $$String.trim("" + (String(match[1]) + (" " + (String(match$1[1]) + (" " + (String(match$2[1]) + ""))))));
+}
+
+var ListCss = {
+  listStyleImage: listStyleImage,
+  listStylePosition: listStylePosition,
+  listStyleType: listStyleType,
+  listStyle: listStyle
+};
+
+function getMargin(opt) {
+  if (typeof opt !== "number") {
+    if (opt.tag) {
+      return opt[0];
+    } else {
+      return getLength(opt[0]);
+    }
+  }
+  switch (opt) {
+    case /* Auto */0 :
+        return auto;
+    case /* Initial */1 :
+        return initial;
+    case /* Inherit */2 :
+        return inherit_;
+    
+  }
+}
+
+function marginBottom(opt) {
+  return /* tuple */[
+          "margin-bottom",
+          getMargin(opt)
+        ];
+}
+
+function marginLeft(opt) {
+  return /* tuple */[
+          "margin-left",
+          getMargin(opt)
+        ];
+}
+
+function marginRight(opt) {
+  return /* tuple */[
+          "margin-right",
+          getMargin(opt)
+        ];
+}
+
+function marginTop(opt) {
+  return /* tuple */[
+          "margin-top",
+          getMargin(opt)
+        ];
+}
+
+function margin(margins) {
+  return $$Array.of_list(List.map(getLength, margins)).join(" ");
+}
+
+var Margin = {
+  getMargin: getMargin,
+  marginBottom: marginBottom,
+  marginLeft: marginLeft,
+  marginRight: marginRight,
+  marginTop: marginTop,
+  margin: margin
+};
+
+function getMax(opt) {
+  if (typeof opt !== "number") {
+    if (opt.tag) {
+      return opt[0];
+    } else {
+      return getLength(opt[0]);
+    }
+  }
+  switch (opt) {
+    case /* None */0 :
+        return none;
+    case /* Initial */1 :
+        return initial;
+    case /* Inherit */2 :
+        return inherit_;
+    
+  }
+}
+
+function maxHeight(opt) {
+  return /* tuple */[
+          "max-height",
+          getMax(opt)
+        ];
+}
+
+function maxWidth(opt) {
+  return /* tuple */[
+          "max-width",
+          getMax(opt)
+        ];
+}
+
+var Max = {
+  getMax: getMax,
+  maxHeight: maxHeight,
+  maxWidth: maxWidth
+};
+
+var Media = { };
+
+var $$class$18 = CamlinternalOO.create_table(0);
+
+CamlinternalOO.init_class($$class$18);
+
+var media = CamlinternalOO.create_object_opt(undefined, $$class$18);
+
+function getMin(opt) {
+  if (typeof opt === "number") {
+    if (opt === /* Initial */0) {
+      return initial;
+    } else {
+      return inherit_;
+    }
+  } else if (opt.tag) {
+    return opt[0];
+  } else {
+    return getLength(opt[0]);
+  }
+}
+
+function minHeight(opt) {
+  return /* tuple */[
+          "min-height",
+          getMin(opt)
+        ];
+}
+
+function minWidth(opt) {
+  return /* tuple */[
+          "min-width",
+          getMin(opt)
+        ];
+}
+
+var Min = {
+  getMin: getMin,
+  minHeight: minHeight,
+  minWidth: minWidth
+};
+
+function mixBlendMode(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Normal */0 :
+          tmp = "normal";
+          break;
+      case /* Multiply */1 :
+          tmp = "multiply";
+          break;
+      case /* Screen */2 :
+          tmp = "screen";
+          break;
+      case /* Overlay */3 :
+          tmp = "overlay";
+          break;
+      case /* Darken */4 :
+          tmp = "darken";
+          break;
+      case /* Lighten */5 :
+          tmp = "lighten";
+          break;
+      case /* ColorDodge */6 :
+          tmp = "color-dodge";
+          break;
+      case /* ColorBurn */7 :
+          tmp = "color-burn";
+          break;
+      case /* Difference */8 :
+          tmp = "difference";
+          break;
+      case /* Exclusion */9 :
+          tmp = "exclusion";
+          break;
+      case /* Hue */10 :
+          tmp = "hue";
+          break;
+      case /* Saturation */11 :
+          tmp = "saturation";
+          break;
+      case /* Color */12 :
+          tmp = "color";
+          break;
+      case /* Luminosity */13 :
+          tmp = "luminosity";
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "mix-blend-mode",
+          tmp
+        ];
+}
+
+var MixBlendMode = {
+  mixBlendMode: mixBlendMode
+};
+
+function objectFit(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Fill */0 :
+          tmp = "fill";
+          break;
+      case /* Contain */1 :
+          tmp = "contain";
+          break;
+      case /* Cover */2 :
+          tmp = "cover";
+          break;
+      case /* None */3 :
+          tmp = none;
+          break;
+      case /* ScaleDown */4 :
+          tmp = "scale-down";
+          break;
+      case /* Initial */5 :
+          tmp = initial;
+          break;
+      case /* Inherit */6 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "object-fit",
+          tmp
+        ];
+}
+
+function objectPosition(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Left */0 :
+          tmp = "left";
+          break;
+      case /* Right */1 :
+          tmp = "right";
+          break;
+      case /* Center */2 :
+          tmp = "center";
+          break;
+      case /* Initial */3 :
+          tmp = initial;
+          break;
+      case /* Inherit */4 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    switch (opt.tag | 0) {
+      case /* Px */0 :
+          tmp = String(opt[0]) + "px";
+          break;
+      case /* Pct */1 :
+          tmp = String(opt[0]) + "%";
+          break;
+      case /* Unsafe_set */2 :
+          tmp = opt[0];
+          break;
+      
+    }
+  }
+  return /* tuple */[
+          "object-position",
+          tmp
+        ];
+}
+
+var ObjectCss = {
+  objectFit: objectFit,
+  objectPosition: objectPosition
+};
+
+function opacity(o) {
+  return /* tuple */[
+          "opacity",
+          Pervasives.string_of_float(o)
+        ];
+}
+
+var Opacity = {
+  opacity: opacity
+};
+
+function order(opt) {
+  var tmp;
+  tmp = typeof opt === "number" ? (
+      opt === /* Initial */0 ? initial : inherit_
+    ) : (
+      opt.tag ? opt[0] : String(opt[0])
+    );
+  return /* tuple */[
+          "order",
+          tmp
+        ];
+}
+
+var Order = {
+  order: order
+};
+
+function outlineColor(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Invert */0 :
+          tmp = "invert";
+          break;
+      case /* Initial */1 :
+          tmp = initial;
+          break;
+      case /* Inherit */2 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "outline-color",
+          tmp
+        ];
+}
+
+function outlineOffset(opt) {
+  var tmp;
+  tmp = typeof opt === "number" ? (
+      opt === /* Initial */0 ? initial : inherit_
+    ) : (
+      opt.tag ? opt[0] : getLength(opt[0])
+    );
+  return /* tuple */[
+          "outline-offset",
+          tmp
+        ];
+}
+
+function outlineStyle(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* None */0 :
+          tmp = none;
+          break;
+      case /* Hidden */1 :
+          tmp = "hidden";
+          break;
+      case /* Dotted */2 :
+          tmp = "dotted";
+          break;
+      case /* Dashed */3 :
+          tmp = "dashed";
+          break;
+      case /* Solid */4 :
+          tmp = "solid";
+          break;
+      case /* Double */5 :
+          tmp = "double";
+          break;
+      case /* Groove */6 :
+          tmp = "groove";
+          break;
+      case /* Ridge */7 :
+          tmp = "ridge";
+          break;
+      case /* Inset */8 :
+          tmp = "inset";
+          break;
+      case /* Outset */9 :
+          tmp = "outset";
+          break;
+      case /* Initial */10 :
+          tmp = initial;
+          break;
+      case /* Inherit */11 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "outline-style",
+          tmp
+        ];
+}
+
+function outlineWidth(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Medium */0 :
+          tmp = "medium";
+          break;
+      case /* Thin */1 :
+          tmp = "thin";
+          break;
+      case /* Thick */2 :
+          tmp = "thick";
+          break;
+      case /* Initial */3 :
+          tmp = initial;
+          break;
+      case /* Inherit */4 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt.tag ? opt[0] : getLength(opt[0]);
+  }
+  return /* tuple */[
+          "outline-width",
+          tmp
+        ];
+}
+
+function outline(style, width, color, param) {
+  var match = outlineStyle(style);
+  var match$1 = outlineWidth(Belt_Option.getWithDefault(width, /* Unsafe_set */Block.__(1, [""])));
+  var match$2 = outlineColor(Belt_Option.getWithDefault(color, /* Unsafe_set */Block.__(1, [""])));
+  return $$String.trim("" + (String(match[1]) + (" " + (String(match$1[1]) + (" " + (String(match$2[1]) + ""))))));
+}
+
+var Outline = {
+  outlineColor: outlineColor,
+  outlineOffset: outlineOffset,
+  outlineStyle: outlineStyle,
+  outlineWidth: outlineWidth,
+  outline: outline
+};
+
+function getOverflow(opt) {
+  if (typeof opt !== "number") {
+    return opt[0];
+  }
+  switch (opt) {
+    case /* Visible */0 :
+        return "visible";
+    case /* Hidden */1 :
+        return "hidden";
+    case /* Scroll */2 :
+        return "scroll";
+    case /* Auto */3 :
+        return auto;
+    case /* Initial */4 :
+        return initial;
+    case /* Inherit */5 :
+        return inherit_;
+    
+  }
+}
+
+function overflow(opt) {
+  return /* tuple */[
+          "overflow",
+          getOverflow(opt)
+        ];
+}
+
+function overflowX(opt) {
+  return /* tuple */[
+          "overflow-x",
+          getOverflow(opt)
+        ];
+}
+
+function overflowY(opt) {
+  return /* tuple */[
+          "overflow-y",
+          getOverflow(opt)
+        ];
+}
+
+var Overflow = {
+  getOverflow: getOverflow,
+  overflow: overflow,
+  overflowX: overflowX,
+  overflowY: overflowY
+};
+
+function getPadding(opt) {
+  if (typeof opt === "number") {
+    if (opt === /* Initial */0) {
+      return initial;
+    } else {
+      return inherit_;
+    }
+  } else if (opt.tag) {
+    return opt[0];
+  } else {
+    return getLength(opt[0]);
+  }
+}
+
+function paddingBottom(opt) {
+  return /* tuple */[
+          "padding-bottom",
+          getPadding(opt)
+        ];
+}
+
+function paddingLeft(opt) {
+  return /* tuple */[
+          "padding-left",
+          getPadding(opt)
+        ];
+}
+
+function padddingRight(opt) {
+  return /* tuple */[
+          "padding-right",
+          getPadding(opt)
+        ];
+}
+
+function paddingTop(opt) {
+  return /* tuple */[
+          "padding-top",
+          getPadding(opt)
+        ];
+}
+
+function padding(pads) {
+  return $$Array.of_list(List.map(getLength, pads)).join(" ");
+}
+
+var Padding = {
+  getPadding: getPadding,
+  paddingBottom: paddingBottom,
+  paddingLeft: paddingLeft,
+  padddingRight: padddingRight,
+  paddingTop: paddingTop,
+  padding: padding
+};
+
+function getPageBreakBeforeAfter(opt) {
+  if (typeof opt !== "number") {
+    return opt[0];
+  }
+  switch (opt) {
+    case /* Auto */0 :
+        return auto;
+    case /* Always */1 :
+        return "always";
+    case /* Avoid */2 :
+        return "avoid";
+    case /* Left */3 :
+        return "left";
+    case /* Right */4 :
+        return "right";
+    case /* Initial */5 :
+        return initial;
+    case /* Inherit */6 :
+        return inherit_;
+    
+  }
+}
+
+function pageBreakAfter(opt) {
+  return /* tuple */[
+          "page-break-after",
+          getPageBreakBeforeAfter(opt)
+        ];
+}
+
+function pageBreakBefore(opt) {
+  return /* tuple */[
+          "page-break-before",
+          getPageBreakBeforeAfter(opt)
+        ];
+}
+
+function pageBreakInside(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Auto */0 :
+          tmp = auto;
+          break;
+      case /* Avoid */1 :
+          tmp = "avoid";
+          break;
+      case /* Initial */2 :
+          tmp = initial;
+          break;
+      case /* Inherit */3 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "page-break-inside",
+          tmp
+        ];
+}
+
+var Page = {
+  getPageBreakBeforeAfter: getPageBreakBeforeAfter,
+  pageBreakAfter: pageBreakAfter,
+  pageBreakBefore: pageBreakBefore,
+  pageBreakInside: pageBreakInside
+};
+
+function perspective(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* None */0 :
+          tmp = none;
+          break;
+      case /* Initial */1 :
+          tmp = initial;
+          break;
+      case /* Inherit */2 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt.tag ? opt[0] : getLength(opt[0]);
+  }
+  return /* tuple */[
+          "perspective",
+          tmp
+        ];
+}
+
+function perspectiveOrigin(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    tmp = opt === /* Initial */0 ? initial : inherit_;
+  } else if (opt.tag) {
+    tmp = opt[0];
+  } else {
+    var xAxis = getLength(opt[0]);
+    var yAxis = getLength(opt[1]);
+    tmp = "" + (String(xAxis) + (" " + (String(yAxis) + "")));
+  }
+  return /* tuple */[
+          "perspective-origin",
+          tmp
+        ];
+}
+
+var Perspective = {
+  perspective: perspective,
+  perspectiveOrigin: perspectiveOrigin
+};
+
+function pointerEvents(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* None */0 :
+          tmp = none;
+          break;
+      case /* Auto */1 :
+          tmp = auto;
+          break;
+      case /* Initial */2 :
+          tmp = initial;
+          break;
+      case /* Inherit */3 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "pointer-events",
+          tmp
+        ];
+}
+
+var PointerEvents = {
+  pointerEvents: pointerEvents
+};
+
+function position(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Static */0 :
+          tmp = "static";
+          break;
+      case /* Absolute */1 :
+          tmp = "absolute";
+          break;
+      case /* Fixed */2 :
+          tmp = "fixed";
+          break;
+      case /* Relative */3 :
+          tmp = "relative";
+          break;
+      case /* Sticky */4 :
+          tmp = "sticky";
+          break;
+      case /* Initial */5 :
+          tmp = initial;
+          break;
+      case /* Inherit */6 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "position",
+          tmp
+        ];
+}
+
+var Position = {
+  position: position
+};
+
+function quotes(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* None */0 :
+          tmp = none;
+          break;
+      case /* Initial */1 :
+          tmp = initial;
+          break;
+      case /* Inherit */2 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt.tag ? opt[0] : $$Array.of_list(opt[0]).join(" ");
+  }
+  return /* tuple */[
+          "quotes",
+          tmp
+        ];
+}
+
+var Quotes = {
+  quotes: quotes
+};
+
+function resize(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* None */0 :
+          tmp = none;
+          break;
+      case /* Both */1 :
+          tmp = "both";
+          break;
+      case /* Horizontal */2 :
+          tmp = "horizontal";
+          break;
+      case /* Vertical */3 :
+          tmp = "vertical";
+          break;
+      case /* Intiial */4 :
+          tmp = initial;
+          break;
+      case /* Inherit */5 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "resize",
+          tmp
+        ];
+}
+
+var Resize = {
+  resize: resize
+};
+
+function right(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Auto */0 :
+          tmp = auto;
+          break;
+      case /* Initial */1 :
+          tmp = initial;
+          break;
+      case /* Inherit */2 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt.tag ? opt[0] : getLength(opt[0]);
+  }
+  return /* tuple */[
+          "right",
+          tmp
+        ];
+}
+
+var Right = {
+  right: right
+};
+
+function scrollBehavior(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Auto */0 :
+          tmp = auto;
+          break;
+      case /* Smooth */1 :
+          tmp = "smooth";
+          break;
+      case /* Initial */2 :
+          tmp = initial;
+          break;
+      case /* Inherit */3 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "scroll-behavior",
+          tmp
+        ];
+}
+
+var ScrollBehavior = {
+  scrollBehavior: scrollBehavior
+};
+
+function tabSize(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    tmp = opt === /* Initial */0 ? initial : inherit_;
+  } else {
+    switch (opt.tag | 0) {
+      case /* Number */0 :
+          tmp = String(opt[0]);
+          break;
+      case /* Length */1 :
+          tmp = getLength(opt[0]);
+          break;
+      case /* Unsafe_set */2 :
+          tmp = opt[0];
+          break;
+      
+    }
+  }
+  return /* tuple */[
+          "tab-size",
+          tmp
+        ];
+}
+
+var TabSize = {
+  tabSize: tabSize
+};
+
+function tableLayout(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Auto */0 :
+          tmp = auto;
+          break;
+      case /* Fixed */1 :
+          tmp = "fixed";
+          break;
+      case /* Initial */2 :
+          tmp = initial;
+          break;
+      case /* Inherit */3 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "table-layout",
+          tmp
+        ];
+}
+
+var TableLayout = {
+  tableLayout: tableLayout
+};
+
+function textAlign(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Left */0 :
+          tmp = "left";
+          break;
+      case /* Right */1 :
+          tmp = "right";
+          break;
+      case /* Center */2 :
+          tmp = "center";
+          break;
+      case /* Justify */3 :
+          tmp = "justify";
+          break;
+      case /* Initial */4 :
+          tmp = initial;
+          break;
+      case /* Inherit */5 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "text-align",
+          tmp
+        ];
+}
+
+var $$Text = {
+  textAlign: textAlign
+};
+
+var $$class$19 = CamlinternalOO.create_table(0);
+
+CamlinternalOO.init_class($$class$19);
+
+var textAlign$1 = CamlinternalOO.create_object_opt(undefined, $$class$19);
+
+var $$class$20 = CamlinternalOO.create_table(0);
+
+CamlinternalOO.init_class($$class$20);
+
+var textAlignLast = CamlinternalOO.create_object_opt(undefined, $$class$20);
+
+var $$class$21 = CamlinternalOO.create_table(0);
+
+CamlinternalOO.init_class($$class$21);
+
+var textCombineUpright = CamlinternalOO.create_object_opt(undefined, $$class$21);
+
+var $$class$22 = CamlinternalOO.create_table(0);
+
+CamlinternalOO.init_class($$class$22);
+
+var textDecoration = CamlinternalOO.create_object_opt(undefined, $$class$22);
+
+var $$class$23 = CamlinternalOO.create_table(0);
+
+CamlinternalOO.init_class($$class$23);
+
+var textDecorationColor = CamlinternalOO.create_object_opt(undefined, $$class$23);
+
+var $$class$24 = CamlinternalOO.create_table(0);
+
+CamlinternalOO.init_class($$class$24);
+
+var textDecorationLine = CamlinternalOO.create_object_opt(undefined, $$class$24);
+
+var $$class$25 = CamlinternalOO.create_table(0);
+
+CamlinternalOO.init_class($$class$25);
+
+var textDecorationStyle = CamlinternalOO.create_object_opt(undefined, $$class$25);
+
+var $$class$26 = CamlinternalOO.create_table(0);
+
+CamlinternalOO.init_class($$class$26);
+
+var textIndent = CamlinternalOO.create_object_opt(undefined, $$class$26);
+
+var $$class$27 = CamlinternalOO.create_table(0);
+
+CamlinternalOO.init_class($$class$27);
+
+var textJustify = CamlinternalOO.create_object_opt(undefined, $$class$27);
+
+var $$class$28 = CamlinternalOO.create_table(0);
+
+CamlinternalOO.init_class($$class$28);
+
+var textOrientation = CamlinternalOO.create_object_opt(undefined, $$class$28);
+
+var $$class$29 = CamlinternalOO.create_table(0);
+
+CamlinternalOO.init_class($$class$29);
+
+var textOverflow = CamlinternalOO.create_object_opt(undefined, $$class$29);
+
+var $$class$30 = CamlinternalOO.create_table(0);
+
+CamlinternalOO.init_class($$class$30);
+
+var textShadow = CamlinternalOO.create_object_opt(undefined, $$class$30);
+
+var $$class$31 = CamlinternalOO.create_table(0);
+
+CamlinternalOO.init_class($$class$31);
+
+var textTransform = CamlinternalOO.create_object_opt(undefined, $$class$31);
+
+var $$class$32 = CamlinternalOO.create_table(0);
+
+CamlinternalOO.init_class($$class$32);
+
+var top = CamlinternalOO.create_object_opt(undefined, $$class$32);
+
+var $$class$33 = CamlinternalOO.create_table(0);
+
+CamlinternalOO.init_class($$class$33);
+
+var transform = CamlinternalOO.create_object_opt(undefined, $$class$33);
+
+var $$class$34 = CamlinternalOO.create_table(0);
+
+CamlinternalOO.init_class($$class$34);
+
+var transformOrigin = CamlinternalOO.create_object_opt(undefined, $$class$34);
+
+var $$class$35 = CamlinternalOO.create_table(0);
+
+CamlinternalOO.init_class($$class$35);
+
+var transformStyle = CamlinternalOO.create_object_opt(undefined, $$class$35);
+
+var $$class$36 = CamlinternalOO.create_table(0);
+
+CamlinternalOO.init_class($$class$36);
+
+var transition = CamlinternalOO.create_object_opt(undefined, $$class$36);
+
+var $$class$37 = CamlinternalOO.create_table(0);
+
+CamlinternalOO.init_class($$class$37);
+
+var transitionDelay = CamlinternalOO.create_object_opt(undefined, $$class$37);
+
+var $$class$38 = CamlinternalOO.create_table(0);
+
+CamlinternalOO.init_class($$class$38);
+
+var transitionDuration = CamlinternalOO.create_object_opt(undefined, $$class$38);
+
+var $$class$39 = CamlinternalOO.create_table(0);
+
+CamlinternalOO.init_class($$class$39);
+
+var transitionProperty = CamlinternalOO.create_object_opt(undefined, $$class$39);
+
+var $$class$40 = CamlinternalOO.create_table(0);
+
+CamlinternalOO.init_class($$class$40);
+
+var transitionTimingFunction = CamlinternalOO.create_object_opt(undefined, $$class$40);
 
 var borderBottomStyle = borderBottomeStyle;
 
 var clip = clipPath;
+
+var paddingRight = padddingRight;
 
 export {
   clsx ,
@@ -3587,6 +4933,102 @@ export {
   JustifyContent ,
   justifyContent ,
   Keyframes ,
+  Left ,
+  left ,
+  Letter ,
+  letterSpacing ,
+  Line ,
+  lineHeight ,
+  ListCss ,
+  listStyle ,
+  listStyleImage ,
+  listStylePosition ,
+  listStyleType ,
+  Margin ,
+  margin ,
+  marginBottom ,
+  marginLeft ,
+  marginRight ,
+  marginTop ,
+  Max ,
+  maxHeight ,
+  maxWidth ,
+  Media ,
+  media ,
+  Min ,
+  minHeight ,
+  minWidth ,
+  MixBlendMode ,
+  mixBlendMode ,
+  ObjectCss ,
+  objectFit ,
+  objectPosition ,
+  Opacity ,
+  opacity ,
+  Order ,
+  order ,
+  Outline ,
+  outline ,
+  outlineColor ,
+  outlineOffset ,
+  outlineStyle ,
+  outlineWidth ,
+  Overflow ,
+  overflow ,
+  overflowX ,
+  overflowY ,
+  Padding ,
+  padding ,
+  paddingBottom ,
+  paddingLeft ,
+  paddingRight ,
+  paddingTop ,
+  Page ,
+  pageBreakAfter ,
+  pageBreakBefore ,
+  pageBreakInside ,
+  Perspective ,
+  perspective ,
+  perspectiveOrigin ,
+  PointerEvents ,
+  pointerEvents ,
+  Position ,
+  position ,
+  Quotes ,
+  quotes ,
+  Resize ,
+  resize ,
+  Right ,
+  right ,
+  ScrollBehavior ,
+  scrollBehavior ,
+  TabSize ,
+  tabSize ,
+  TableLayout ,
+  tableLayout ,
+  $$Text ,
+  textAlign$1 as textAlign,
+  textAlignLast ,
+  textCombineUpright ,
+  textDecoration ,
+  textDecorationColor ,
+  textDecorationLine ,
+  textDecorationStyle ,
+  textIndent ,
+  textJustify ,
+  textOrientation ,
+  textOverflow ,
+  textShadow ,
+  textTransform ,
+  top ,
+  transform ,
+  transformOrigin ,
+  transformStyle ,
+  transition ,
+  transitionDelay ,
+  transitionDuration ,
+  transitionProperty ,
+  transitionTimingFunction ,
   
 }
 /* class Not a pure module */

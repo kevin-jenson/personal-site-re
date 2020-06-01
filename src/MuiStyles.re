@@ -2457,5 +2457,902 @@ let justifyContent = JustifyContent.justifyContent;
 
 // K's
 module Keyframes = {
-  // let fromTo
+  let keyframe = (name, frame) => {
+    let dict = Js.Dict.empty();
+    frame |> Js.Dict.fromList |> Js.Dict.set(dict, name);
+  };
 };
+
+// L's
+module Left = {
+  type options =
+    | Auto
+    | Left(Length.options)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let left = opt => (
+    "left",
+    switch (opt) {
+    | Auto => auto
+    | Left(length) => Length.getLength(length)
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type leftOptions = Left.options;
+let left = Left.left;
+
+module Letter = {
+  type options =
+    | Normal
+    | Spacing(Length.options)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let letterSpacing = opt => (
+    "letter-spacing",
+    switch (opt) {
+    | Normal => "normal"
+    | Spacing(length) => Length.getLength(length)
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type letterSpacingOptions = Letter.options;
+let letterSpacing = Letter.letterSpacing;
+
+module Line = {
+  type options =
+    | Normal
+    | Number(int)
+    | Length(Length.options)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+
+  let lineHeight = opt => (
+    "line-height",
+    switch (opt) {
+    | Normal => "normal"
+    | Number(num) => toStr(num)
+    | Length(length) => Length.getLength(length)
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type lineHeightOptions = Line.options;
+let lineHeight = Line.lineHeight;
+
+module ListCss = {
+  type listStyleImageOptions =
+    | None
+    | Url(string)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let listStyleImage = opt => (
+    "list-style-image",
+    switch (opt) {
+    | None => none
+    | Url(url) => url
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type listStylePositionOptions =
+    | Inside
+    | Outside
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let listStylePosition = opt => (
+    "list-style-position",
+    switch (opt) {
+    | Inside => "inside"
+    | Outside => "outside"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type listStyleTypeOptions =
+    | Disc
+    | Armenian
+    | Circle
+    | CjkIdeagraphic
+    | Decimal
+    | DecimalLeadingZero
+    | Georgian
+    | Hebrew
+    | Hiragana
+    | HiraganaIroha
+    | Katakana
+    | KatakanaIroha
+    | LowerAlpha
+    | LowerGreek
+    | LowerLatin
+    | LowerRoman
+    | None
+    | Square
+    | UpperAlpha
+    | UpperGreek
+    | UpperLatin
+    | UpperRoman
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let listStyleType = opt => (
+    "list-style-type",
+    switch (opt) {
+    | Disc => "disc"
+    | Armenian => "armenian"
+    | Circle => "circle"
+    | CjkIdeagraphic => "cjk-ideographic"
+    | Decimal => "decimal"
+    | DecimalLeadingZero => "decimal-leading-zero"
+    | Georgian => "georgian"
+    | Hebrew => "hebrew"
+    | Hiragana => "hiragana"
+    | HiraganaIroha => "hiragana-iroha"
+    | Katakana => "katakana"
+    | KatakanaIroha => "katakana-iroha"
+    | LowerAlpha => "lower-alpha"
+    | LowerGreek => "lower-greek"
+    | LowerLatin => "lower-latin"
+    | LowerRoman => "lower-roman"
+    | None => none
+    | Square => "square"
+    | UpperAlpha => "upper-alpha"
+    | UpperGreek => "upper-greek"
+    | UpperLatin => "upper-latin"
+    | UpperRoman => "upper-roman"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  let listStyle =
+      (
+        ~styleType: option(listStyleTypeOptions)=?,
+        ~position: option(listStylePositionOptions)=?,
+        ~image: option(listStyleImageOptions)=?,
+        (),
+      ) => {
+    let (_, styleType) = styleType->Belt.Option.getWithDefault(Unsafe_set(""))->listStyleType;
+    let (_, position) = position->Belt.Option.getWithDefault(Unsafe_set(""))->listStylePosition;
+    let (_, image) = image->Belt.Option.getWithDefault(Unsafe_set(""))->listStyleImage;
+
+    {j|$styleType $position $image|j} |> String.trim;
+  };
+};
+
+let listStyle = ListCss.listStyle;
+type listStyleImageOptions = ListCss.listStyleImageOptions;
+let listStyleImage = ListCss.listStyleImage;
+type listStylePositionOptions = ListCss.listStylePositionOptions;
+let listStylePosition = ListCss.listStylePosition;
+type listStyleTypeOptions = ListCss.listStyleTypeOptions;
+let listStyleType = ListCss.listStyleType;
+
+// M's
+module Margin = {
+  type options =
+    | Margin(Length.options)
+    | Auto
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let getMargin = opt =>
+    switch (opt) {
+    | Margin(length) => Length.getLength(length)
+    | Auto => auto
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    };
+
+  let marginBottom = opt => ("margin-bottom", getMargin(opt));
+  let marginLeft = opt => ("margin-left", getMargin(opt));
+  let marginRight = opt => ("margin-right", getMargin(opt));
+  let marginTop = opt => ("margin-top", getMargin(opt));
+
+  let margin = margins =>
+    margins |> List.map(length => Length.getLength(length)) |> Array.of_list |> Js.Array.joinWith(" ");
+};
+
+type marginOptions = Margin.options;
+let margin = Margin.margin;
+let marginBottom = Margin.marginBottom;
+let marginLeft = Margin.marginLeft;
+let marginRight = Margin.marginRight;
+let marginTop = Margin.marginTop;
+
+module Max = {
+  type options =
+    | None
+    | Max(Length.options)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let getMax = opt =>
+    switch (opt) {
+    | None => none
+    | Max(length) => Length.getLength(length)
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    };
+
+  let maxHeight = opt => ("max-height", getMax(opt));
+  let maxWidth = opt => ("max-width", getMax(opt));
+};
+
+type maxOptions = Max.options;
+let maxHeight = Max.maxHeight;
+let maxWidth = Max.maxWidth;
+
+module Media = {
+  // TODO add media lol
+};
+
+let media = {};
+
+module Min = {
+  type options =
+    | Min(Length.options)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let getMin = opt =>
+    switch (opt) {
+    | Min(length) => Length.getLength(length)
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    };
+
+  let minHeight = opt => ("min-height", getMin(opt));
+  let minWidth = opt => ("min-width", getMin(opt));
+};
+
+type minOptions = Min.options;
+let minHeight = Min.minHeight;
+let minWidth = Min.minWidth;
+
+module MixBlendMode = {
+  type options =
+    | Normal
+    | Multiply
+    | Screen
+    | Overlay
+    | Darken
+    | Lighten
+    | ColorDodge
+    | ColorBurn
+    | Difference
+    | Exclusion
+    | Hue
+    | Saturation
+    | Color
+    | Luminosity
+    | Unsafe_set(string);
+  let mixBlendMode = opt => (
+    "mix-blend-mode",
+    switch (opt) {
+    | Normal => "normal"
+    | Multiply => "multiply"
+    | Screen => "screen"
+    | Overlay => "overlay"
+    | Darken => "darken"
+    | Lighten => "lighten"
+    | ColorDodge => "color-dodge"
+    | ColorBurn => "color-burn"
+    | Difference => "difference"
+    | Exclusion => "exclusion"
+    | Hue => "hue"
+    | Saturation => "saturation"
+    | Color => "color"
+    | Luminosity => "luminosity"
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type mixBlendModeOptions = MixBlendMode.options;
+let mixBlendMode = MixBlendMode.mixBlendMode;
+
+// O's
+module ObjectCss = {
+  type objectFitOptions =
+    | Fill
+    | Contain
+    | Cover
+    | None
+    | ScaleDown
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let objectFit = opt => (
+    "object-fit",
+    switch (opt) {
+    | Fill => "fill"
+    | Contain => "contain"
+    | Cover => "cover"
+    | None => none
+    | ScaleDown => "scale-down"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type objectPositionOptions =
+    | Left
+    | Right
+    | Center
+    | Px(int)
+    | Pct(int)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let objectPosition = opt => (
+    "object-position",
+    switch (opt) {
+    | Left => "left"
+    | Right => "right"
+    | Center => "center"
+    | Px(px) => toStr(px) ++ "px"
+    | Pct(pct) => toStr(pct) ++ "%"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type objectFitOptions = ObjectCss.objectFitOptions;
+let objectFit = ObjectCss.objectFit;
+type objectPositionOptions = ObjectCss.objectPositionOptions;
+let objectPosition = ObjectCss.objectPosition;
+
+module Opacity = {
+  let opacity = o => ("opacity", string_of_float(o));
+};
+
+let opacity = Opacity.opacity;
+
+module Order = {
+  type options =
+    | Order(int)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let order = opt => (
+    "order",
+    switch (opt) {
+    | Order(order) => toStr(order)
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type orderOptions = Order.options;
+let order = Order.order;
+
+module Outline = {
+  type outlineColorOptions =
+    | Invert
+    | Color(string)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let outlineColor = opt => (
+    "outline-color",
+    switch (opt) {
+    | Invert => "invert"
+    | Color(color) => color
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type outlineOffsetOptions =
+    | Offset(Length.options)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let outlineOffset = opt => (
+    "outline-offset",
+    switch (opt) {
+    | Offset(length) => Length.getLength(length)
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type outlineStyleOptions =
+    | None
+    | Hidden
+    | Dotted
+    | Dashed
+    | Solid
+    | Double
+    | Groove
+    | Ridge
+    | Inset
+    | Outset
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let outlineStyle = opt => (
+    "outline-style",
+    switch (opt) {
+    | None => none
+    | Hidden => "hidden"
+    | Dotted => "dotted"
+    | Dashed => "dashed"
+    | Solid => "solid"
+    | Double => "double"
+    | Groove => "groove"
+    | Ridge => "ridge"
+    | Inset => "inset"
+    | Outset => "outset"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type outlineWidthOptions =
+    | Medium
+    | Thin
+    | Thick
+    | Width(Length.options)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let outlineWidth = opt => (
+    "outline-width",
+    switch (opt) {
+    | Medium => "medium"
+    | Thin => "thin"
+    | Thick => "thick"
+    | Width(length) => Length.getLength(length)
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  let outline =
+      (
+        ~style: outlineStyleOptions,
+        ~width: option(outlineWidthOptions)=?,
+        ~color: option(outlineColorOptions)=?,
+        (),
+      ) => {
+    let (_, style) = outlineStyle(style);
+    let (_, width) = width->Belt.Option.getWithDefault(Unsafe_set(""))->outlineWidth;
+    let (_, color) = color->Belt.Option.getWithDefault(Unsafe_set(""))->outlineColor;
+
+    {j|$style $width $color|j} |> String.trim;
+  };
+};
+
+let outline = Outline.outline;
+type outlineColorOptions = Outline.outlineColorOptions;
+let outlineColor = Outline.outlineColor;
+type outlineOffsetOptions = Outline.outlineOffsetOptions;
+let outlineOffset = Outline.outlineOffset;
+type outlineStyleOptions = Outline.outlineStyleOptions;
+let outlineStyle = Outline.outlineStyle;
+type outlineWidthOptions = Outline.outlineWidthOptions;
+let outlineWidth = Outline.outlineWidth;
+
+module Overflow = {
+  type options =
+    | Visible
+    | Hidden
+    | Scroll
+    | Auto
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let getOverflow = opt =>
+    switch (opt) {
+    | Visible => "visible"
+    | Hidden => "hidden"
+    | Scroll => "scroll"
+    | Auto => auto
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    };
+
+  let overflow = opt => ("overflow", getOverflow(opt));
+  let overflowX = opt => ("overflow-x", getOverflow(opt));
+  let overflowY = opt => ("overflow-y", getOverflow(opt));
+};
+
+type overflowOptions = Overflow.options;
+let overflow = Overflow.overflow;
+let overflowX = Overflow.overflowX;
+let overflowY = Overflow.overflowY;
+
+// P's
+module Padding = {
+  type options =
+    | Padding(Length.options)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let getPadding = opt =>
+    switch (opt) {
+    | Padding(length) => Length.getLength(length)
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    };
+
+  let paddingBottom = opt => ("padding-bottom", getPadding(opt));
+  let paddingLeft = opt => ("padding-left", getPadding(opt));
+  let padddingRight = opt => ("padding-right", getPadding(opt));
+  let paddingTop = opt => ("padding-top", getPadding(opt));
+
+  let padding = pads =>
+    pads |> List.map(length => Length.getLength(length)) |> Array.of_list |> Js.Array.joinWith(" ");
+};
+
+type paddingOptions = Padding.options;
+let padding = Padding.padding;
+let paddingBottom = Padding.paddingBottom;
+let paddingLeft = Padding.paddingLeft;
+let paddingRight = Padding.padddingRight;
+let paddingTop = Padding.paddingTop;
+
+module Page = {
+  type pageBreakBeforeAfterOptions =
+    | Auto
+    | Always
+    | Avoid
+    | Left
+    | Right
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let getPageBreakBeforeAfter = opt =>
+    switch (opt) {
+    | Auto => auto
+    | Always => "always"
+    | Avoid => "avoid"
+    | Left => "left"
+    | Right => "right"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    };
+
+  let pageBreakAfter = opt => ("page-break-after", getPageBreakBeforeAfter(opt));
+  let pageBreakBefore = opt => ("page-break-before", getPageBreakBeforeAfter(opt));
+
+  type pageBreakInsideOptions =
+    | Auto
+    | Avoid
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let pageBreakInside = opt => (
+    "page-break-inside",
+    switch (opt) {
+    | Auto => auto
+    | Avoid => "avoid"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type pageBreakBeforeAfterOptions = Page.pageBreakBeforeAfterOptions;
+let pageBreakAfter = Page.pageBreakAfter;
+let pageBreakBefore = Page.pageBreakBefore;
+type pageBreakInsideOptions = Page.pageBreakInsideOptions;
+let pageBreakInside = Page.pageBreakInside;
+
+module Perspective = {
+  type perspectiveOptions =
+    | Perspective(Length.options)
+    | None
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let perspective = opt => (
+    "perspective",
+    switch (opt) {
+    | Perspective(length) => Length.getLength(length)
+    | None => none
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type perspectiveOriginOptions =
+    | Origin(Length.options, Length.options)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let perspectiveOrigin = opt => (
+    "perspective-origin",
+    switch (opt) {
+    | Origin(xAxis, yAxis) =>
+      let xAxis = Length.getLength(xAxis);
+      let yAxis = Length.getLength(yAxis);
+      {j|$xAxis $yAxis|j};
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type perspectiveOptions = Perspective.perspectiveOptions;
+let perspective = Perspective.perspective;
+type perspectiveOriginOptions = Perspective.perspectiveOriginOptions;
+let perspectiveOrigin = Perspective.perspectiveOrigin;
+
+module PointerEvents = {
+  type options =
+    | None
+    | Auto
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let pointerEvents = opt => (
+    "pointer-events",
+    switch (opt) {
+    | None => none
+    | Auto => auto
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type pointerEventsOptions = PointerEvents.options;
+let pointerEvents = PointerEvents.pointerEvents;
+
+module Position = {
+  type options =
+    | Static
+    | Absolute
+    | Fixed
+    | Relative
+    | Sticky
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let position = opt => (
+    "position",
+    switch (opt) {
+    | Static => "static"
+    | Absolute => "absolute"
+    | Fixed => "fixed"
+    | Relative => "relative"
+    | Sticky => "sticky"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type postionOptions = Position.options;
+let position = Position.position;
+
+// Q's
+module Quotes = {
+  type options =
+    | None
+    | Quotes(list(string))
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let quotes = opt => (
+    "quotes",
+    switch (opt) {
+    | None => none
+    | Quotes(quotes) => quotes |> Array.of_list |> Js.Array.joinWith(" ")
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type quotesOptions = Quotes.options;
+let quotes = Quotes.quotes;
+
+// R's
+module Resize = {
+  type options =
+    | None
+    | Both
+    | Horizontal
+    | Vertical
+    | Intiial
+    | Inherit
+    | Unsafe_set(string);
+  let resize = opt => (
+    "resize",
+    switch (opt) {
+    | None => none
+    | Both => "both"
+    | Horizontal => "horizontal"
+    | Vertical => "vertical"
+    | Intiial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type resizeOptions = Resize.options;
+let resize = Resize.resize;
+
+module Right = {
+  type options =
+    | Auto
+    | Right(Length.options)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let right = opt => (
+    "right",
+    switch (opt) {
+    | Auto => auto
+    | Right(length) => Length.getLength(length)
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type rightOptions = Right.options;
+let right = Right.right;
+
+// S's
+module ScrollBehavior = {
+  type options =
+    | Auto
+    | Smooth
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let scrollBehavior = opt => (
+    "scroll-behavior",
+    switch (opt) {
+    | Auto => auto
+    | Smooth => "smooth"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type scrollBehaviorOptions = ScrollBehavior.options;
+let scrollBehavior = ScrollBehavior.scrollBehavior;
+
+// T's
+module TabSize = {
+  type options =
+    | Number(int)
+    | Length(Length.options)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let tabSize = opt => (
+    "tab-size",
+    switch (opt) {
+    | Number(size) => toStr(size)
+    | Length(length) => Length.getLength(length)
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type tabSizeOptions = TabSize.options;
+let tabSize = TabSize.tabSize;
+
+module TableLayout = {
+  type options =
+    | Auto
+    | Fixed
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let tableLayout = opt => (
+    "table-layout",
+    switch (opt) {
+    | Auto => auto
+    | Fixed => "fixed"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type tabelLayoutOptions = TableLayout.options;
+let tableLayout = TableLayout.tableLayout;
+
+module Text = {
+  type textAlignOptions =
+    | Left
+    | Right
+    | Center
+    | Justify
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let textAlign = opt => (
+    "text-align",
+    switch (opt) {
+    | Left => "left"
+    | Right => "right"
+    | Center => "center"
+    | Justify => "justify"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  
+};
+
+let textAlign = {};
+let textAlignLast = {};
+let textCombineUpright = {};
+let textDecoration = {};
+let textDecorationColor = {};
+let textDecorationLine = {};
+let textDecorationStyle = {};
+let textIndent = {};
+let textJustify = {};
+let textOrientation = {};
+let textOverflow = {};
+let textShadow = {};
+let textTransform = {};
+let top = {};
+let transform = {};
+let transformOrigin = {};
+let transformStyle = {};
+let transition = {};
+let transitionDelay = {};
+let transitionDuration = {};
+let transitionProperty = {};
+let transitionTimingFunction = {};
