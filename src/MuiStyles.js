@@ -12,6 +12,7 @@ import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as CamlinternalOO from "bs-platform/lib/es6/camlinternalOO.js";
 import * as Caml_exceptions from "bs-platform/lib/es6/caml_exceptions.js";
 import * as Styles from "@material-ui/styles";
+import * as Caml_builtin_exceptions from "bs-platform/lib/es6/caml_builtin_exceptions.js";
 
 function clsx(classNames) {
   return List.fold_left((function (classes, cls) {
@@ -4608,141 +4609,447 @@ function textAlign(opt) {
         ];
 }
 
+function textAlignLast(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Auto */0 :
+          tmp = auto;
+          break;
+      case /* Left */1 :
+          tmp = "left";
+          break;
+      case /* Right */2 :
+          tmp = "right";
+          break;
+      case /* Center */3 :
+          tmp = "center";
+          break;
+      case /* Justify */4 :
+          tmp = "justify";
+          break;
+      case /* Start */5 :
+          tmp = "start";
+          break;
+      case /* End */6 :
+          tmp = "end";
+          break;
+      case /* Initial */7 :
+          tmp = initial;
+          break;
+      case /* Inherit */8 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "text-align-last",
+          tmp
+        ];
+}
+
+function textDecorationColor(opt) {
+  return /* tuple */[
+          "text-decoration-color",
+          typeof opt === "number" ? (
+              opt !== 0 ? inherit_ : initial
+            ) : opt[0]
+        ];
+}
+
+function textDecorationLine(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* None */0 :
+          tmp = none;
+          break;
+      case /* Underline */1 :
+          tmp = "underline";
+          break;
+      case /* Overline */2 :
+          tmp = "overline";
+          break;
+      case /* LineThrough */3 :
+          tmp = "line-through";
+          break;
+      case /* Initial */4 :
+          tmp = initial;
+          break;
+      case /* Inherit */5 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "text-decoration-line",
+          tmp
+        ];
+}
+
+function textDecorationStyle(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Solid */0 :
+          tmp = "solid";
+          break;
+      case /* Double */1 :
+          tmp = "double";
+          break;
+      case /* Dotted */2 :
+          tmp = "dotted";
+          break;
+      case /* Dashed */3 :
+          tmp = "dashed";
+          break;
+      case /* Wavy */4 :
+          tmp = "wavy";
+          break;
+      case /* Initial */5 :
+          tmp = initial;
+          break;
+      case /* Inherit */6 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "text-decoration-style",
+          tmp
+        ];
+}
+
+function textDecoration(color, line, style, param) {
+  var match = textDecorationColor(Belt_Option.getWithDefault(color, /* Unsafe_set */Block.__(1, [""])));
+  var match$1 = textDecorationLine(Belt_Option.getWithDefault(line, /* Unsafe_set */[""]));
+  var match$2 = textDecorationStyle(Belt_Option.getWithDefault(style, /* Unsafe_set */[""]));
+  return $$String.trim("" + (String(match[1]) + (" " + (String(match$1[1]) + (" " + (String(match$2[1]) + ""))))));
+}
+
+function textIndent(opt) {
+  var tmp;
+  tmp = typeof opt === "number" ? (
+      opt === /* Initial */0 ? initial : inherit_
+    ) : (
+      opt.tag ? opt[0] : getLength(opt[0])
+    );
+  return /* tuple */[
+          "text-indent",
+          tmp
+        ];
+}
+
+function textJustify(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Auto */0 :
+          tmp = auto;
+          break;
+      case /* InterWord */1 :
+          tmp = "inter-word";
+          break;
+      case /* InterCharacter */2 :
+          tmp = "inter-character";
+          break;
+      case /* None */3 :
+          tmp = none;
+          break;
+      case /* Initial */4 :
+          tmp = initial;
+          break;
+      case /* Inherit */5 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "text-justify",
+          tmp
+        ];
+}
+
+function textOverflow(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Clip */0 :
+          tmp = "clip";
+          break;
+      case /* Ellipsis */1 :
+          tmp = "ellipsis";
+          break;
+      case /* Initial */2 :
+          tmp = initial;
+          break;
+      case /* Inherit */3 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "text-overflow",
+          tmp
+        ];
+}
+
+function textShadow(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* None */0 :
+          tmp = none;
+          break;
+      case /* Initial */1 :
+          tmp = initial;
+          break;
+      case /* Inherit */2 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "text-shadow",
+          tmp
+        ];
+}
+
+function textTransform(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* None */0 :
+          tmp = none;
+          break;
+      case /* Capitalize */1 :
+          tmp = "capitalize";
+          break;
+      case /* Uppercase */2 :
+          tmp = "uppercase";
+          break;
+      case /* Lowercase */3 :
+          tmp = "lowercase";
+          break;
+      case /* Initial */4 :
+          tmp = initial;
+          break;
+      case /* Inherit */5 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "text-transform",
+          tmp
+        ];
+}
+
 var $$Text = {
-  textAlign: textAlign
+  textAlign: textAlign,
+  textAlignLast: textAlignLast,
+  textDecorationColor: textDecorationColor,
+  textDecorationLine: textDecorationLine,
+  textDecorationStyle: textDecorationStyle,
+  textDecoration: textDecoration,
+  textIndent: textIndent,
+  textJustify: textJustify,
+  textOverflow: textOverflow,
+  textShadow: textShadow,
+  textTransform: textTransform
+};
+
+function top(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Auto */0 :
+          tmp = auto;
+          break;
+      case /* Initial */1 :
+          tmp = initial;
+          break;
+      case /* Inherit */2 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt.tag ? opt[0] : getLength(opt[0]);
+  }
+  return /* tuple */[
+          "top",
+          tmp
+        ];
+}
+
+var Top = {
+  top: top
+};
+
+function transform(optList) {
+  var value = List.map((function (opt) {
+          if (typeof opt === "number") {
+            if (opt === /* None */0) {
+              return none;
+            }
+            throw [
+                  Caml_builtin_exceptions.match_failure,
+                  /* tuple */[
+                    "MuiStyles.re",
+                    3603,
+                    11
+                  ]
+                ];
+          } else {
+            switch (opt.tag | 0) {
+              case /* Matrix */0 :
+                  return "matrix(" + (String(opt[0]) + (", " + (String(opt[1]) + (", " + (String(opt[2]) + (", " + (String(opt[3]) + (", " + (String(opt[4]) + (", " + (String(opt[5]) + ")")))))))))));
+              case /* Matrix3d */1 :
+                  return "matrix(" + (String(opt[0]) + (", " + (String(opt[1]) + (", " + (String(opt[2]) + (", " + (String(opt[3]) + (", " + (String(opt[4]) + (", " + (String(opt[5]) + (", " + (String(opt[6]) + (", " + (String(opt[7]) + (", " + (String(opt[8]) + (", " + (String(opt[9]) + (", " + (String(opt[10]) + (", " + (String(opt[11]) + (", " + (String(opt[12]) + (", " + (String(opt[13]) + (", " + (String(opt[14]) + (", " + (String(opt[15]) + ")")))))))))))))))))))))))))))))));
+              default:
+                throw [
+                      Caml_builtin_exceptions.match_failure,
+                      /* tuple */[
+                        "MuiStyles.re",
+                        3603,
+                        11
+                      ]
+                    ];
+            }
+          }
+        }), optList);
+  return /* tuple */[
+          "transform",
+          value
+        ];
+}
+
+function transformOrigin(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    tmp = opt === /* Initial */0 ? initial : inherit_;
+  } else {
+    switch (opt.tag | 0) {
+      case /* TwoD */0 :
+          tmp = "" + (String(opt[0]) + (" " + (String(opt[1]) + "")));
+          break;
+      case /* ThreeD */1 :
+          tmp = "" + (String(opt[0]) + (" " + (String(opt[1]) + (" " + (String(opt[2]) + "")))));
+          break;
+      case /* Unsafe_set */2 :
+          tmp = opt[0];
+          break;
+      
+    }
+  }
+  return /* tuple */[
+          "transform-origin",
+          tmp
+        ];
+}
+
+function transformStyle(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Flat */0 :
+          tmp = "flat";
+          break;
+      case /* Preserve3D */1 :
+          tmp = "perserve-3d";
+          break;
+      case /* Initial */2 :
+          tmp = initial;
+          break;
+      case /* Inherit */3 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "transform-style",
+          tmp
+        ];
+}
+
+var Transform = {
+  transform: transform,
+  transformOrigin: transformOrigin,
+  transformStyle: transformStyle
 };
 
 var $$class$19 = CamlinternalOO.create_table(0);
 
 CamlinternalOO.init_class($$class$19);
 
-var textAlign$1 = CamlinternalOO.create_object_opt(undefined, $$class$19);
+var transform$1 = CamlinternalOO.create_object_opt(undefined, $$class$19);
 
 var $$class$20 = CamlinternalOO.create_table(0);
 
 CamlinternalOO.init_class($$class$20);
 
-var textAlignLast = CamlinternalOO.create_object_opt(undefined, $$class$20);
+var transformOrigin$1 = CamlinternalOO.create_object_opt(undefined, $$class$20);
 
 var $$class$21 = CamlinternalOO.create_table(0);
 
 CamlinternalOO.init_class($$class$21);
 
-var textCombineUpright = CamlinternalOO.create_object_opt(undefined, $$class$21);
+var transformStyle$1 = CamlinternalOO.create_object_opt(undefined, $$class$21);
 
 var $$class$22 = CamlinternalOO.create_table(0);
 
 CamlinternalOO.init_class($$class$22);
 
-var textDecoration = CamlinternalOO.create_object_opt(undefined, $$class$22);
+var transition = CamlinternalOO.create_object_opt(undefined, $$class$22);
 
 var $$class$23 = CamlinternalOO.create_table(0);
 
 CamlinternalOO.init_class($$class$23);
 
-var textDecorationColor = CamlinternalOO.create_object_opt(undefined, $$class$23);
+var transitionDelay = CamlinternalOO.create_object_opt(undefined, $$class$23);
 
 var $$class$24 = CamlinternalOO.create_table(0);
 
 CamlinternalOO.init_class($$class$24);
 
-var textDecorationLine = CamlinternalOO.create_object_opt(undefined, $$class$24);
+var transitionDuration = CamlinternalOO.create_object_opt(undefined, $$class$24);
 
 var $$class$25 = CamlinternalOO.create_table(0);
 
 CamlinternalOO.init_class($$class$25);
 
-var textDecorationStyle = CamlinternalOO.create_object_opt(undefined, $$class$25);
+var transitionProperty = CamlinternalOO.create_object_opt(undefined, $$class$25);
 
 var $$class$26 = CamlinternalOO.create_table(0);
 
 CamlinternalOO.init_class($$class$26);
 
-var textIndent = CamlinternalOO.create_object_opt(undefined, $$class$26);
-
-var $$class$27 = CamlinternalOO.create_table(0);
-
-CamlinternalOO.init_class($$class$27);
-
-var textJustify = CamlinternalOO.create_object_opt(undefined, $$class$27);
-
-var $$class$28 = CamlinternalOO.create_table(0);
-
-CamlinternalOO.init_class($$class$28);
-
-var textOrientation = CamlinternalOO.create_object_opt(undefined, $$class$28);
-
-var $$class$29 = CamlinternalOO.create_table(0);
-
-CamlinternalOO.init_class($$class$29);
-
-var textOverflow = CamlinternalOO.create_object_opt(undefined, $$class$29);
-
-var $$class$30 = CamlinternalOO.create_table(0);
-
-CamlinternalOO.init_class($$class$30);
-
-var textShadow = CamlinternalOO.create_object_opt(undefined, $$class$30);
-
-var $$class$31 = CamlinternalOO.create_table(0);
-
-CamlinternalOO.init_class($$class$31);
-
-var textTransform = CamlinternalOO.create_object_opt(undefined, $$class$31);
-
-var $$class$32 = CamlinternalOO.create_table(0);
-
-CamlinternalOO.init_class($$class$32);
-
-var top = CamlinternalOO.create_object_opt(undefined, $$class$32);
-
-var $$class$33 = CamlinternalOO.create_table(0);
-
-CamlinternalOO.init_class($$class$33);
-
-var transform = CamlinternalOO.create_object_opt(undefined, $$class$33);
-
-var $$class$34 = CamlinternalOO.create_table(0);
-
-CamlinternalOO.init_class($$class$34);
-
-var transformOrigin = CamlinternalOO.create_object_opt(undefined, $$class$34);
-
-var $$class$35 = CamlinternalOO.create_table(0);
-
-CamlinternalOO.init_class($$class$35);
-
-var transformStyle = CamlinternalOO.create_object_opt(undefined, $$class$35);
-
-var $$class$36 = CamlinternalOO.create_table(0);
-
-CamlinternalOO.init_class($$class$36);
-
-var transition = CamlinternalOO.create_object_opt(undefined, $$class$36);
-
-var $$class$37 = CamlinternalOO.create_table(0);
-
-CamlinternalOO.init_class($$class$37);
-
-var transitionDelay = CamlinternalOO.create_object_opt(undefined, $$class$37);
-
-var $$class$38 = CamlinternalOO.create_table(0);
-
-CamlinternalOO.init_class($$class$38);
-
-var transitionDuration = CamlinternalOO.create_object_opt(undefined, $$class$38);
-
-var $$class$39 = CamlinternalOO.create_table(0);
-
-CamlinternalOO.init_class($$class$39);
-
-var transitionProperty = CamlinternalOO.create_object_opt(undefined, $$class$39);
-
-var $$class$40 = CamlinternalOO.create_table(0);
-
-CamlinternalOO.init_class($$class$40);
-
-var transitionTimingFunction = CamlinternalOO.create_object_opt(undefined, $$class$40);
+var transitionTimingFunction = CamlinternalOO.create_object_opt(undefined, $$class$26);
 
 var borderBottomStyle = borderBottomeStyle;
 
@@ -5007,23 +5314,23 @@ export {
   TableLayout ,
   tableLayout ,
   $$Text ,
-  textAlign$1 as textAlign,
+  textAlign ,
   textAlignLast ,
-  textCombineUpright ,
   textDecoration ,
   textDecorationColor ,
   textDecorationLine ,
   textDecorationStyle ,
   textIndent ,
   textJustify ,
-  textOrientation ,
   textOverflow ,
   textShadow ,
   textTransform ,
+  Top ,
   top ,
-  transform ,
-  transformOrigin ,
-  transformStyle ,
+  Transform ,
+  transform$1 as transform,
+  transformOrigin$1 as transformOrigin,
+  transformStyle$1 as transformStyle,
   transition ,
   transitionDelay ,
   transitionDuration ,

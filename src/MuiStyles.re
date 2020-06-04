@@ -3331,23 +3331,325 @@ module Text = {
     },
   );
 
-  
+  type textAlignLastOptions =
+    | Auto
+    | Left
+    | Right
+    | Center
+    | Justify
+    | Start
+    | End
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let textAlignLast = opt => (
+    "text-align-last",
+    switch (opt) {
+    | Auto => auto
+    | Left => "left"
+    | Right => "right"
+    | Center => "center"
+    | Justify => "justify"
+    | Start => "start"
+    | End => "end"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type textDecorationColorOptions =
+    | Color(string)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let textDecorationColor = opt => (
+    "text-decoration-color",
+    switch (opt) {
+    | Color(color) => color
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type textDecorationLineOptions =
+    | None
+    | Underline
+    | Overline
+    | LineThrough
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let textDecorationLine = opt => (
+    "text-decoration-line",
+    switch (opt) {
+    | None => none
+    | Underline => "underline"
+    | Overline => "overline"
+    | LineThrough => "line-through"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type textDecorationStyleOptions =
+    | Solid
+    | Double
+    | Dotted
+    | Dashed
+    | Wavy
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let textDecorationStyle = opt => (
+    "text-decoration-style",
+    switch (opt) {
+    | Solid => "solid"
+    | Double => "double"
+    | Dotted => "dotted"
+    | Dashed => "dashed"
+    | Wavy => "wavy"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  let textDecoration =
+      (
+        ~color: option(textDecorationColorOptions)=?,
+        ~line: option(textDecorationLineOptions)=?,
+        ~style: option(textDecorationStyleOptions)=?,
+        (),
+      ) => {
+    let (_, color) = color->Belt.Option.getWithDefault(Unsafe_set(""))->textDecorationColor;
+    let (_, line) = line->Belt.Option.getWithDefault(Unsafe_set(""))->textDecorationLine;
+    let (_, style) = style->Belt.Option.getWithDefault(Unsafe_set(""))->textDecorationStyle;
+
+    {j|$color $line $style|j} |> String.trim;
+  };
+
+  type textIndentOptions =
+    | Indent(Length.options)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let textIndent = opt => (
+    "text-indent",
+    switch (opt) {
+    | Indent(length) => Length.getLength(length)
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type textJustifyOptions =
+    | Auto
+    | InterWord
+    | InterCharacter
+    | None
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let textJustify = opt => (
+    "text-justify",
+    switch (opt) {
+    | Auto => auto
+    | InterWord => "inter-word"
+    | InterCharacter => "inter-character"
+    | None => none
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type textOverflowOptions =
+    | Clip
+    | Ellipsis
+    | String(string)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let textOverflow = opt => (
+    "text-overflow",
+    switch (opt) {
+    | Clip => "clip"
+    | Ellipsis => "ellipsis"
+    | String(str) => str
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type textShadowOptions =
+    | Shadow(string)
+    | None
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let textShadow = opt => (
+    "text-shadow",
+    switch (opt) {
+    | Shadow(shadow) => shadow
+    | None => none
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type textTransformOptions =
+    | None
+    | Capitalize
+    | Uppercase
+    | Lowercase
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let textTransform = opt => (
+    "text-transform",
+    switch (opt) {
+    | None => none
+    | Capitalize => "capitalize"
+    | Uppercase => "uppercase"
+    | Lowercase => "lowercase"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
 };
 
-let textAlign = {};
-let textAlignLast = {};
-let textCombineUpright = {};
-let textDecoration = {};
-let textDecorationColor = {};
-let textDecorationLine = {};
-let textDecorationStyle = {};
-let textIndent = {};
-let textJustify = {};
-let textOrientation = {};
-let textOverflow = {};
-let textShadow = {};
-let textTransform = {};
-let top = {};
+type textAlignOptions = Text.textAlignOptions;
+let textAlign = Text.textAlign;
+type textAlignLastOptions = Text.textAlignLastOptions;
+let textAlignLast = Text.textAlignLast;
+let textDecoration = Text.textDecoration;
+type textDecorationColorOptions = Text.textDecorationColorOptions;
+let textDecorationColor = Text.textDecorationColor;
+type textDecorationLineOptions = Text.textDecorationLineOptions;
+let textDecorationLine = Text.textDecorationLine;
+type textDecorationStyleOptions = Text.textDecorationStyleOptions;
+let textDecorationStyle = Text.textDecorationStyle;
+type textIndentOptions = Text.textIndentOptions;
+let textIndent = Text.textIndent;
+type textJustifyOptions = Text.textJustifyOptions;
+let textJustify = Text.textJustify;
+type textOverflowOptions = Text.textOverflowOptions;
+let textOverflow = Text.textOverflow;
+type textShadowOptions = Text.textShadowOptions;
+let textShadow = Text.textShadow;
+type textTransformOptions = Text.textTransformOptions;
+let textTransform = Text.textTransform;
+
+module Top = {
+  type options =
+    | Auto
+    | Top(Length.options)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let top = opt => (
+    "top",
+    switch (opt) {
+    | Auto => auto
+    | Top(top) => Length.getLength(top)
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type topOptions = Top.options;
+let top = Top.top;
+
+module Transform = {
+  type transformOptions =
+    | None
+    | Matrix(int, int, int, int, int, int)
+    | Matrix3d(int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int)
+    | Translate(Length.options, Length.options)
+    | Translate3d(Length.options, Length.options, Length.options)
+    | TranslateX(Length.options)
+    | TranslateY(Length.options)
+    | TranslateZ(Length.options)
+    | Scale(float, float)
+    | Scale3d(float, float, float)
+    | ScaleX(float)
+    | ScaleY(float)
+    | ScaleZ(float)
+    | Rotate(string)
+    | Rotate3d(float, float, float, string)
+    | RotateX(string)
+    | RotateY(string)
+    | RotateZ(string)
+    | Skew(string, string)
+    | SkewX(string)
+    | SkewY(string)
+    | Perspective(string)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let transform = optList => {
+    let value =
+      optList
+      |> List.map(opt =>
+           switch (opt) {
+           | None => none
+           | Matrix(n1, n2, n3, n4, n5, n6) => {j|matrix($n1, $n2, $n3, $n4, $n5, $n6)|j}
+           | Matrix3d(n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16) => {j|matrix($n1, $n2, $n3, $n4, $n5, $n6, $n7, $n8, $n9, $n10, $n11, $n12, $n13, $n14, $n15, $n16)|j}
+           }
+         );
+
+    ("transform", value);
+  };
+
+  type xyAxis =
+    | Left
+    | Center
+    | Right
+    | Length(Length.options)
+  and transformOriginOptions =
+    | TwoD(xyAxis, xyAxis)
+    | ThreeD(xyAxis, xyAxis, Length.options)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let transformOrigin = opt => (
+    "transform-origin",
+    switch (opt) {
+    | TwoD(xAxis, yAxis) => {j|$xAxis $yAxis|j}
+    | ThreeD(xAxis, yAxis, zAxis) => {j|$xAxis $yAxis $zAxis|j}
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type transformStyleOptions =
+    | Flat
+    | Preserve3D
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let transformStyle = opt => (
+    "transform-style",
+    switch (opt) {
+    | Flat => "flat"
+    | Preserve3D => "perserve-3d"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
 let transform = {};
 let transformOrigin = {};
 let transformStyle = {};
