@@ -6,13 +6,11 @@ import * as Block from "bs-platform/lib/es6/block.js";
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as $$String from "bs-platform/lib/es6/string.js";
 import * as Js_dict from "bs-platform/lib/es6/js_dict.js";
-import * as Pervasives from "bs-platform/lib/es6/pervasives.js";
 import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as CamlinternalOO from "bs-platform/lib/es6/camlinternalOO.js";
 import * as Caml_exceptions from "bs-platform/lib/es6/caml_exceptions.js";
 import * as Styles from "@material-ui/styles";
-import * as Caml_builtin_exceptions from "bs-platform/lib/es6/caml_builtin_exceptions.js";
 
 function clsx(classNames) {
   return List.fold_left((function (classes, cls) {
@@ -2841,7 +2839,7 @@ function fontSizeAdjust(opt) {
       
     }
   } else {
-    tmp = opt.tag ? opt[0] : Pervasives.string_of_float(opt[0]);
+    tmp = opt.tag ? opt[0] : opt[0].toString();
   }
   return /* tuple */[
           "font-size-adjust",
@@ -3943,7 +3941,7 @@ var ObjectCss = {
 function opacity(o) {
   return /* tuple */[
           "opacity",
-          Pervasives.string_of_float(o)
+          o.toString()
         ];
 }
 
@@ -4911,32 +4909,81 @@ var Top = {
 function transform(optList) {
   var value = List.map((function (opt) {
           if (typeof opt === "number") {
-            if (opt === /* None */0) {
-              return none;
+            switch (opt) {
+              case /* None */0 :
+                  return none;
+              case /* Initial */1 :
+                  return initial;
+              case /* Inherit */2 :
+                  return inherit_;
+              
             }
-            throw [
-                  Caml_builtin_exceptions.match_failure,
-                  /* tuple */[
-                    "MuiStyles.re",
-                    3603,
-                    11
-                  ]
-                ];
           } else {
             switch (opt.tag | 0) {
               case /* Matrix */0 :
                   return "matrix(" + (String(opt[0]) + (", " + (String(opt[1]) + (", " + (String(opt[2]) + (", " + (String(opt[3]) + (", " + (String(opt[4]) + (", " + (String(opt[5]) + ")")))))))))));
               case /* Matrix3d */1 :
                   return "matrix(" + (String(opt[0]) + (", " + (String(opt[1]) + (", " + (String(opt[2]) + (", " + (String(opt[3]) + (", " + (String(opt[4]) + (", " + (String(opt[5]) + (", " + (String(opt[6]) + (", " + (String(opt[7]) + (", " + (String(opt[8]) + (", " + (String(opt[9]) + (", " + (String(opt[10]) + (", " + (String(opt[11]) + (", " + (String(opt[12]) + (", " + (String(opt[13]) + (", " + (String(opt[14]) + (", " + (String(opt[15]) + ")")))))))))))))))))))))))))))))));
-              default:
-                throw [
-                      Caml_builtin_exceptions.match_failure,
-                      /* tuple */[
-                        "MuiStyles.re",
-                        3603,
-                        11
-                      ]
-                    ];
+              case /* Translate */2 :
+                  var x = getLength(opt[0]);
+                  var y = getLength(opt[1]);
+                  return "translate(" + (String(x) + (", " + (String(y) + ")")));
+              case /* Translate3d */3 :
+                  var x$1 = getLength(opt[0]);
+                  var y$1 = getLength(opt[1]);
+                  var z = getLength(opt[2]);
+                  return "translate3d(" + (String(x$1) + (", " + (String(y$1) + (", " + (String(z) + ")")))));
+              case /* TranslateX */4 :
+                  var x$2 = getLength(opt[0]);
+                  return "translateX(" + (String(x$2) + ")");
+              case /* TranslateY */5 :
+                  var y$2 = getLength(opt[0]);
+                  return "translateY(" + (String(y$2) + ")");
+              case /* TranslateZ */6 :
+                  var z$1 = getLength(opt[0]);
+                  return "translateZ(" + (String(z$1) + ")");
+              case /* Scale */7 :
+                  var x$3 = opt[0].toString();
+                  var y$3 = opt[1].toString();
+                  return "scale(" + (String(x$3) + (", " + (String(y$3) + ")")));
+              case /* Scale3d */8 :
+                  var x$4 = opt[0].toString();
+                  var y$4 = opt[1].toString();
+                  var z$2 = opt[2].toString();
+                  return "scale3d(" + (String(x$4) + (", " + (String(y$4) + (", " + (String(z$2) + ")")))));
+              case /* ScaleX */9 :
+                  var x$5 = opt[0].toString();
+                  return "scaleX(" + (String(x$5) + ")");
+              case /* ScaleY */10 :
+                  var y$5 = opt[0].toString();
+                  return "scaleY(" + (String(y$5) + ")");
+              case /* ScaleZ */11 :
+                  var z$3 = opt[0].toString();
+                  return "scaleZ(" + (String(z$3) + ")");
+              case /* Rotate */12 :
+                  return "rotate(" + (String(opt[0]) + ")");
+              case /* Rotate3d */13 :
+                  var x$6 = opt[0].toString();
+                  var y$6 = opt[1].toString();
+                  var z$4 = opt[2].toString();
+                  return "rotate3d(" + (String(x$6) + (", " + (String(y$6) + (", " + (String(z$4) + (", " + (String(opt[3]) + ")")))))));
+              case /* RotateX */14 :
+                  return "rotateX(" + (String(opt[0]) + ")");
+              case /* RotateY */15 :
+                  return "rotateY(" + (String(opt[0]) + ")");
+              case /* RotateZ */16 :
+                  return "rotateZ(" + (String(opt[0]) + ")");
+              case /* Skew */17 :
+                  return "skew(" + (String(opt[0]) + (", " + (String(opt[1]) + ")")));
+              case /* SkewX */18 :
+                  return "skewX(" + (String(opt[0]) + ")");
+              case /* SkewY */19 :
+                  return "skewY(" + (String(opt[0]) + ")");
+              case /* Perspective */20 :
+                  return "perspective(" + (String(opt[0]) + ")");
+              case /* Unsafe_set */21 :
+                  return opt[0];
+              
             }
           }
         }), optList);
@@ -5003,53 +5050,523 @@ var Transform = {
   transformStyle: transformStyle
 };
 
-var $$class$19 = CamlinternalOO.create_table(0);
+function getTransitionDelayDuration(opt) {
+  if (typeof opt === "number") {
+    if (opt === /* Initial */0) {
+      return initial;
+    } else {
+      return inherit_;
+    }
+  }
+  switch (opt.tag | 0) {
+    case /* Sec */0 :
+        var sec = String(opt[0]);
+        return "" + (String(sec) + "s");
+    case /* MS */1 :
+        var ms = String(opt[0]);
+        return "" + (String(ms) + "ms");
+    case /* Time */2 :
+    case /* Unsafe_set */3 :
+        return opt[0];
+    
+  }
+}
 
-CamlinternalOO.init_class($$class$19);
+function transitionDelay(opt) {
+  return /* tuple */[
+          "transition-delay",
+          getTransitionDelayDuration(opt)
+        ];
+}
 
-var transform$1 = CamlinternalOO.create_object_opt(undefined, $$class$19);
+function transitionDuration(opt) {
+  return /* tuple */[
+          "transition-duration",
+          getTransitionDelayDuration(opt)
+        ];
+}
 
-var $$class$20 = CamlinternalOO.create_table(0);
+function transitionProperty(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* None */0 :
+          tmp = none;
+          break;
+      case /* All */1 :
+          tmp = "all";
+          break;
+      case /* Initial */2 :
+          tmp = initial;
+          break;
+      case /* Inherit */3 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    switch (opt.tag | 0) {
+      case /* Properties */1 :
+          tmp = $$Array.of_list(opt[0]).join(", ");
+          break;
+      case /* Property */0 :
+      case /* Unsafe_set */2 :
+          tmp = opt[0];
+          break;
+      
+    }
+  }
+  return /* tuple */[
+          "transition-property",
+          tmp
+        ];
+}
 
-CamlinternalOO.init_class($$class$20);
+function transitionTimingFunction(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Ease */0 :
+          tmp = "ease";
+          break;
+      case /* Linear */1 :
+          tmp = "linear";
+          break;
+      case /* EaseIn */2 :
+          tmp = "ease-in";
+          break;
+      case /* EaseOut */3 :
+          tmp = "ease-out";
+          break;
+      case /* EaseInOut */4 :
+          tmp = "ease-in-out";
+          break;
+      case /* StepStart */5 :
+          tmp = "step-start";
+          break;
+      case /* StepEnd */6 :
+          tmp = "step-end";
+          break;
+      case /* Initial */7 :
+          tmp = initial;
+          break;
+      case /* Inherit */8 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    switch (opt.tag | 0) {
+      case /* Steps */0 :
+          var step = opt[1] ? "end" : "start";
+          tmp = "step(" + (String(opt[0]) + (", " + (String(step) + ")")));
+          break;
+      case /* CubicBezier */1 :
+          var x1 = opt[0].toString();
+          var y1 = opt[1].toString();
+          var x2 = opt[2].toString();
+          var y2 = opt[3].toString();
+          tmp = "cubic-bezier(" + (String(x1) + (", " + (String(y1) + (", " + (String(x2) + (", " + (String(y2) + ")")))))));
+          break;
+      case /* Unsafe_set */2 :
+          tmp = opt[0];
+          break;
+      
+    }
+  }
+  return /* tuple */[
+          "transition-timing-function",
+          tmp
+        ];
+}
 
-var transformOrigin$1 = CamlinternalOO.create_object_opt(undefined, $$class$20);
+function transition(property, duration, timing, delay, param) {
+  var match = transitionProperty(Belt_Option.getWithDefault(property, /* Unsafe_set */Block.__(2, [""])));
+  var duration$1 = getTransitionDelayDuration(Belt_Option.getWithDefault(duration, /* Unsafe_set */Block.__(3, [""])));
+  var match$1 = transitionTimingFunction(Belt_Option.getWithDefault(timing, /* Unsafe_set */Block.__(2, [""])));
+  var delay$1 = getTransitionDelayDuration(Belt_Option.getWithDefault(delay, /* Unsafe_set */Block.__(3, [""])));
+  return $$String.trim("" + (String(match[1]) + (" " + (String(duration$1) + (" " + (String(match$1[1]) + (" " + (String(delay$1) + ""))))))));
+}
 
-var $$class$21 = CamlinternalOO.create_table(0);
+var Transition = {
+  getTransitionDelayDuration: getTransitionDelayDuration,
+  transitionDelay: transitionDelay,
+  transitionDuration: transitionDuration,
+  transitionProperty: transitionProperty,
+  transitionTimingFunction: transitionTimingFunction,
+  transition: transition
+};
 
-CamlinternalOO.init_class($$class$21);
+function unicodeBidi(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Normal */0 :
+          tmp = "normal";
+          break;
+      case /* Embed */1 :
+          tmp = "embed";
+          break;
+      case /* BidiOverride */2 :
+          tmp = "bidi-override";
+          break;
+      case /* Isolate */3 :
+          tmp = "isolate";
+          break;
+      case /* IsolateOverride */4 :
+          tmp = "isolate-override";
+          break;
+      case /* PlainText */5 :
+          tmp = "plain-text";
+          break;
+      case /* Initial */6 :
+          tmp = initial;
+          break;
+      case /* Inherit */7 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "unicode-bidi",
+          tmp
+        ];
+}
 
-var transformStyle$1 = CamlinternalOO.create_object_opt(undefined, $$class$21);
+var UnicodeBidi = {
+  unicodeBidi: unicodeBidi
+};
 
-var $$class$22 = CamlinternalOO.create_table(0);
+function userSelect(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Auto */0 :
+          tmp = auto;
+          break;
+      case /* None */1 :
+          tmp = none;
+          break;
+      case /* Text */2 :
+          tmp = "text";
+          break;
+      case /* All */3 :
+          tmp = "all";
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "user-select",
+          tmp
+        ];
+}
 
-CamlinternalOO.init_class($$class$22);
+var UserSelect = {
+  userSelect: userSelect
+};
 
-var transition = CamlinternalOO.create_object_opt(undefined, $$class$22);
+function verticalAlign(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Baseline */0 :
+          tmp = "baseline";
+          break;
+      case /* Sub */1 :
+          tmp = "sub";
+          break;
+      case /* Super */2 :
+          tmp = "super";
+          break;
+      case /* Top */3 :
+          tmp = "top";
+          break;
+      case /* TextTop */4 :
+          tmp = "text-top";
+          break;
+      case /* Middle */5 :
+          tmp = "middle";
+          break;
+      case /* Bottom */6 :
+          tmp = "bottom";
+          break;
+      case /* TextBottom */7 :
+          tmp = "text-bottom";
+          break;
+      case /* Initial */8 :
+          tmp = initial;
+          break;
+      case /* Inherit */9 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt.tag ? opt[0] : getLength(opt[0]);
+  }
+  return /* tuple */[
+          "vertical-align",
+          tmp
+        ];
+}
 
-var $$class$23 = CamlinternalOO.create_table(0);
+var VerticalAlign = {
+  verticalAlign: verticalAlign
+};
 
-CamlinternalOO.init_class($$class$23);
+function visibility(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Visible */0 :
+          tmp = "visible";
+          break;
+      case /* Hidden */1 :
+          tmp = "hidden";
+          break;
+      case /* Collapse */2 :
+          tmp = "collapse";
+          break;
+      case /* Initial */3 :
+          tmp = initial;
+          break;
+      case /* Inherit */4 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "visibility",
+          tmp
+        ];
+}
 
-var transitionDelay = CamlinternalOO.create_object_opt(undefined, $$class$23);
+var Visibility = {
+  visibility: visibility
+};
 
-var $$class$24 = CamlinternalOO.create_table(0);
+function whiteSpace(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Normal */0 :
+          tmp = "normal";
+          break;
+      case /* Nowrap */1 :
+          tmp = "nowrap";
+          break;
+      case /* Pre */2 :
+          tmp = "pre";
+          break;
+      case /* PreLine */3 :
+          tmp = "pre-line";
+          break;
+      case /* PreWrap */4 :
+          tmp = "pre-wrap";
+          break;
+      case /* Initial */5 :
+          tmp = initial;
+          break;
+      case /* Inherit */6 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "white-space",
+          tmp
+        ];
+}
 
-CamlinternalOO.init_class($$class$24);
+var WhiteSpace = {
+  whiteSpace: whiteSpace
+};
 
-var transitionDuration = CamlinternalOO.create_object_opt(undefined, $$class$24);
+function width(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Auto */0 :
+          tmp = auto;
+          break;
+      case /* Initial */1 :
+          tmp = initial;
+          break;
+      case /* Inherit */2 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt.tag ? opt[0] : getLength(opt[0]);
+  }
+  return /* tuple */[
+          "width",
+          tmp
+        ];
+}
 
-var $$class$25 = CamlinternalOO.create_table(0);
+var Width = {
+  width: width
+};
 
-CamlinternalOO.init_class($$class$25);
+function wordBreak(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Normal */0 :
+          tmp = "normal";
+          break;
+      case /* BreakAll */1 :
+          tmp = "break-all";
+          break;
+      case /* KeepAll */2 :
+          tmp = "keep-all";
+          break;
+      case /* BreakWord */3 :
+          tmp = "break-word";
+          break;
+      case /* Initial */4 :
+          tmp = initial;
+          break;
+      case /* Inherit */5 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "word-break",
+          tmp
+        ];
+}
 
-var transitionProperty = CamlinternalOO.create_object_opt(undefined, $$class$25);
+function wordSpacing(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Normal */0 :
+          tmp = "normal";
+          break;
+      case /* Initial */1 :
+          tmp = initial;
+          break;
+      case /* Inherit */2 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt.tag ? opt[0] : getLength(opt[0]);
+  }
+  return /* tuple */[
+          "word-spacing",
+          tmp
+        ];
+}
 
-var $$class$26 = CamlinternalOO.create_table(0);
+function wordWrap(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Normal */0 :
+          tmp = "normal";
+          break;
+      case /* BreakWord */1 :
+          tmp = "break-word";
+          break;
+      case /* Initial */2 :
+          tmp = initial;
+          break;
+      case /* Inherit */3 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "word-wrap",
+          tmp
+        ];
+}
 
-CamlinternalOO.init_class($$class$26);
+var Word = {
+  wordBreak: wordBreak,
+  wordSpacing: wordSpacing,
+  wordWrap: wordWrap
+};
 
-var transitionTimingFunction = CamlinternalOO.create_object_opt(undefined, $$class$26);
+function writingMode(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* HorizontalTb */0 :
+          tmp = "horizontal-tb";
+          break;
+      case /* VerticalRl */1 :
+          tmp = "vertical-rl";
+          break;
+      case /* VerticalLr */2 :
+          tmp = "vertical-lr";
+          break;
+      
+    }
+  } else {
+    tmp = opt[0];
+  }
+  return /* tuple */[
+          "writing-mode",
+          tmp
+        ];
+}
+
+var WritingMode = {
+  writingMode: writingMode
+};
+
+function zIndex(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Auto */0 :
+          tmp = auto;
+          break;
+      case /* Initial */1 :
+          tmp = initial;
+          break;
+      case /* Inherit */2 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    tmp = opt.tag ? opt[0] : String(opt[0]);
+  }
+  return /* tuple */[
+          "z-index",
+          tmp
+        ];
+}
+
+var ZIndex = {
+  zIndex: zIndex
+};
 
 var borderBottomStyle = borderBottomeStyle;
 
@@ -5328,14 +5845,35 @@ export {
   Top ,
   top ,
   Transform ,
-  transform$1 as transform,
-  transformOrigin$1 as transformOrigin,
-  transformStyle$1 as transformStyle,
+  transform ,
+  transformOrigin ,
+  transformStyle ,
+  Transition ,
   transition ,
   transitionDelay ,
   transitionDuration ,
   transitionProperty ,
   transitionTimingFunction ,
+  UnicodeBidi ,
+  unicodeBidi ,
+  UserSelect ,
+  userSelect ,
+  VerticalAlign ,
+  verticalAlign ,
+  Visibility ,
+  visibility ,
+  WhiteSpace ,
+  whiteSpace ,
+  Width ,
+  width ,
+  Word ,
+  wordBreak ,
+  wordSpacing ,
+  wordWrap ,
+  WritingMode ,
+  writingMode ,
+  ZIndex ,
+  zIndex ,
   
 }
 /* class Not a pure module */

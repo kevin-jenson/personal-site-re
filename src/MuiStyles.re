@@ -2112,7 +2112,7 @@ module Font = {
   let fontSizeAdjust = opt => (
     "font-size-adjust",
     switch (opt) {
-    | Adjust(adjust) => string_of_float(adjust)
+    | Adjust(adjust) => Js.Float.toString(adjust)
     | None => none
     | Initial => initial
     | Inherit => inherit_
@@ -2830,7 +2830,7 @@ type objectPositionOptions = ObjectCss.objectPositionOptions;
 let objectPosition = ObjectCss.objectPosition;
 
 module Opacity = {
-  let opacity = o => ("opacity", string_of_float(o));
+  let opacity = o => ("opacity", Js.Float.toString(o));
 };
 
 let opacity = Opacity.opacity;
@@ -3604,6 +3604,58 @@ module Transform = {
            | None => none
            | Matrix(n1, n2, n3, n4, n5, n6) => {j|matrix($n1, $n2, $n3, $n4, $n5, $n6)|j}
            | Matrix3d(n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16) => {j|matrix($n1, $n2, $n3, $n4, $n5, $n6, $n7, $n8, $n9, $n10, $n11, $n12, $n13, $n14, $n15, $n16)|j}
+           | Translate(xLength, yLength) =>
+             let x = Length.getLength(xLength);
+             let y = Length.getLength(yLength);
+             {j|translate($x, $y)|j};
+           | Translate3d(xLength, yLength, zLength) =>
+             let x = Length.getLength(xLength);
+             let y = Length.getLength(yLength);
+             let z = Length.getLength(zLength);
+             {j|translate3d($x, $y, $z)|j};
+           | TranslateX(xLength) =>
+             let x = Length.getLength(xLength);
+             {j|translateX($x)|j};
+           | TranslateY(yLength) =>
+             let y = Length.getLength(yLength);
+             {j|translateY($y)|j};
+           | TranslateZ(zLength) =>
+             let z = Length.getLength(zLength);
+             {j|translateZ($z)|j};
+           | Scale(x, y) =>
+             let x = Js.Float.toString(x);
+             let y = Js.Float.toString(y);
+             {j|scale($x, $y)|j};
+           | Scale3d(x, y, z) =>
+             let x = Js.Float.toString(x);
+             let y = Js.Float.toString(y);
+             let z = Js.Float.toString(z);
+             {j|scale3d($x, $y, $z)|j};
+           | ScaleX(x) =>
+             let x = Js.Float.toString(x);
+             {j|scaleX($x)|j};
+           | ScaleY(y) =>
+             let y = Js.Float.toString(y);
+             {j|scaleY($y)|j};
+           | ScaleZ(z) =>
+             let z = Js.Float.toString(z);
+             {j|scaleZ($z)|j};
+           | Rotate(rotate) => {j|rotate($rotate)|j}
+           | Rotate3d(x, y, z, rotate) =>
+             let x = Js.Float.toString(x);
+             let y = Js.Float.toString(y);
+             let z = Js.Float.toString(z);
+             {j|rotate3d($x, $y, $z, $rotate)|j};
+           | RotateX(rotate) => {j|rotateX($rotate)|j}
+           | RotateY(rotate) => {j|rotateY($rotate)|j}
+           | RotateZ(rotate) => {j|rotateZ($rotate)|j}
+           | Skew(x, y) => {j|skew($x, $y)|j}
+           | SkewX(x) => {j|skewX($x)|j}
+           | SkewY(y) => {j|skewY($y)|j}
+           | Perspective(perspectve) => {j|perspective($perspectve)|j}
+           | Initial => initial
+           | Inherit => inherit_
+           | Unsafe_set(str) => str
            }
          );
 
@@ -3650,11 +3702,400 @@ module Transform = {
   );
 };
 
-let transform = {};
-let transformOrigin = {};
-let transformStyle = {};
-let transition = {};
-let transitionDelay = {};
-let transitionDuration = {};
-let transitionProperty = {};
-let transitionTimingFunction = {};
+type transformOptions = Transform.transformOptions;
+let transform = Transform.transform;
+type transformOriginOptions = Transform.transformOriginOptions;
+let transformOrigin = Transform.transformOrigin;
+type transformStyleOptions = Transform.transformStyleOptions;
+let transformStyle = Transform.transformStyle;
+
+module Transition = {
+  type transitionDelayDurationOptions =
+    | Sec(int)
+    | MS(int)
+    | Time(string)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let getTransitionDelayDuration = opt =>
+    switch (opt) {
+    | Sec(sec) =>
+      let sec = toStr(sec);
+      {j|$(sec)s|j};
+    | MS(ms) =>
+      let ms = toStr(ms);
+      {j|$(ms)ms|j};
+    | Time(time) => time
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    };
+
+  let transitionDelay = opt => ("transition-delay", getTransitionDelayDuration(opt));
+  let transitionDuration = opt => ("transition-duration", getTransitionDelayDuration(opt));
+
+  type transitionPropertyOptions =
+    | None
+    | All
+    | Property(string)
+    | Properties(list(string))
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let transitionProperty = opt => (
+    "transition-property",
+    switch (opt) {
+    | None => none
+    | All => "all"
+    | Property(property) => property
+    | Properties(propList) => Array.of_list(propList) |> Js.Array.joinWith(", ")
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type step =
+    | Start
+    | End
+  and transitionTimingFunctionOptions =
+    | Ease
+    | Linear
+    | EaseIn
+    | EaseOut
+    | EaseInOut
+    | StepStart
+    | StepEnd
+    | Steps(int, step)
+    | CubicBezier(float, float, float, float)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let transitionTimingFunction = opt => (
+    "transition-timing-function",
+    switch (opt) {
+    | Ease => "ease"
+    | Linear => "linear"
+    | EaseIn => "ease-in"
+    | EaseOut => "ease-out"
+    | EaseInOut => "ease-in-out"
+    | StepStart => "step-start"
+    | StepEnd => "step-end"
+    | Steps(num, step) =>
+      let step =
+        switch (step) {
+        | Start => "start"
+        | End => "end"
+        };
+
+      {j|step($num, $step)|j};
+    | CubicBezier(x1, y1, x2, y2) =>
+      let x1 = Js.Float.toString(x1);
+      let y1 = Js.Float.toString(y1);
+      let x2 = Js.Float.toString(x2);
+      let y2 = Js.Float.toString(y2);
+
+      {j|cubic-bezier($x1, $y1, $x2, $y2)|j};
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  let transition =
+      (
+        ~property: option(transitionPropertyOptions)=?,
+        ~duration: option(transitionDelayDurationOptions)=?,
+        ~timing: option(transitionTimingFunctionOptions)=?,
+        ~delay: option(transitionDelayDurationOptions),
+        (),
+      ) => {
+    let (_, property) = property->Belt.Option.getWithDefault(Unsafe_set(""))->transitionProperty;
+    let duration = duration->Belt.Option.getWithDefault(Unsafe_set(""))->getTransitionDelayDuration;
+    let (_, timing) = timing->Belt.Option.getWithDefault(Unsafe_set(""))->transitionTimingFunction;
+    let delay = delay->Belt.Option.getWithDefault(Unsafe_set(""))->getTransitionDelayDuration;
+
+    {j|$property $duration $timing $delay|j} |> String.trim;
+  };
+};
+
+let transition = Transition.transition;
+type transitionDelayDurationOptions = Transition.transitionDelayDurationOptions;
+let transitionDelay = Transition.transitionDelay;
+let transitionDuration = Transition.transitionDuration;
+type transitionPropertyOptions = Transition.transitionPropertyOptions;
+let transitionProperty = Transition.transitionProperty;
+type transitionTimingFunctionOptions = Transition.transitionTimingFunctionOptions;
+let transitionTimingFunction = Transition.transitionTimingFunction;
+
+// U's
+module UnicodeBidi = {
+  type options =
+    | Normal
+    | Embed
+    | BidiOverride
+    | Isolate
+    | IsolateOverride
+    | PlainText
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let unicodeBidi = opt => (
+    "unicode-bidi",
+    switch (opt) {
+    | Normal => "normal"
+    | Embed => "embed"
+    | BidiOverride => "bidi-override"
+    | Isolate => "isolate"
+    | IsolateOverride => "isolate-override"
+    | PlainText => "plain-text"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type unicodeBidiOptions = UnicodeBidi.options;
+let unicodeBidi = UnicodeBidi.unicodeBidi;
+
+module UserSelect = {
+  type options =
+    | Auto
+    | None
+    | Text
+    | All
+    | Unsafe_set(string);
+  let userSelect = opt => (
+    "user-select",
+    switch (opt) {
+    | Auto => auto
+    | None => none
+    | Text => "text"
+    | All => "all"
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type userSelectOptions = UserSelect.options;
+let userSelect = UserSelect.userSelect;
+
+// V's
+module VerticalAlign = {
+  type options =
+    | Baseline
+    | Length(Length.options)
+    | Sub
+    | Super
+    | Top
+    | TextTop
+    | Middle
+    | Bottom
+    | TextBottom
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let verticalAlign = opt => (
+    "vertical-align",
+    switch (opt) {
+    | Baseline => "baseline"
+    | Length(length) => Length.getLength(length)
+    | Sub => "sub"
+    | Super => "super"
+    | Top => "top"
+    | TextTop => "text-top"
+    | Middle => "middle"
+    | Bottom => "bottom"
+    | TextBottom => "text-bottom"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type verticalAlignOptions = VerticalAlign.options;
+let verticalAlign = VerticalAlign.verticalAlign;
+
+module Visibility = {
+  type options =
+    | Visible
+    | Hidden
+    | Collapse
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let visibility = opt => (
+    "visibility",
+    switch (opt) {
+    | Visible => "visible"
+    | Hidden => "hidden"
+    | Collapse => "collapse"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type visibilityOptions = Visibility.options;
+let visibility = Visibility.visibility;
+
+// W's
+module WhiteSpace = {
+  type options =
+    | Normal
+    | Nowrap
+    | Pre
+    | PreLine
+    | PreWrap
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let whiteSpace = opt => (
+    "white-space",
+    switch (opt) {
+    | Normal => "normal"
+    | Nowrap => "nowrap"
+    | Pre => "pre"
+    | PreLine => "pre-line"
+    | PreWrap => "pre-wrap"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type whiteSpaceOptions = WhiteSpace.options;
+let whiteSpace = WhiteSpace.whiteSpace;
+
+module Width = {
+  type options =
+    | Auto
+    | Width(Length.options)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let width = opt => (
+    "width",
+    switch (opt) {
+    | Auto => auto
+    | Width(length) => Length.getLength(length)
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type widthOptions = Width.options;
+let width = Width.width;
+
+module Word = {
+  type wordBreakOptions =
+    | Normal
+    | BreakAll
+    | KeepAll
+    | BreakWord
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let wordBreak = opt => (
+    "word-break",
+    switch (opt) {
+    | Normal => "normal"
+    | BreakAll => "break-all"
+    | KeepAll => "keep-all"
+    | BreakWord => "break-word"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type wordSpacingOptions =
+    | Normal
+    | Spacing(Length.options)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let wordSpacing = opt => (
+    "word-spacing",
+    switch (opt) {
+    | Normal => "normal"
+    | Spacing(length) => Length.getLength(length)
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type wordWrapOptions =
+    | Normal
+    | BreakWord
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let wordWrap = opt => (
+    "word-wrap",
+    switch (opt) {
+    | Normal => "normal"
+    | BreakWord => "break-word"
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type wordBreakOptions = Word.wordBreakOptions;
+let wordBreak = Word.wordBreak;
+type wordSpacingOptions = Word.wordSpacingOptions;
+let wordSpacing = Word.wordSpacing;
+type wordWrapOptions = Word.wordWrapOptions;
+let wordWrap = Word.wordWrap;
+
+module WritingMode = {
+  type options =
+    | HorizontalTb
+    | VerticalRl
+    | VerticalLr
+    | Unsafe_set(string);
+  let writingMode = opt => (
+    "writing-mode",
+    switch (opt) {
+    | HorizontalTb => "horizontal-tb"
+    | VerticalRl => "vertical-rl"
+    | VerticalLr => "vertical-lr"
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type writingModeOptions = WritingMode.options;
+let writingMode = WritingMode.writingMode;
+
+// Z's
+module ZIndex = {
+  type options =
+    | Auto
+    | Index(int)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let zIndex = opt => (
+    "z-index",
+    switch (opt) {
+    | Auto => auto
+    | Index(index) => toStr(index)
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+};
+
+type zIndexOptions = ZIndex.options;
+let zIndex = ZIndex.zIndex;
