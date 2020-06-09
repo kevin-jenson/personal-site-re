@@ -739,7 +739,6 @@ module Background = {
   );
 };
 
-// TODO: add background
 type backgroundOptions = Background.backgroundOptions;
 let background = Background.background;
 type backgroundAttachmentOptions = Background.backgroundAttachmentOptions;
@@ -2307,26 +2306,226 @@ type fontWeightOptions = Font.fontWeightOptions;
 let fontWeight = Font.fontWeight;
 
 // G's
-module Grid = {};
+module Grid = {
+  type gridAutoColumnsOptions =
+    | Auto
+    | FitContent(Length.options)
+    | MaxContent
+    | MinContent
+    | Minmax(string, string)
+    | Length(Length.options)
+    | Unsafe_set(string);
+  let gridAutoColumns = opt => (
+    "grid-auto-columns",
+    switch (opt) {
+    | Auto => auto
+    | FitContent(length) =>
+      let length = Length.getLength(length);
+      {j|fit-content($length)|j};
+    | MaxContent => "max-content"
+    | MinContent => "min-content"
+    | Minmax(min, max) => {j|minmax($min, $max)|j}
+    | Length(length) => Length.getLength(length)
+    | Unsafe_set(str) => str
+    },
+  );
 
-let grid = {};
-let gridArea = {};
-let gridAutoColumns = {};
-let gridAutoFlow = {};
-let gridAutoRows = {};
-let gridColumn = {};
-let gridColumnEnd = {};
-let gridColumnGap = {};
-let gridColumnStart = {};
-let gridGap = {};
-let gridRow = {};
-let gridRowEnd = {};
-let gridRowGap = {};
-let gridRowStart = {};
-let gridTemplate = {};
-let gridTemplateAreas = {};
-let gridTemplateColumns = {};
-let gridTemplateRows = {};
+  type gridAutoFlowOptions =
+    | Row
+    | Column
+    | Dense
+    | RowDense
+    | ColumnDense;
+  let gridAutoFlow = opt => (
+    "grid-auto=-flow",
+    switch (opt) {
+    | Row => "row"
+    | Column => "column"
+    | Dense => "dense"
+    | RowDense => "row dense"
+    | ColumnDense => "column dense"
+    },
+  );
+
+  type gridAutoRowsOptions =
+    | Auto
+    | MaxContent
+    | MinContent
+    | Length(Length.options)
+    | Unsafe_set(string);
+  let gridAutoRows = opt => (
+    "grid-auto-rows",
+    switch (opt) {
+    | Auto => auto
+    | MaxContent => "max-content"
+    | MinContent => "min-content"
+    | Length(length) => Length.getLength(length)
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type gridColumnStartEndOptions =
+    | Auto
+    | Span(int)
+    | ColumnLine(int)
+    | Unsafe_set(string);
+  let getGridColumnStartEnd = opt =>
+    switch (opt) {
+    | Auto => auto
+    | Span(span) => {j|span $span|j}
+    | ColumnLine(line) => toStr(line)
+    | Unsafe_set(str) => str
+    };
+
+  let gridColumnEnd = opt => ("grid-column-end", getGridColumnStartEnd(opt));
+  let gridColumnStart = opt => ("grid-column-start", getGridColumnStartEnd(opt));
+
+  type gridColumnRowGapOptions =
+    | Gap(Length.options)
+    | Unsafe_set(string);
+  let getGridColumnRowGap = opt =>
+    switch (opt) {
+    | Gap(length) => Length.getLength(length)
+    | Unsafe_set(str) => str
+    };
+
+  let gridColumnGap = opt => ("grid-column-gap", getGridColumnRowGap(opt));
+  let gridRowGap = opt => ("grid-row-gap", getGridColumnRowGap(opt));
+
+  let gridColumn = (~columnStart, ~columnEnd) => {
+    let columnStart = getGridColumnStartEnd(columnStart);
+    let columnEnd = getGridColumnStartEnd(columnEnd);
+    {j|$columnStart / $columnEnd|j};
+  };
+
+  type gridRowStartEndOptions =
+    | Auto
+    | Span(int)
+    | RowLine(int)
+    | Unsafe_set(string);
+  let getGridRowStartEnd = opt =>
+    switch (opt) {
+    | Auto => auto
+    | Span(span) => {j|span $span|j}
+    | RowLine(line) => toStr(line)
+    | Unsafe_set(str) => str
+    };
+
+  let gridRowEnd = opt => ("grid-row-end", getGridRowStartEnd(opt));
+  let gridRowStart = opt => ("grid-row-start", getGridRowStartEnd(opt));
+
+  let gridGap = (~row: option(gridColumnRowGapOptions)=?, ~column: option(gridColumnRowGapOptions)=?, ()) => {
+    let row = row->Belt.Option.getWithDefault(Unsafe_set(""))->getGridColumnRowGap;
+    let column = column->Belt.Option.getWithDefault(Unsafe_set(""))->getGridColumnRowGap;
+
+    {j|$row $column|j} |> String.trim;
+  };
+
+  let gridRow = (~rowStart, ~rowEnd) => {
+    let rowStart = getGridRowStartEnd(rowStart);
+    let rowEnd = getGridRowStartEnd(rowEnd);
+    {j|$rowStart / $rowEnd|j};
+  };
+
+  type gridTemplateAreasOptions =
+    | None
+    | Areas(string)
+    | Unsafe_set(string);
+  let gridTemplateAreas = opt => (
+    "grid-template-areas",
+    switch (opt) {
+    | None => none
+    | Areas(area) => area
+    | Unsafe_set(str) => str
+    },
+  );
+
+  type gridTemplateColumnsRowsOptions =
+    | None
+    | Auto
+    | MaxContent
+    | MinContent
+    | Length(Length.options)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let getGridTemplateColumnsRows = opt =>
+    switch (opt) {
+    | None => none
+    | Auto => auto
+    | MaxContent => "max-content"
+    | MinContent => "min-content"
+    | Length(length) => Length.getLength(length)
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    };
+
+  let gridTemplateColumns = opt => ("grid-template-columns", getGridTemplateColumnsRows(opt));
+  let gridTemplateRows = opt => ("grid-template-rows", getGridTemplateColumnsRows(opt));
+
+  type gridTemplateOptions =
+    | None
+    | RowsColumns(gridTemplateColumnsRowsOptions, gridTemplateColumnsRowsOptions)
+    | Areas(string)
+    | Initial
+    | Inherit
+    | Unsafe_set(string);
+  let gridTemplate = opt => (
+    "grid-template",
+    switch (opt) {
+    | None => none
+    | RowsColumns(rows, columns) =>
+      let rows = getGridTemplateColumnsRows(rows);
+      let columns = getGridTemplateColumnsRows(columns);
+
+      {j|$rows / $columns|j};
+    | Areas(areas) => areas
+    | Initial => initial
+    | Inherit => inherit_
+    | Unsafe_set(str) => str
+    },
+  );
+
+  let gridArea = (~rowStart, ~columnStart, ~rowEnd, ~columnEnd) => {
+    let rowStart = getGridRowStartEnd(rowStart);
+    let columnStart = getGridColumnStartEnd(columnStart);
+    let rowEnd = getGridRowStartEnd(rowEnd);
+    let columnEnd = getGridColumnStartEnd(columnEnd);
+
+    {j|$rowStart / $columnStart / $rowEnd / $columnEnd|j};
+  };
+
+  let grid = str => ("grid", str);
+};
+
+let grid = Grid.grid;
+let gridArea = Grid.gridArea;
+type gridAutoColumnsOptions = Grid.gridAutoColumnsOptions;
+let gridAutoColumns = Grid.gridAutoColumns;
+type gridAutoFlowOptions = Grid.gridAutoFlowOptions;
+let gridAutoFlow = Grid.gridAutoFlow;
+type gridAutoRowsOptions = Grid.gridAutoRowsOptions;
+let gridAutoRows = Grid.gridAutoRows;
+let gridColumn = Grid.gridColumn;
+type gridColumnStartEndOptions = Grid.gridColumnStartEndOptions;
+let gridColumnEnd = Grid.gridColumnEnd;
+type gridColumnRowGapOptions = Grid.gridColumnRowGapOptions;
+let gridColumnGap = Grid.gridColumnGap;
+let gridColumnStart = Grid.gridColumnStart;
+let gridGap = Grid.gridGap;
+let gridRow = Grid.gridRow;
+type gridRowStartEndOptions = Grid.gridRowStartEndOptions;
+let gridRowEnd = Grid.gridRowEnd;
+let gridRowGap = Grid.gridRowGap;
+let gridRowStart = Grid.gridRowStart;
+type gridTemplateOptions = Grid.gridTemplateOptions;
+let gridTemplate = Grid.gridTemplate;
+type gridTemplateAreasOptions = Grid.gridTemplateAreasOptions;
+let gridTemplateAreas = Grid.gridTemplateAreas;
+type gridTemplateColumnsRowsOptions = Grid.gridTemplateColumnsRowsOptions;
+let gridTemplateColumns = Grid.gridTemplateColumns;
+let gridTemplateRows = Grid.gridTemplateRows;
 
 // H's
 module HangingPunctuation = {

@@ -3114,115 +3114,313 @@ var Font = {
   fontFace: fontFace
 };
 
-var Grid = { };
+function gridAutoColumns(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Auto */0 :
+          tmp = auto;
+          break;
+      case /* MaxContent */1 :
+          tmp = "max-content";
+          break;
+      case /* MinContent */2 :
+          tmp = "min-content";
+          break;
+      
+    }
+  } else {
+    switch (opt.tag | 0) {
+      case /* FitContent */0 :
+          var length = getLength(opt[0]);
+          tmp = "fit-content(" + (String(length) + ")");
+          break;
+      case /* Minmax */1 :
+          tmp = "minmax(" + (String(opt[0]) + (", " + (String(opt[1]) + ")")));
+          break;
+      case /* Length */2 :
+          tmp = getLength(opt[0]);
+          break;
+      case /* Unsafe_set */3 :
+          tmp = opt[0];
+          break;
+      
+    }
+  }
+  return /* tuple */[
+          "grid-auto-columns",
+          tmp
+        ];
+}
 
-var $$class = CamlinternalOO.create_table(0);
+function gridAutoFlow(opt) {
+  var tmp;
+  switch (opt) {
+    case /* Row */0 :
+        tmp = "row";
+        break;
+    case /* Column */1 :
+        tmp = "column";
+        break;
+    case /* Dense */2 :
+        tmp = "dense";
+        break;
+    case /* RowDense */3 :
+        tmp = "row dense";
+        break;
+    case /* ColumnDense */4 :
+        tmp = "column dense";
+        break;
+    
+  }
+  return /* tuple */[
+          "grid-auto=-flow",
+          tmp
+        ];
+}
 
-CamlinternalOO.init_class($$class);
+function gridAutoRows(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* Auto */0 :
+          tmp = auto;
+          break;
+      case /* MaxContent */1 :
+          tmp = "max-content";
+          break;
+      case /* MinContent */2 :
+          tmp = "min-content";
+          break;
+      
+    }
+  } else {
+    tmp = opt.tag ? opt[0] : getLength(opt[0]);
+  }
+  return /* tuple */[
+          "grid-auto-rows",
+          tmp
+        ];
+}
 
-var grid = CamlinternalOO.create_object_opt(undefined, $$class);
+function getGridColumnStartEnd(opt) {
+  if (typeof opt === "number") {
+    return auto;
+  }
+  switch (opt.tag | 0) {
+    case /* Span */0 :
+        return "span " + (String(opt[0]) + "");
+    case /* ColumnLine */1 :
+        return String(opt[0]);
+    case /* Unsafe_set */2 :
+        return opt[0];
+    
+  }
+}
 
-var $$class$1 = CamlinternalOO.create_table(0);
+function gridColumnEnd(opt) {
+  return /* tuple */[
+          "grid-column-end",
+          getGridColumnStartEnd(opt)
+        ];
+}
 
-CamlinternalOO.init_class($$class$1);
+function gridColumnStart(opt) {
+  return /* tuple */[
+          "grid-column-start",
+          getGridColumnStartEnd(opt)
+        ];
+}
 
-var gridArea = CamlinternalOO.create_object_opt(undefined, $$class$1);
+function getGridColumnRowGap(opt) {
+  if (opt.tag) {
+    return opt[0];
+  } else {
+    return getLength(opt[0]);
+  }
+}
 
-var $$class$2 = CamlinternalOO.create_table(0);
+function gridColumnGap(opt) {
+  return /* tuple */[
+          "grid-column-gap",
+          getGridColumnRowGap(opt)
+        ];
+}
 
-CamlinternalOO.init_class($$class$2);
+function gridRowGap(opt) {
+  return /* tuple */[
+          "grid-row-gap",
+          getGridColumnRowGap(opt)
+        ];
+}
 
-var gridAutoColumns = CamlinternalOO.create_object_opt(undefined, $$class$2);
+function gridColumn(columnStart, columnEnd) {
+  var columnStart$1 = getGridColumnStartEnd(columnStart);
+  var columnEnd$1 = getGridColumnStartEnd(columnEnd);
+  return "" + (String(columnStart$1) + (" / " + (String(columnEnd$1) + "")));
+}
 
-var $$class$3 = CamlinternalOO.create_table(0);
+function getGridRowStartEnd(opt) {
+  if (typeof opt === "number") {
+    return auto;
+  }
+  switch (opt.tag | 0) {
+    case /* Span */0 :
+        return "span " + (String(opt[0]) + "");
+    case /* RowLine */1 :
+        return String(opt[0]);
+    case /* Unsafe_set */2 :
+        return opt[0];
+    
+  }
+}
 
-CamlinternalOO.init_class($$class$3);
+function gridRowEnd(opt) {
+  return /* tuple */[
+          "grid-row-end",
+          getGridRowStartEnd(opt)
+        ];
+}
 
-var gridAutoFlow = CamlinternalOO.create_object_opt(undefined, $$class$3);
+function gridRowStart(opt) {
+  return /* tuple */[
+          "grid-row-start",
+          getGridRowStartEnd(opt)
+        ];
+}
 
-var $$class$4 = CamlinternalOO.create_table(0);
+function gridGap(row, column, param) {
+  var row$1 = getGridColumnRowGap(Belt_Option.getWithDefault(row, /* Unsafe_set */Block.__(1, [""])));
+  var column$1 = getGridColumnRowGap(Belt_Option.getWithDefault(column, /* Unsafe_set */Block.__(1, [""])));
+  return $$String.trim("" + (String(row$1) + (" " + (String(column$1) + ""))));
+}
 
-CamlinternalOO.init_class($$class$4);
+function gridRow(rowStart, rowEnd) {
+  var rowStart$1 = getGridRowStartEnd(rowStart);
+  var rowEnd$1 = getGridRowStartEnd(rowEnd);
+  return "" + (String(rowStart$1) + (" / " + (String(rowEnd$1) + "")));
+}
 
-var gridAutoRows = CamlinternalOO.create_object_opt(undefined, $$class$4);
+function gridTemplateAreas(opt) {
+  return /* tuple */[
+          "grid-template-areas",
+          typeof opt === "number" ? none : opt[0]
+        ];
+}
 
-var $$class$5 = CamlinternalOO.create_table(0);
+function getGridTemplateColumnsRows(opt) {
+  if (typeof opt !== "number") {
+    if (opt.tag) {
+      return opt[0];
+    } else {
+      return getLength(opt[0]);
+    }
+  }
+  switch (opt) {
+    case /* None */0 :
+        return none;
+    case /* Auto */1 :
+        return auto;
+    case /* MaxContent */2 :
+        return "max-content";
+    case /* MinContent */3 :
+        return "min-content";
+    case /* Initial */4 :
+        return initial;
+    case /* Inherit */5 :
+        return inherit_;
+    
+  }
+}
 
-CamlinternalOO.init_class($$class$5);
+function gridTemplateColumns(opt) {
+  return /* tuple */[
+          "grid-template-columns",
+          getGridTemplateColumnsRows(opt)
+        ];
+}
 
-var gridColumn = CamlinternalOO.create_object_opt(undefined, $$class$5);
+function gridTemplateRows(opt) {
+  return /* tuple */[
+          "grid-template-rows",
+          getGridTemplateColumnsRows(opt)
+        ];
+}
 
-var $$class$6 = CamlinternalOO.create_table(0);
+function gridTemplate(opt) {
+  var tmp;
+  if (typeof opt === "number") {
+    switch (opt) {
+      case /* None */0 :
+          tmp = none;
+          break;
+      case /* Initial */1 :
+          tmp = initial;
+          break;
+      case /* Inherit */2 :
+          tmp = inherit_;
+          break;
+      
+    }
+  } else {
+    switch (opt.tag | 0) {
+      case /* RowsColumns */0 :
+          var rows = getGridTemplateColumnsRows(opt[0]);
+          var columns = getGridTemplateColumnsRows(opt[1]);
+          tmp = "" + (String(rows) + (" / " + (String(columns) + "")));
+          break;
+      case /* Areas */1 :
+      case /* Unsafe_set */2 :
+          tmp = opt[0];
+          break;
+      
+    }
+  }
+  return /* tuple */[
+          "grid-template",
+          tmp
+        ];
+}
 
-CamlinternalOO.init_class($$class$6);
+function gridArea(rowStart, columnStart, rowEnd, columnEnd) {
+  var rowStart$1 = getGridRowStartEnd(rowStart);
+  var columnStart$1 = getGridColumnStartEnd(columnStart);
+  var rowEnd$1 = getGridRowStartEnd(rowEnd);
+  var columnEnd$1 = getGridColumnStartEnd(columnEnd);
+  return "" + (String(rowStart$1) + (" / " + (String(columnStart$1) + (" / " + (String(rowEnd$1) + (" / " + (String(columnEnd$1) + "")))))));
+}
 
-var gridColumnEnd = CamlinternalOO.create_object_opt(undefined, $$class$6);
+function grid(str) {
+  return /* tuple */[
+          "grid",
+          str
+        ];
+}
 
-var $$class$7 = CamlinternalOO.create_table(0);
-
-CamlinternalOO.init_class($$class$7);
-
-var gridColumnGap = CamlinternalOO.create_object_opt(undefined, $$class$7);
-
-var $$class$8 = CamlinternalOO.create_table(0);
-
-CamlinternalOO.init_class($$class$8);
-
-var gridColumnStart = CamlinternalOO.create_object_opt(undefined, $$class$8);
-
-var $$class$9 = CamlinternalOO.create_table(0);
-
-CamlinternalOO.init_class($$class$9);
-
-var gridGap = CamlinternalOO.create_object_opt(undefined, $$class$9);
-
-var $$class$10 = CamlinternalOO.create_table(0);
-
-CamlinternalOO.init_class($$class$10);
-
-var gridRow = CamlinternalOO.create_object_opt(undefined, $$class$10);
-
-var $$class$11 = CamlinternalOO.create_table(0);
-
-CamlinternalOO.init_class($$class$11);
-
-var gridRowEnd = CamlinternalOO.create_object_opt(undefined, $$class$11);
-
-var $$class$12 = CamlinternalOO.create_table(0);
-
-CamlinternalOO.init_class($$class$12);
-
-var gridRowGap = CamlinternalOO.create_object_opt(undefined, $$class$12);
-
-var $$class$13 = CamlinternalOO.create_table(0);
-
-CamlinternalOO.init_class($$class$13);
-
-var gridRowStart = CamlinternalOO.create_object_opt(undefined, $$class$13);
-
-var $$class$14 = CamlinternalOO.create_table(0);
-
-CamlinternalOO.init_class($$class$14);
-
-var gridTemplate = CamlinternalOO.create_object_opt(undefined, $$class$14);
-
-var $$class$15 = CamlinternalOO.create_table(0);
-
-CamlinternalOO.init_class($$class$15);
-
-var gridTemplateAreas = CamlinternalOO.create_object_opt(undefined, $$class$15);
-
-var $$class$16 = CamlinternalOO.create_table(0);
-
-CamlinternalOO.init_class($$class$16);
-
-var gridTemplateColumns = CamlinternalOO.create_object_opt(undefined, $$class$16);
-
-var $$class$17 = CamlinternalOO.create_table(0);
-
-CamlinternalOO.init_class($$class$17);
-
-var gridTemplateRows = CamlinternalOO.create_object_opt(undefined, $$class$17);
+var Grid = {
+  gridAutoColumns: gridAutoColumns,
+  gridAutoFlow: gridAutoFlow,
+  gridAutoRows: gridAutoRows,
+  getGridColumnStartEnd: getGridColumnStartEnd,
+  gridColumnEnd: gridColumnEnd,
+  gridColumnStart: gridColumnStart,
+  getGridColumnRowGap: getGridColumnRowGap,
+  gridColumnGap: gridColumnGap,
+  gridRowGap: gridRowGap,
+  gridColumn: gridColumn,
+  getGridRowStartEnd: getGridRowStartEnd,
+  gridRowEnd: gridRowEnd,
+  gridRowStart: gridRowStart,
+  gridGap: gridGap,
+  gridRow: gridRow,
+  gridTemplateAreas: gridTemplateAreas,
+  getGridTemplateColumnsRows: getGridTemplateColumnsRows,
+  gridTemplateColumns: gridTemplateColumns,
+  gridTemplateRows: gridTemplateRows,
+  gridTemplate: gridTemplate,
+  gridArea: gridArea,
+  grid: grid
+};
 
 function hangingPunctuation(opt) {
   var tmp;
@@ -3755,11 +3953,11 @@ var Max = {
 
 var Media = { };
 
-var $$class$18 = CamlinternalOO.create_table(0);
+var $$class = CamlinternalOO.create_table(0);
 
-CamlinternalOO.init_class($$class$18);
+CamlinternalOO.init_class($$class);
 
-var media = CamlinternalOO.create_object_opt(undefined, $$class$18);
+var media = CamlinternalOO.create_object_opt(undefined, $$class);
 
 function getMin(opt) {
   if (typeof opt === "number") {
