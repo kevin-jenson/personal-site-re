@@ -2904,11 +2904,8 @@ type maxOptions = Max.options;
 let maxHeight = Max.maxHeight;
 let maxWidth = Max.maxWidth;
 
-module Media = {
-  // TODO add media lol
-};
-
-let media = {};
+// TODO: better media
+let media = str => str;
 
 module Min = {
   type options =

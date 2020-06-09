@@ -8,7 +8,6 @@ import * as $$String from "bs-platform/lib/es6/string.js";
 import * as Js_dict from "bs-platform/lib/es6/js_dict.js";
 import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
-import * as CamlinternalOO from "bs-platform/lib/es6/camlinternalOO.js";
 import * as Caml_exceptions from "bs-platform/lib/es6/caml_exceptions.js";
 import * as Styles from "@material-ui/styles";
 
@@ -3951,13 +3950,9 @@ var Max = {
   maxWidth: maxWidth
 };
 
-var Media = { };
-
-var $$class = CamlinternalOO.create_table(0);
-
-CamlinternalOO.init_class($$class);
-
-var media = CamlinternalOO.create_object_opt(undefined, $$class);
+function media(str) {
+  return str;
+}
 
 function getMin(opt) {
   if (typeof opt === "number") {
@@ -5975,7 +5970,6 @@ export {
   Max ,
   maxHeight ,
   maxWidth ,
-  Media ,
   media ,
   Min ,
   minHeight ,
@@ -6074,4 +6068,4 @@ export {
   zIndex ,
   
 }
-/* class Not a pure module */
+/* @material-ui/styles Not a pure module */
